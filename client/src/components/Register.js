@@ -1,7 +1,13 @@
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import { useQuery } from "react-query";
+import axios from "axios";
 import "./Register.css";
+
+const addNewUser = () => {
+  return axios.post("");
+};
 
 const Register = () => {
   const [formData, setFormData] = useState({
