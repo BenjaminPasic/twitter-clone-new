@@ -1,15 +1,24 @@
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
-import { useState } from "react";
-import { useQuery } from "react-query";
+import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
 import axios from "axios";
 import "./Register.css";
 
-const addNewUser = () => {
-  return axios.post("");
+const registerUser = (formData) => {
+  return axios.post("http://localhost:3001/user/register", formData);
 };
 
 const Register = () => {
+  const { isFetching, mutate, error } = useMutation(registerUser);
+
+  useEffect(() => {
+    const errorMessage = error.response?.data;
+    if (errorMessage === "username must be unique") {
+      setFormError({ ...formError, username: "Username is already taken" });
+    }
+  }, [error]);
+
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -49,7 +58,7 @@ const Register = () => {
     }
 
     if (!error) {
-      console.log("success");
+      mutate(formData);
     }
   };
 
@@ -114,9 +123,15 @@ const Register = () => {
           error={formError.password ? true : false}
           helperText={formError.password ? formError.password : ""}
         />
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
-          Register
-        </Button>
+        {isFetching ? (
+          <Button fullWidth variant="contained" sx={{ mt: 2 }} disabled>
+            Loading...
+          </Button>
+        ) : (
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
+            Register
+          </Button>
+        )}
         <p className="login-link">
           Already have an account? <a href="#">Log in</a>
         </p>
