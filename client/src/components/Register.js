@@ -12,9 +12,39 @@ const Register = () => {
     password: "",
   });
 
+  const [formError, setFormError] = useState({
+    name: "",
+    surname: "",
+    username: "",
+    email: "",
+    password: "",
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    let error = false;
+
+    setFormError({
+      name: false,
+      surname: false,
+      username: false,
+      email: false,
+      password: false,
+    });
+
+    for (const property in formData) {
+      if (formData[property] === "") {
+        setFormError((prevData) => ({
+          ...prevData,
+          [property]: "This field is required",
+        }));
+        error = true;
+      }
+    }
+
+    if (!error) {
+      console.log("success");
+    }
   };
 
   const handleInput = (e) => {
@@ -35,6 +65,8 @@ const Register = () => {
             name="name"
             type="text"
             onChange={handleInput}
+            error={formError.name ? true : false}
+            helperText={formError.name ? formError.name : ""}
           />
           <TextField
             variant="outlined"
@@ -42,6 +74,8 @@ const Register = () => {
             name="surname"
             type="text"
             onChange={handleInput}
+            error={formError.surname ? true : false}
+            helperText={formError.surname ? formError.surname : ""}
           />
         </div>
         <TextField
@@ -51,6 +85,8 @@ const Register = () => {
           name="username"
           type="text"
           onChange={handleInput}
+          error={formError.username ? true : false}
+          helperText={formError.username ? formError.username : ""}
         />
         <TextField
           margin="normal"
@@ -59,6 +95,8 @@ const Register = () => {
           type="email"
           name="email"
           onChange={handleInput}
+          error={formError.email ? true : false}
+          helperText={formError.email ? formError.email : ""}
         />
         <TextField
           margin="normal"
@@ -67,6 +105,8 @@ const Register = () => {
           type="password"
           name="password"
           onChange={handleInput}
+          error={formError.password ? true : false}
+          helperText={formError.password ? formError.password : ""}
         />
         <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
           Register
