@@ -6,14 +6,14 @@ import axios from "axios";
 import "./Register.css";
 
 const registerUser = (formData) => {
-  return axios.post("http://localhost:3001/user/register", formData);
+  return axios.post("/user/register", formData);
 };
 
 const Register = () => {
   const { isFetching, mutate, error } = useMutation(registerUser);
 
   useEffect(() => {
-    const errorMessage = error.response?.data;
+    const errorMessage = error?.response?.data;
     if (errorMessage === "username must be unique") {
       setFormError({ ...formError, username: "Username is already taken" });
     }
