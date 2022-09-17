@@ -1,7 +1,9 @@
 import { TextField } from "@mui/material";
+import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
+import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
 import "./Register.css";
 
@@ -35,6 +37,7 @@ const Register = () => {
     password: "",
   });
 
+  //Add minimum password character length later!
   const handleSubmit = (e) => {
     e.preventDefault();
     let error = false;
@@ -72,6 +75,7 @@ const Register = () => {
   return (
     <div className="register">
       <form onSubmit={handleSubmit}>
+        <LockIcon />
         <h2>Sign up</h2>
         <div className="first-row">
           <TextField
@@ -133,7 +137,7 @@ const Register = () => {
           </Button>
         )}
         <p className="login-link">
-          Already have an account? <a href="#">Log in</a>
+          Already have an account? <Link to="/login">Log in</Link>
         </p>
       </form>
     </div>

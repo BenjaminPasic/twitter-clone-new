@@ -7,7 +7,6 @@ const registerUser = async (req, res) => {
     await User.create({ ...req.body, password: hashedPassword });
     res.status(200);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error.errors[0].message);
   }
 };
