@@ -2,6 +2,7 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import LoginCheck from "./components/LoginCheck";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 import NotFound from "./components/NotFound";
 import { Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -18,7 +19,9 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
           </Route>
-          <Route path="/" element={<Home />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/" element={<Home />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

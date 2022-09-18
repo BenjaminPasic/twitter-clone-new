@@ -42,8 +42,12 @@ const loginUser = async (req, res) => {
 
 const verifyToken = async (req, res) => {
   const { token } = req.cookies;
-  const isTokenValid = await verifyJwtToken(token);
-  res.status(200).json({ isTokenValid });
+  if (token === undefined || token === null) {
+    res.status(200).json({ isTokenValid: false }).end();
+  } else {
+    const isTokenValid = await verifyJwtToken(token);
+    res.status(200).json({ isTokenValid });
+  }
 };
 
 module.exports = {

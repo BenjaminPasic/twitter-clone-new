@@ -11,6 +11,7 @@ const verifyJwtToken = async (jwtToken) => {
     await jwt.verify(jwtToken, process.env.JWT_SECRET);
     return true;
   } catch (error) {
+    console.log(error);
     return false;
   }
 };

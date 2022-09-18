@@ -73,7 +73,9 @@ export default function Login() {
     if (!error) {
       mutate(formData, {
         onSuccess: () => {
-          navigate("/");
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
         },
       });
     }

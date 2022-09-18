@@ -1,23 +1,22 @@
 import { useQuery } from "react-query";
-import Home from "../components/Home";
+import Login from "../components/Login";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
-
-const isLoggedIn = () => {
+const verifyToken = () => {
   return axios.get("/user/verifyToken");
 };
 
-export default function LoginCheck() {
-  const [canContinue, setCanContinue] = useState(null);
-  const { isFetching } = useQuery("isLoggedIn", isLoggedIn, {
+export default function ProtectedRoutes() {
+  const [isTokenValid, setIsTokenValid] = useState(null);
+  const { isFetching } = useQuery("verifyToken", verifyToken, {
     onSuccess: (data) => {
       //If the user has a valid token, deny access to login or register pages
       if (data.data.isTokenValid) {
-        setCanContinue(false);
+        setIsTokenValid(true);
       } else {
-        setCanContinue(true);
+        setIsTokenValid(false);
       }
     },
   });
@@ -29,5 +28,5 @@ export default function LoginCheck() {
       </div>
     );
 
-  return canContinue === true ? <Outlet /> : <Home />;
+  return isTokenValid === true ? <Outlet /> : <Login />;
 }
