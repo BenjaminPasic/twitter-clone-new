@@ -6,11 +6,16 @@ const createJwtToken = async (payload) => {
   return token;
 };
 
-const checkJwtToken = (jwtToken) => {
-  console.log(jwtToken);
+const verifyJwtToken = async (jwtToken) => {
+  try {
+    await jwt.verify(jwtToken, process.env.JWT_SECRET);
+    return true;
+  } catch (error) {
+    return false;
+  }
 };
 
 module.exports = {
   createJwtToken,
-  checkJwtToken,
+  verifyJwtToken,
 };

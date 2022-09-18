@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const { encryptPassword, decryptPassword } = require("../utils/bcrypt");
-const { createJwtToken } = require("../utils/jwt");
+const { createJwtToken, verifyJwtToken } = require("../utils/jwt");
 const cookie = require("cookie");
 
 const registerUser = async (req, res) => {
@@ -40,7 +40,14 @@ const loginUser = async (req, res) => {
   }
 };
 
+const verifyToken = async (req, res) => {
+  const { token } = req.cookies;
+  const isTokenValid = await verifyJwtToken(token);
+  res.status(200).json({ isTokenValid });
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  verifyToken,
 };
