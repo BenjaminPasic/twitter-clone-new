@@ -2,14 +2,19 @@ const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
 
-const hashPassword = async (plainTextPassword) => {
+const encryptPassword = async (plainTextPassword) => {
   try {
     return await bcrypt.hash(plainTextPassword, saltRounds);
   } catch (error) {
-    console.log(error);
+    console.log("Encryption: ", error);
   }
 };
 
+const decryptPassword = async (plainTextPassword, hashedPassword) => {
+  return await bcrypt.compare(plainTextPassword, hashedPassword);
+};
+
 module.exports = {
-  hashPassword,
+  encryptPassword,
+  decryptPassword,
 };

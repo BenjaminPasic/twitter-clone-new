@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
@@ -12,6 +12,8 @@ const registerUser = (formData) => {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const { isFetching, mutate, error } = useMutation(registerUser);
 
   useEffect(() => {
@@ -61,7 +63,11 @@ const Register = () => {
     }
 
     if (!error) {
-      mutate(formData);
+      mutate(formData, {
+        onSuccess: () => {
+          navigate("/login");
+        },
+      });
     }
   };
 

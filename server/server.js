@@ -10,7 +10,7 @@ const dbConnection = require("./config/dbConnection");
 const userRoutes = require("./routes/UserRoutes");
 
 //Cors setup
-server.use(cors({ origin: "http://localhost:3000" }));
+server.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 //Logger for requests
 server.use(morgan("tiny"));

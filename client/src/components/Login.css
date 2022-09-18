@@ -1,4 +1,4 @@
-.logins form {
+.login form {
   padding: 20px;
   border-radius: 10px;
   max-width: 400px;
@@ -7,4 +7,14 @@
   margin-top: 8%;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   background-color: rgb(249 250 251);
+}
+
+.login h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.login p {
+  text-align: left;
+  margin-bottom: 0;
 }
