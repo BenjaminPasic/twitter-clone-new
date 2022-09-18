@@ -2,12 +2,16 @@ const express = require("express");
 const server = express();
 const morgan = require("morgan");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 //Database connection
 const dbConnection = require("./config/dbConnection");
 
 //Route imports
 const userRoutes = require("./routes/UserRoutes");
+
+//Cookie parser
+server.use(cookieParser());
 
 //Cors setup
 server.use(cors({ origin: "http://localhost:3000", credentials: true }));

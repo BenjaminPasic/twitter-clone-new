@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useMutation } from "react-query";
 import "./Login.css";
@@ -12,6 +12,7 @@ const loginUser = (formData) => {
 
 export default function Login() {
   const { mutate, isFetching, error } = useMutation(loginUser);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -72,7 +73,7 @@ export default function Login() {
     if (!error) {
       mutate(formData, {
         onSuccess: () => {
-          console.log("Successfully logged in!");
+          navigate("/");
         },
       });
     }
@@ -100,9 +101,15 @@ export default function Login() {
           error={formError.password ? true : false}
           helperText={formError.password ? formError.password : ""}
         />
-        <Button type="submit" variant="contained" sx={{ mt: 2 }} fullWidth>
-          Login
-        </Button>
+        {isFetching ? (
+          <Button fullWidth variant="contained" sx={{ mt: 2 }} disabled>
+            Loading...
+          </Button>
+        ) : (
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
+            Login
+          </Button>
+        )}
         <p>
           Don't have an account? <Link to="/register">Register</Link>
         </p>

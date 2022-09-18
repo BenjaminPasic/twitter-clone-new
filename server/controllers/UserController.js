@@ -1,5 +1,7 @@
 const User = require("../models/User");
 const { encryptPassword, decryptPassword } = require("../utils/bcrypt");
+const { createJwtToken } = require("../utils/jwt");
+const cookie = require("cookie");
 
 const registerUser = async (req, res) => {
   try {
@@ -21,6 +23,18 @@ const loginUser = async (req, res) => {
     if (user === null) throw "Invalid username";
     const doPasswordsMatch = await decryptPassword(password, user.password);
     if (doPasswordsMatch === false) throw "Passwords do not match";
+    const payload = {
+      user_id: user.id,
+      username: user.username,
+    };
+    const jwtToken = await createJwtToken(payload);
+    res
+      .status(200)
+      .cookie("token", jwtToken, {
+        maxAge: 12 * 60 * 60 * 1000,
+        httpOnly: true,
+      })
+      .end();
   } catch (error) {
     res.status(401).json(error);
   }
