@@ -14,7 +14,7 @@ const registerUser = (formData) => {
 const Register = () => {
   const navigate = useNavigate();
 
-  const { isFetching, mutate, error } = useMutation(registerUser);
+  const { isLoading, mutate, error } = useMutation(registerUser);
 
   useEffect(() => {
     const errorMessage = error?.response?.data;
@@ -133,7 +133,7 @@ const Register = () => {
           error={formError.password ? true : false}
           helperText={formError.password ? formError.password : ""}
         />
-        {isFetching ? (
+        {isLoading ? (
           <Button fullWidth variant="contained" sx={{ mt: 2 }} disabled>
             Loading...
           </Button>

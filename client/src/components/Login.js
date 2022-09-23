@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { useMutation } from "react-query";
 import "../css/Login.css";
@@ -12,8 +12,7 @@ const loginUser = (formData) => {
 };
 
 export default function Login() {
-  const { mutate, isFetching, error } = useMutation(loginUser);
-  const navigate = useNavigate();
+  const { mutate, isLoading, error } = useMutation(loginUser);
   const { setIsAuth, isAuth } = useAuth();
 
   const [formData, setFormData] = useState({
@@ -25,12 +24,6 @@ export default function Login() {
     username: "",
     password: "",
   });
-
-  useEffect(() => {
-    if (isAuth) {
-      navigate("/login");
-    }
-  }, [isAuth]);
 
   useEffect(() => {
     if (error) {
@@ -81,13 +74,13 @@ export default function Login() {
     if (!error) {
       mutate(formData, {
         onSuccess: () => {
-          setTimeout(() => {
-            setIsAuth(true);
-          }, 1000);
+          setIsAuth(true);
         },
       });
     }
   };
+
+  if (isAuth) return <Navigate to="/" replace={true} />;
 
   return (
     <div className="login">
@@ -111,7 +104,7 @@ export default function Login() {
           error={formError.password ? true : false}
           helperText={formError.password ? formError.password : ""}
         />
-        {isFetching ? (
+        {isLoading ? (
           <Button fullWidth variant="contained" sx={{ mt: 2 }} disabled>
             Loading...
           </Button>

@@ -10,17 +10,13 @@ const verifyToken = () => {
 };
 
 export default function ProtectedRoutes() {
-  console.log("Protected route trigger");
-  const [isTokenValid, setIsTokenValid] = useState(null);
-  const { setIsAuth } = useAuth();
+  const { setIsAuth, isAuth } = useAuth();
   const { isFetching } = useQuery("verifyToken", verifyToken, {
     onSuccess: (data) => {
-      //If the user has a valid token, deny access to login or register pages
+      //If the user has a valid token, deny access to login and register page
       if (data.data.isTokenValid) {
-        setIsTokenValid(true);
         setIsAuth(true);
       } else {
-        setIsTokenValid(false);
         setIsAuth(false);
       }
     },
@@ -33,5 +29,5 @@ export default function ProtectedRoutes() {
       </div>
     );
 
-  return isTokenValid === true ? <Outlet /> : <Login />;
+  return isAuth === true ? <Outlet /> : <Login />;
 }
