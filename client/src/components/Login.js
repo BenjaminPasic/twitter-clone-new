@@ -5,6 +5,7 @@ import axios from "axios";
 import { useMutation } from "react-query";
 import "../css/Login.css";
 import { useEffect, useState } from "react";
+import useAuth from "../hooks/useAuth";
 
 const loginUser = (formData) => {
   return axios.post("/user/login", formData);
@@ -13,6 +14,7 @@ const loginUser = (formData) => {
 export default function Login() {
   const { mutate, isFetching, error } = useMutation(loginUser);
   const navigate = useNavigate();
+  const { setIsAuth, isAuth } = useAuth();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -23,6 +25,12 @@ export default function Login() {
     username: "",
     password: "",
   });
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate("/login");
+    }
+  }, [isAuth]);
 
   useEffect(() => {
     if (error) {
@@ -74,7 +82,7 @@ export default function Login() {
       mutate(formData, {
         onSuccess: () => {
           setTimeout(() => {
-            navigate("/");
+            setIsAuth(true);
           }, 1000);
         },
       });
