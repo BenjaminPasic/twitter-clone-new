@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
-import "./Register.css";
+import "../css/Register.css";
 
 const registerUser = (formData) => {
   return axios.post("/user/register", formData);

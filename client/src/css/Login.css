@@ -1,23 +1,20 @@
-.register form {
+.login form {
   padding: 20px;
   border-radius: 10px;
   max-width: 400px;
-  min-width: 320px;
+  width: 100%;
   margin: 0 auto;
   margin-top: 8%;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   background-color: rgb(249 250 251);
 }
 
-.register .first-row {
-  display: flex;
-  justify-content: space-between;
-}
-
-.register h2 {
+.login h2 {
   margin-top: 0;
+  margin-bottom: 10px;
 }
 
-.register .login-link {
+.login p {
   text-align: left;
+  margin-bottom: 0;
 }
