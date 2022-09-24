@@ -3,7 +3,6 @@ import Home from "../components/Home";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { Outlet } from "react-router-dom";
-import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 
 const isLoggedIn = () => {

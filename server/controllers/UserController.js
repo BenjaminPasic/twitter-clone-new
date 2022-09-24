@@ -40,6 +40,11 @@ const loginUser = async (req, res) => {
   }
 };
 
+const logoutUser = (req, res) => {
+  console.log("trigger");
+  res.status(200).clearCookie("token").end();
+};
+
 const verifyToken = async (req, res) => {
   const { token } = req.cookies;
   if (token === undefined || token === null) {
@@ -54,4 +59,5 @@ module.exports = {
   registerUser,
   loginUser,
   verifyToken,
+  logoutUser,
 };

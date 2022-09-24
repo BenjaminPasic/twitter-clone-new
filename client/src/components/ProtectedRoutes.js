@@ -11,7 +11,7 @@ const verifyToken = () => {
 
 export default function ProtectedRoutes() {
   const { setIsAuth, isAuth } = useAuth();
-  const { isFetching } = useQuery("verifyToken", verifyToken, {
+  const { isFetching, isLoading } = useQuery("verifyToken", verifyToken, {
     onSuccess: (data) => {
       //If the user has a valid token, deny access to login and register page
       if (data.data.isTokenValid) {
@@ -22,7 +22,7 @@ export default function ProtectedRoutes() {
     },
   });
 
-  if (isFetching)
+  if (isFetching || isLoading)
     return (
       <div className="fullScreen">
         <CircularProgress />
