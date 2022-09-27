@@ -53,13 +53,12 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let error = false;
 
     setFormError({
       username: "",
       password: "",
     });
-
-    let error = false;
 
     for (const property in formData) {
       if (formData[property] === "") {

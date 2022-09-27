@@ -1,6 +1,10 @@
 import "../css/Home.css";
-import useAuth from "../hooks/useAuth";
+import StatusUpdate from "./StatusUpdate";
 
 export default function Home() {
-  return <div>Home</div>;
+  return (
+    <div className="home">
+      <StatusUpdate />
+    </div>
+  );
 }
