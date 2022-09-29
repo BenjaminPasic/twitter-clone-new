@@ -16,7 +16,17 @@ const verifyJwtToken = async (jwtToken) => {
   }
 };
 
+const decodeJwtToken = async (jwtToken) => {
+  try {
+    const decodedToken = await jwt.verify(jwtToken, process.env.JWT_SECRET);
+    return decodedToken;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   createJwtToken,
   verifyJwtToken,
+  decodeJwtToken,
 };

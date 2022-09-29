@@ -1,19 +1,15 @@
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import { Link, Navigate } from "react-router-dom";
-import axios from "axios";
 import { useMutation } from "react-query";
 import "../css/Login.css";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
-
-const loginUser = (formData) => {
-  return axios.post("/user/login", formData);
-};
+import { login } from "../api/userApi";
 
 export default function Login() {
-  const { mutate, isLoading, error } = useMutation(loginUser);
-  const { setIsAuth, isAuth } = useAuth();
+  const { mutate, isLoading, error } = useMutation(login);
+  const { isAuth, setIsAuth } = useAuth();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -79,7 +75,7 @@ export default function Login() {
     }
   };
 
-  if (isAuth) return <Navigate to="/" replace={true} />;
+  // if (isAuth) return <Navigate to="/" replace={true} />;
 
   return (
     <div className="login">

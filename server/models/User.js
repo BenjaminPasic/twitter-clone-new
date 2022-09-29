@@ -25,13 +25,13 @@ const User = dbConnection.define("user", {
   },
 });
 
-dbConnection
-  .sync()
-  .then(() => {
-    console.log("User db model sync complete");
-  })
-  .catch((error) => {
-    console.log("DB model sync error: ", error);
-  });
+(async () => {
+  try {
+    await User.sync();
+    console.log("User sync complete");
+  } catch (error) {
+    console.log("Sync error: ", error);
+  }
+})();
 
 module.exports = User;

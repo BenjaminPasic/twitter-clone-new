@@ -10,7 +10,7 @@ const isLoggedIn = () => {
 };
 
 export default function LoginCheck() {
-  const { setIsAuth, isAuth } = useAuth();
+  const { isAuth, setIsAuth } = useAuth();
   const { isFetching } = useQuery("isLoggedIn", isLoggedIn, {
     onSuccess: (data) => {
       //If the user has a valid token, deny access to login or register pages

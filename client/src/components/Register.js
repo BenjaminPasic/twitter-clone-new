@@ -4,17 +4,12 @@ import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import LockIcon from "@mui/icons-material/Lock";
-import axios from "axios";
 import "../css/Register.css";
-
-const registerUser = (formData) => {
-  return axios.post("/user/register", formData);
-};
+import { register } from "../api/userApi";
 
 const Register = () => {
   const navigate = useNavigate();
-
-  const { isLoading, mutate, error } = useMutation(registerUser);
+  const { isLoading, mutate, error } = useMutation(register);
 
   useEffect(() => {
     const errorMessage = error?.response?.data;

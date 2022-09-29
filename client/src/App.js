@@ -13,7 +13,7 @@ import "./App.css";
 const queryClient = new QueryClient();
 
 function App() {
-  const { isAuth } = useAuth();
+  const { isAuth, setIsAuth } = useAuth();
 
   return (
     <QueryClientProvider client={queryClient}>

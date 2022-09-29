@@ -4,11 +4,9 @@ const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-//Database connection
-const dbConnection = require("./config/dbConnection");
-
 //Route imports
 const userRoutes = require("./routes/UserRoutes");
+const postRoutes = require("./routes/PostRoutes");
 
 //Cookie parser
 server.use(cookieParser());
@@ -25,5 +23,6 @@ server.use(express.json());
 
 //Include routes
 server.use("/user", userRoutes);
+server.use("/post", postRoutes);
 
 server.listen(3001);
