@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
 import "../css/Login.css";
 import { useEffect, useState } from "react";
@@ -74,8 +74,6 @@ export default function Login() {
       });
     }
   };
-
-  // if (isAuth) return <Navigate to="/" replace={true} />;
 
   return (
     <div className="login">

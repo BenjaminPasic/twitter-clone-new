@@ -1,5 +1,4 @@
 import axios from "axios";
-import { redirect } from "react-router-dom";
 
 const customAxios = axios.create({
   baseURL: "http://localhost:3001",
@@ -11,9 +10,9 @@ customAxios.interceptors.response.use(
     return response;
   },
   (error) => {
+    //Figure out how to do it without redownloading the entire document later...
     if (error.response.data === "Invalid token") {
-      console.log("true");
-      return redirect("/login");
+      window.location.href = "/login";
     }
   }
 );

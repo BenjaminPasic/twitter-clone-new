@@ -14,15 +14,8 @@ export default function Navbar() {
   const { isLoading, isFetching, refetch } = useQuery("logout", logout, {
     enabled: false,
   });
-  const { setIsAuth, isAuth } = useAuth();
+  const { setIsAuth } = useAuth();
   const [searchInput, setSearchInput] = useState("");
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (!isAuth) {
-  //     navigate("/login");
-  //   }
-  // }, [isAuth]);
 
   const handleChange = (e) => {
     setSearchInput(e.target.value);

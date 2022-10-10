@@ -10,7 +10,13 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import useAuth from "./hooks/useAuth";
 import "./App.css";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   const { isAuth, setIsAuth } = useAuth();

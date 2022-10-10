@@ -10,7 +10,7 @@ export default function StatusUpdate() {
   const CHAR_LIMIT = 200;
   const [status, setStatus] = useState("");
   const [statusCharCount, setStatusCharCount] = useState(0);
-  const { isFetching, mutate, error } = useMutation(newPost);
+  const { isLoading, mutate, error } = useMutation(newPost);
   const { setIsAuth } = useAuth();
 
   useEffect(() => {
@@ -30,6 +30,8 @@ export default function StatusUpdate() {
 
   const handleClick = () => {
     mutate({ post: status });
+    setStatus("");
+    setStatusCharCount(0);
   };
 
   return (
@@ -46,15 +48,19 @@ export default function StatusUpdate() {
           variant="determinate"
           value={statusCharCount * 0.5}
         />
-        <Button
-          variant="contained"
-          type="submit"
-          className="button"
-          margin="normal"
-          onClick={handleClick}
-        >
-          Post
-        </Button>
+        {isLoading ? (
+          <p>Waiting.</p>
+        ) : (
+          <Button
+            variant="contained"
+            type="submit"
+            className="button"
+            margin="normal"
+            onClick={handleClick}
+          >
+            Post
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -1,25 +1,20 @@
 import { useQuery } from "react-query";
-import Login from "../components/Login";
 import CircularProgress from "@mui/material/CircularProgress";
-import axios from "axios";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-const verifyToken = () => {
-  return axios.get("/user/verifyToken");
-};
+import { verifyToken } from "../api/userApi";
 
 export default function ProtectedRoutes() {
+  console.log("trigger");
   const { setIsAuth, isAuth } = useAuth();
   const { isFetching, isLoading } = useQuery("verifyToken", verifyToken, {
     onSuccess: (data) => {
-      //If the user has a valid token, deny access to login and register page
       if (data.data.isTokenValid) {
         setIsAuth(true);
       } else {
         setIsAuth(false);
       }
     },
-    refetchOnWindowFocus: false,
   });
 
   if (isFetching || isLoading)
@@ -29,5 +24,5 @@ export default function ProtectedRoutes() {
       </div>
     );
 
-  return isAuth === true ? <Outlet /> : <Login />;
+  return isAuth === true ? <Outlet /> : <Navigate to="/login" replace={true} />;
 }
