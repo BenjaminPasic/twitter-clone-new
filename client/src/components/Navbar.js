@@ -9,7 +9,6 @@ import useAuth from "../hooks/useAuth";
 import { useQuery } from "react-query";
 import { logout } from "../api/userApi";
 import { useNavigate } from "react-router-dom";
-//TODO ADD LOGOUT route!!
 
 export default function Navbar() {
   const { isLoading, isFetching, refetch } = useQuery("logout", logout, {
@@ -17,13 +16,13 @@ export default function Navbar() {
   });
   const { setIsAuth, isAuth } = useAuth();
   const [searchInput, setSearchInput] = useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isAuth) {
-      navigate("/login");
-    }
-  }, [isAuth]);
+  // useEffect(() => {
+  //   if (!isAuth) {
+  //     navigate("/login");
+  //   }
+  // }, [isAuth]);
 
   const handleChange = (e) => {
     setSearchInput(e.target.value);

@@ -31,7 +31,7 @@ const loginUser = async (req, res) => {
     res
       .status(200)
       .cookie("token", jwtToken, {
-        maxAge: 12 * 60 * 60 * 1000,
+        maxAge: 5,
         httpOnly: true,
       })
       .end();
@@ -41,7 +41,6 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = (req, res) => {
-  console.log("trigger");
   res.status(200).clearCookie("token").end();
 };
 

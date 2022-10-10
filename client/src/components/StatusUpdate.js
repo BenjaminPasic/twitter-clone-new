@@ -4,12 +4,22 @@ import Button from "@mui/material/Button";
 import { CircularProgress } from "@mui/material";
 import { useMutation } from "react-query";
 import { newPost } from "../api/postApi";
+import useAuth from "../hooks/useAuth";
 
 export default function StatusUpdate() {
   const CHAR_LIMIT = 200;
   const [status, setStatus] = useState("");
   const [statusCharCount, setStatusCharCount] = useState(0);
-  const { isFetching, mutate } = useMutation(newPost);
+  const { isFetching, mutate, error } = useMutation(newPost);
+  const { setIsAuth } = useAuth();
+
+  useEffect(() => {
+    if (error) {
+      if (error === "Invalid token") {
+        setIsAuth(false);
+      }
+    }
+  }, [error]);
 
   const handleChange = (e) => {
     setStatus(e.target.value.slice(0, CHAR_LIMIT));
@@ -18,7 +28,6 @@ export default function StatusUpdate() {
     }
   };
 
-  //Continue from here, you submit it to backend
   const handleClick = () => {
     mutate({ post: status });
   };

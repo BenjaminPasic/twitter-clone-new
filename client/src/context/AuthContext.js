@@ -5,15 +5,15 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
-  const [tokenStatus, setTokenStatus] = useState("");
+  const [redirect, setRedirect] = useState(false);
   const navigate = useNavigate();
 
-  if (tokenStatus === "Invalid token") {
+  if (redirect === true) {
     navigate("/login");
   }
 
   return (
-    <AuthContext.Provider value={{ isAuth, setIsAuth }}>
+    <AuthContext.Provider value={{ isAuth, setIsAuth, setRedirect }}>
       {children}
     </AuthContext.Provider>
   );

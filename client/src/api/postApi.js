@@ -1,5 +1,5 @@
-import axios from "axios";
+import customAxios from "./customAxios";
 
 export const newPost = (postData) => {
-  return axios.post("/post/new", postData);
+  return customAxios.post("/post/new", postData);
 };

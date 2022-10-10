@@ -19,6 +19,7 @@ export default function ProtectedRoutes() {
         setIsAuth(false);
       }
     },
+    refetchOnWindowFocus: false,
   });
 
   if (isFetching || isLoading)

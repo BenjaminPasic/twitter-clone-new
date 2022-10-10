@@ -1,13 +1,17 @@
-import axios from "axios";
+import customAxios from "./customAxios";
 
 export const logout = () => {
-  return axios.get("/user/logout");
+  return customAxios.get("/user/logout");
 };
 
 export const login = (loginData) => {
-  return axios.post("/user/login", loginData);
+  return customAxios.post("/user/login", loginData);
 };
 
 export const register = (registerData) => {
-  return axios.post("/user/register", registerData);
+  return customAxios.post("/user/register", registerData);
+};
+
+export const verifyToken = () => {
+  return customAxios.get("/user/verifyToken");
 };
