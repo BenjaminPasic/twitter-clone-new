@@ -1,7 +1,6 @@
 import { useState, createContext } from "react";
-import { useNavigate } from "react-router-dom";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);

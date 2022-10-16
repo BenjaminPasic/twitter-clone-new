@@ -4,11 +4,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Avatar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { useQuery } from "react-query";
 import { logout } from "../api/userApi";
-import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const { isLoading, isFetching, refetch } = useQuery("logout", logout, {

@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import "../css/Login.css";
 import { useEffect, useState } from "react";
@@ -9,7 +9,8 @@ import { login } from "../api/userApi";
 
 export default function Login() {
   const { mutate, isLoading, error } = useMutation(login);
-  const { isAuth, setIsAuth } = useAuth();
+  const { setIsAuth, isAuth } = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -20,6 +21,14 @@ export default function Login() {
     username: "",
     password: "",
   });
+
+  useEffect(() => {
+    if (isAuth === true) {
+      navigate("/");
+      console.log("aaaa");
+    }
+    console.log(isAuth);
+  }, [isAuth]);
 
   useEffect(() => {
     if (error) {

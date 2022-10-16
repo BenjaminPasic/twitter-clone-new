@@ -5,9 +5,10 @@ import useAuth from "../hooks/useAuth";
 import { verifyToken } from "../api/userApi";
 
 export default function ProtectedRoutes() {
-  console.log("trigger");
   const { setIsAuth, isAuth } = useAuth();
+
   const { isFetching, isLoading } = useQuery("verifyToken", verifyToken, {
+    enabled: false,
     onSuccess: (data) => {
       if (data.data.isTokenValid) {
         setIsAuth(true);
