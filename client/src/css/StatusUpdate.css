@@ -30,7 +30,7 @@
 
 .status-update .status-input:focus {
   outline: none;
-  border: px solid gray;
+  border: 1px solid gray;
 }
 
 .status-update .button {

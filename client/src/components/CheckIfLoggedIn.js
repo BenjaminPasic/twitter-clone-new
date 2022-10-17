@@ -10,9 +10,7 @@ export default function CheckIfLoggedIn() {
 
   const { isFetching, isLoading } = useQuery("verifyToken", verifyToken, {
     onSuccess: (data) => {
-      console.log(data);
       if (data.data.isTokenValid) {
-        console.log("tru");
         setIsAuth(true);
       } else {
         setIsAuth(false);
@@ -27,5 +25,5 @@ export default function CheckIfLoggedIn() {
       </div>
     );
 
-  return isAuth === true ? <Navigate to="" replace={true} /> : <Outlet />;
+  return isAuth === true ? <Navigate to="/" replace={true} /> : <Outlet />;
 }

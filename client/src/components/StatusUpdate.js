@@ -14,10 +14,8 @@ export default function StatusUpdate() {
   const { setIsAuth } = useAuth();
 
   useEffect(() => {
-    if (error) {
-      if (error === "Invalid token") {
-        setIsAuth(false);
-      }
+    if (error === "Invalid token") {
+      setIsAuth(false);
     }
   }, [error]);
 
@@ -29,7 +27,7 @@ export default function StatusUpdate() {
   };
 
   const handleClick = () => {
-    mutate({ post: status });
+    mutate({ post: status.trim() });
     setStatus("");
     setStatusCharCount(0);
   };

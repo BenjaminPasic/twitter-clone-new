@@ -1,9 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
-body,
-html {
-  margin: 0;
+* {
   box-sizing: border-box;
+
+}
+
+body,
+html,
+#root{
+  margin: 0;
   background-color: #121212;
   color: white;
   font-family: "Roboto", sans-serif;
