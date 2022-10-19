@@ -35,7 +35,7 @@ const Post = ({ post }) => {
 
   return (
     <div className="post">
-      <Avatar>{post.name.charAt(0)}</Avatar>
+      <Avatar>{post.username.charAt(0)}</Avatar>
       <div className="wrapper">
         <div className="top-portion">
           <span className="username">{post.username}</span>

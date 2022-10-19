@@ -15,11 +15,16 @@ const addNewPost = async (req, res) => {
 };
 
 const getRecentPosts = async (req, res) => {
+  const { page } = req.params;
+  let offset = 0;
+  if (page > 1) {
+    offset = page * 10 - 10;
+  }
   try {
     const recentPosts = await dbConnection.query(
-      "select * from posts\n" +
-        "join users u on u.id = posts.user_id\n" +
-        "order by posts.createdAt DESC limit 10",
+      `SELECT p.id AS post_id, u.id AS user_id, p.post, p.createdAt, u.username FROM posts p
+            JOIN users u on p.user_id = u.id
+            ORDER BY p.createdAt DESC LIMIT 10 OFFSET ${offset}`,
       { type: QueryTypes.SELECT }
     );
     res.status(200).json({ recentPosts }).end();

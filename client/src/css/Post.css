@@ -37,3 +37,8 @@
 .post div .username:before {
     content: "@";
 }
+
+.post div .username:hover {
+    color: dodgerblue;
+    cursor: pointer;
+}

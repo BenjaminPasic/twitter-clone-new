@@ -4,6 +4,6 @@ export const newPost = (postData) => {
   return customAxios.post("/post/new", postData);
 };
 
-export const getRecentPosts = () => {
-  return customAxios.get("/post/recent");
+export const getRecentPosts = ({ pageParam = 1 }) => {
+  return customAxios.get("/post/recent/" + pageParam);
 };

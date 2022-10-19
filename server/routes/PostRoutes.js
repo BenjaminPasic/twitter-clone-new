@@ -5,6 +5,6 @@ const verifyCredentials = require("../middleware/verifyCredentials");
 
 router.post("/new", verifyCredentials, addNewPost);
 
-router.get("/recent", verifyCredentials, getRecentPosts);
+router.get("/recent/:page", verifyCredentials, getRecentPosts);
 
 module.exports = router;
