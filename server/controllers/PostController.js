@@ -1,5 +1,7 @@
 const Post = require("../models/Post");
+const dbConnection = require("../config/dbConnection");
 const { decodeJwtToken } = require("../utils/jwt");
+const { QueryTypes } = require("sequelize");
 
 const addNewPost = async (req, res) => {
   try {
@@ -14,11 +16,12 @@ const addNewPost = async (req, res) => {
 
 const getRecentPosts = async (req, res) => {
   try {
-    //Join user to get useranme TODOOO
-    const recentPosts = await Post.findAll({
-      order: [["createdAt", "DESC"]],
-      limit: 10,
-    });
+    const recentPosts = await dbConnection.query(
+      "select * from posts\n" +
+        "join users u on u.id = posts.user_id\n" +
+        "order by posts.createdAt DESC limit 10",
+      { type: QueryTypes.SELECT }
+    );
     res.status(200).json({ recentPosts }).end();
   } catch (e) {
     console.log(e);

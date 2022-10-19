@@ -8,7 +8,7 @@ const Post = ({ post }) => {
     const whenWasPostCreatedInSeconds = Math.floor(
       Math.abs((currentTime - datePostedAt) / 1000)
     );
-    console.log(whenWasPostCreatedInSeconds);
+
     if (whenWasPostCreatedInSeconds < 60) {
       return whenWasPostCreatedInSeconds + "s";
     }
@@ -32,13 +32,13 @@ const Post = ({ post }) => {
 
     return day + " " + month;
   };
-  console.log(post);
+
   return (
     <div className="post">
-      <Avatar />
+      <Avatar>{post.name.charAt(0)}</Avatar>
       <div className="wrapper">
         <div className="top-portion">
-          <span className="username">Some username</span>
+          <span className="username">{post.username}</span>
           <span className="seperator">&#183;</span>
           <span className="date">{dateFormat(post.createdAt)}</span>
         </div>

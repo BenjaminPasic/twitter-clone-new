@@ -9,6 +9,10 @@ export default function Posts() {
     getRecentPosts
   );
 
+  if (data) {
+    console.log(data);
+  }
+
   return (
     <div className="posts">
       {data &&
