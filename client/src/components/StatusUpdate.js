@@ -6,11 +6,12 @@ import { useMutation } from "react-query";
 import { newPost } from "../api/postApi";
 import useAuth from "../hooks/useAuth";
 
-export default function StatusUpdate() {
+export default function StatusUpdate({ addNewLocalPost }) {
   const CHAR_LIMIT = 200;
   const [status, setStatus] = useState("");
+  const [tempStatus, setTempStatus] = useState("");
   const [statusCharCount, setStatusCharCount] = useState(0);
-  const { isLoading, mutate, error } = useMutation(newPost);
+  const { isLoading, mutate, error, data } = useMutation(newPost);
   const { setIsAuth } = useAuth();
 
   useEffect(() => {
@@ -18,6 +19,24 @@ export default function StatusUpdate() {
       setIsAuth(false);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (data && tempStatus) {
+      const { username } = data.data;
+      addNewLocalPost((prevData) => {
+        return [
+          {
+            username,
+            createdAt: "now",
+            post: tempStatus,
+          },
+          ...prevData,
+        ];
+      });
+
+      setTempStatus();
+    }
+  }, [data, tempStatus]);
 
   const handleChange = (e) => {
     setStatus(e.target.value.slice(0, CHAR_LIMIT));
@@ -28,8 +47,9 @@ export default function StatusUpdate() {
 
   const handleClick = () => {
     mutate({ post: status.trim() });
-    setStatus("");
+    setTempStatus(status);
     setStatusCharCount(0);
+    setStatus("");
   };
 
   return (

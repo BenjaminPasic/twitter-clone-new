@@ -2,9 +2,10 @@ import { useInfiniteQuery } from "react-query";
 import { getRecentPosts } from "../api/postApi";
 import Post from "./Post";
 import "../css/Posts.css";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Fragment } from "react";
 
-export default function Posts() {
+export default function Posts({ localPost }) {
   const { isLoading, isFetching, data, fetchNextPage } = useInfiniteQuery(
     "getRecentPosts",
     getRecentPosts,
@@ -15,20 +16,12 @@ export default function Posts() {
     }
   );
 
-  if (data) {
-    console.log(data);
-  }
-
-  const handleFetchPost = () => {
-    try {
-      fetchNextPage();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return (
     <div className="posts">
+      {localPost.length !== 0 &&
+        localPost.map((post, i) => {
+          return <Post key={i} post={post} />;
+        })}
       {data &&
         data.pages.map((collection, i) => {
           return (
@@ -39,7 +32,8 @@ export default function Posts() {
             </Fragment>
           );
         })}
-      <button onClick={handleFetchPost}>Fetch more</button>
+      {isFetching ? <CircularProgress /> : null}
+      <button onClick={fetchNextPage}>Fetch more</button>
     </div>
   );
 }

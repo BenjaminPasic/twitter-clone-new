@@ -3,6 +3,8 @@ import { Avatar } from "@mui/material";
 
 const Post = ({ post }) => {
   const dateFormat = (date) => {
+    if (date === "now") return "now";
+
     const currentTime = new Date();
     const datePostedAt = new Date(date);
     const whenWasPostCreatedInSeconds = Math.floor(

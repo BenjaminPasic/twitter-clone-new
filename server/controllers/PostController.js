@@ -6,8 +6,12 @@ const { QueryTypes } = require("sequelize");
 const addNewPost = async (req, res) => {
   try {
     const decodedToken = await decodeJwtToken(req.cookies.token);
-    await Post.create({ post: req.body.post, user_id: decodedToken.user_id });
-    res.status(200).end();
+    console.log(decodedToken);
+    await Post.create({
+      post: req.body.post,
+      user_id: decodedToken.user_id,
+    });
+    res.status(200).json({ username: decodedToken.username }).end();
   } catch (error) {
     console.log(error);
     res.status(301).json(error).end();
