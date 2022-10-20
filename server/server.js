@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 //Route imports
 const userRoutes = require("./routes/UserRoutes");
 const postRoutes = require("./routes/PostRoutes");
+const likeRoutes = require("./routes/LikeRoutes");
 
 //Cookie parser
 server.use(cookieParser());
@@ -24,5 +25,6 @@ server.use(express.json());
 //Include routes
 server.use("/user", userRoutes);
 server.use("/post", postRoutes);
+server.use("/like", likeRoutes);
 
 server.listen(3001);

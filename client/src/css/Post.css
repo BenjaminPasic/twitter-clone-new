@@ -42,3 +42,12 @@
     color: dodgerblue;
     cursor: pointer;
 }
+
+.post .bottom-portion {
+    width: fit-content;
+    margin-top: 6px;
+}
+
+.post .like-counter {
+    margin-left: 5px;
+}

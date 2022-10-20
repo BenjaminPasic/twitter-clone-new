@@ -1,7 +1,19 @@
 import "../css/Post.css";
 import { Avatar } from "@mui/material";
+import { useMutation } from "react-query";
+import { addNewLike } from "../api/likeApi";
+import likeIcon from "../assets/PostIcons/like-icon.png";
+import { useEffect } from "react";
 
 const Post = ({ post }) => {
+  const { mutate, isLoading } = useMutation(addNewLike, {
+    onSuccess: (data) => {
+      if (data.data.isSuccess) {
+        console.log(data);
+      }
+    },
+  });
+
   const dateFormat = (date) => {
     if (date === "now") return "now";
 
@@ -35,6 +47,14 @@ const Post = ({ post }) => {
     return day + " " + month;
   };
 
+  console.log(post);
+
+  const handleLike = () => {
+    mutate({
+      post_id: post.post_id,
+    });
+  };
+
   return (
     <div className="post">
       <Avatar>{post.username.charAt(0)}</Avatar>
@@ -45,6 +65,10 @@ const Post = ({ post }) => {
           <span className="date">{dateFormat(post.createdAt)}</span>
         </div>
         <p>{post.post}</p>
+        <div className="bottom-portion">
+          <button onClick={handleLike}>tempLike</button>
+          <span className="like-counter">0</span>
+        </div>
       </div>
     </div>
   );

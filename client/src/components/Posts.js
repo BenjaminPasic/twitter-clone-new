@@ -3,7 +3,7 @@ import { getRecentPosts } from "../api/postApi";
 import Post from "./Post";
 import "../css/Posts.css";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 
 export default function Posts({ localPost }) {
   const { isLoading, isFetching, data, fetchNextPage } = useInfiniteQuery(
@@ -11,10 +11,27 @@ export default function Posts({ localPost }) {
     getRecentPosts,
     {
       getNextPageParam: (_lastPage, pages) => {
-        return pages.length + 1;
+        if (pages[pages.length - 1].data.recentPosts.length < 10) {
+        } else {
+          return pages.length + 1;
+        }
       },
     }
   );
+
+  useEffect(() => {
+    const handleScrollListener = () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        fetchNextPage();
+      }
+    };
+
+    window.addEventListener("scroll", handleScrollListener);
+
+    return () => {
+      window.removeEventListener("scroll", handleScrollListener);
+    };
+  }, []);
 
   return (
     <div className="posts">
@@ -33,7 +50,6 @@ export default function Posts({ localPost }) {
           );
         })}
       {isFetching ? <CircularProgress /> : null}
-      <button onClick={fetchNextPage}>Fetch more</button>
     </div>
   );
 }
