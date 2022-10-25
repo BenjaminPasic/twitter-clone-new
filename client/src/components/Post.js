@@ -1,18 +1,36 @@
 import "../css/Post.css";
 import { Avatar } from "@mui/material";
+import customAxios from "../api/customAxios";
 import { useMutation } from "react-query";
-import { addNewLike } from "../api/likeApi";
-import likeIcon from "../assets/PostIcons/like-icon.png";
-import { useEffect } from "react";
+import { addNewLike, countLikes, checkIfUserLikedPost } from "../api/likeApi";
+import { useEffect, useState } from "react";
 
 const Post = ({ post }) => {
-  const { mutate, isLoading } = useMutation(addNewLike, {
-    onSuccess: (data) => {
-      if (data.data.isSuccess) {
-        console.log(data);
-      }
-    },
-  });
+  const { mutate, isLoading } = useMutation(addNewLike);
+  const [likeCount, setLikeCount] = useState(undefined);
+  const [hasUserLiked, setHasUserLiked] = useState(undefined);
+
+  useEffect(() => {
+    customAxios
+      .get("/like/count", {
+        params: {
+          post_id: post.post_id,
+        },
+      })
+      .then((res) => {
+        setLikeCount(res.data.postLikes);
+      });
+
+    customAxios
+      .get("/like/checkIfLiked", {
+        params: {
+          post_id: post.post_id,
+        },
+      })
+      .then((res) => {
+        setHasUserLiked(res.data.hasUserLiked);
+      });
+  }, []);
 
   const dateFormat = (date) => {
     if (date === "now") return "now";
@@ -47,12 +65,12 @@ const Post = ({ post }) => {
     return day + " " + month;
   };
 
-  console.log(post);
-
   const handleLike = () => {
     mutate({
       post_id: post.post_id,
     });
+    setHasUserLiked(true);
+    setLikeCount((prev) => prev + 1);
   };
 
   return (
@@ -66,8 +84,12 @@ const Post = ({ post }) => {
         </div>
         <p>{post.post}</p>
         <div className="bottom-portion">
-          <button onClick={handleLike}>tempLike</button>
-          <span className="like-counter">0</span>
+          {hasUserLiked ? (
+            <button disabled>already liked</button>
+          ) : (
+            <button onClick={handleLike}>U can like</button>
+          )}
+          <span className="like-counter">{likeCount ? likeCount : 0}</span>
         </div>
       </div>
     </div>
