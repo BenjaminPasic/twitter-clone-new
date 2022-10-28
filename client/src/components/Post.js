@@ -2,11 +2,12 @@ import "../css/Post.css";
 import { Avatar } from "@mui/material";
 import customAxios from "../api/customAxios";
 import { useMutation } from "react-query";
-import { addNewLike, countLikes, checkIfUserLikedPost } from "../api/likeApi";
+import { addNewLike } from "../api/likeApi";
 import { useEffect, useState } from "react";
+import commentIcon from "../assets/icons/comment.svg";
 
 const Post = ({ post }) => {
-  const { mutate, isLoading } = useMutation(addNewLike);
+  const { mutate } = useMutation(addNewLike);
   const [likeCount, setLikeCount] = useState(undefined);
   const [hasUserLiked, setHasUserLiked] = useState(undefined);
 
@@ -79,7 +80,7 @@ const Post = ({ post }) => {
       <div className="wrapper">
         <div className="top-portion">
           <span className="username">{post.username}</span>
-          <span className="seperator">&#183;</span>
+          <span className="separator">&#183;</span>
           <span className="date">{dateFormat(post.createdAt)}</span>
         </div>
         <p>{post.post}</p>
@@ -90,6 +91,7 @@ const Post = ({ post }) => {
             <button onClick={handleLike}>U can like</button>
           )}
           <span className="like-counter">{likeCount ? likeCount : 0}</span>
+          <img src={commentIcon} alt="comment icon" className="comment-icon" />
         </div>
       </div>
     </div>

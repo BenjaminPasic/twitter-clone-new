@@ -8,6 +8,7 @@
 .post .wrapper {
     min-width: 0;
     margin-left: 10px;
+    width: 100%;
 }
 
 .post p {
@@ -25,7 +26,7 @@
     justify-content: start;
 }
 
-.post .seperator {
+.post .separator {
     margin: 0 5px 0 5px;
     color: gray;
 }
@@ -46,6 +47,12 @@
 .post .bottom-portion {
     width: fit-content;
     margin-top: 6px;
+    display: flex;
+}
+
+.post .comment-icon {
+    margin-left: 10px;
+    width: 20px
 }
 
 .post .like-counter {

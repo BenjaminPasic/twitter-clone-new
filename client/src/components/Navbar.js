@@ -1,9 +1,8 @@
 import "../css/Navbar.css";
 import logo from "../assets/Chitter-logos/Chatter.png";
+import logoutIcon from "../assets/icons/log-out.svg";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Avatar } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { useQuery } from "react-query";
@@ -52,12 +51,12 @@ export default function Navbar() {
         />
         <div>
           <Avatar sx={{ bgcolor: "red" }}>B</Avatar>
-          <IconButton onClick={handleSignout}>
-            <LogoutOutlinedIcon
-              className="logout-icon"
-              sx={{ "&:hover": { bgcolor: "#2c2633", cursor: "pointer" } }}
-            />
-          </IconButton>
+          <img
+            src={logoutIcon}
+            alt="logout icon"
+            className="logout-icon"
+            onClick={handleSignout}
+          />
         </div>
       </nav>
     </div>
