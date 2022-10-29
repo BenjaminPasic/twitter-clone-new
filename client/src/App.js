@@ -3,6 +3,7 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import NotFound from "./components/NotFound";
+import Comments from "./components/Comments";
 import Navbar from "./components/Navbar";
 import CheckIfLoggedIn from "./components/CheckIfLoggedIn";
 import { Route, Routes } from "react-router-dom";
@@ -32,6 +33,7 @@ function App() {
           </Route>
           <Route element={<ProtectedRoutes />}>
             <Route path="/" element={<Home />} />
+            <Route path="/comments/:id" element={<Comments />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -39,5 +41,7 @@ function App() {
     </QueryClientProvider>
   );
 }
+
+//<Route path="/comments/:id" element={<Comment />} />
 
 export default App;

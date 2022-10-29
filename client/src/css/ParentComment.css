@@ -1,0 +1,45 @@
+.parent-comment {
+    width: 100%;
+    max-width: 65%;
+    border: 1px solid #2c2633;
+    background: #1f1b24;
+    display: flex;
+    margin: 0 auto;
+}
+
+.parent-comment .top-portion {
+    margin-left: 10px;
+}
+
+.parent-comment .top-portion .username {
+    margin: 0;
+    color: white;
+}
+
+.parent-comment .top-portion p {
+    min-width: 0;
+    color: white;
+    text-align: left;
+    word-wrap: break-word;
+    margin: 0;
+    margin-top: 5px;
+}
+
+.parent-comment .top-portion {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+}
+
+.parent-comment .top-portion .separator {
+    margin: 0 5px 0 5px;
+    color: gray;
+}
+
+.parent-comment .top-portion .date {
+    color: gray;
+}
+
+.parent-comment .top-portion div .username:before {
+    content: "@";
+}

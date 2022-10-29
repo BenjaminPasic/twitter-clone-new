@@ -29,6 +29,7 @@ export default function StatusUpdate({ addNewLocalPost }) {
             username,
             createdAt: "now",
             post: tempStatus,
+            isLocalPost: true,
           },
           ...prevData,
         ];
