@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/UserRoutes");
 const postRoutes = require("./routes/PostRoutes");
 const likeRoutes = require("./routes/LikeRoutes");
+const commentRoutes = require("./routes/CommentRoutes");
 
 //Cookie parser
 server.use(cookieParser());
@@ -26,5 +27,6 @@ server.use(express.json());
 server.use("/user", userRoutes);
 server.use("/post", postRoutes);
 server.use("/like", likeRoutes);
+server.use("/comment", commentRoutes);
 
 server.listen(3001);

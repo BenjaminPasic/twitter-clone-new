@@ -6,6 +6,7 @@ import { Avatar } from "@mui/material";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { logout } from "../api/userApi";
 
 export default function Navbar() {
@@ -14,6 +15,7 @@ export default function Navbar() {
   });
   const { setIsAuth } = useAuth();
   const [searchInput, setSearchInput] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setSearchInput(e.target.value);
@@ -32,6 +34,10 @@ export default function Navbar() {
     setIsAuth(false);
   };
 
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   if (isLoading || isFetching) {
     return (
       <div className="fullScreen">
@@ -43,7 +49,7 @@ export default function Navbar() {
   return (
     <div className="navbar">
       <nav>
-        <img src={logo} alt="Chitter logo temp" />
+        <img onClick={handleLogoClick} src={logo} alt="Chitter logo temp" />
         <input
           placeholder="Search"
           onKeyDown={(e) => handleKeyPress(e)}

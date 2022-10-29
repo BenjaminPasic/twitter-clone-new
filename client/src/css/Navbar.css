@@ -16,6 +16,10 @@ nav img {
   max-width: 125px;
 }
 
+nav img:hover {
+  cursor: pointer;
+}
+
 nav input {
   width: 100%;
   max-width: 325px;

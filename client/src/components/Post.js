@@ -83,12 +83,11 @@ const Post = ({ post }) => {
   };
 
   const handleCommentClick = () => {
+    console.log("test", post);
     navigate(`/comments/${post.post_id}`, {
       state: post,
     });
   };
-
-  console.log(post);
 
   return (
     <div
