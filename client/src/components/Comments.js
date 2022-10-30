@@ -2,18 +2,44 @@ import "../css/Comments.css";
 import { useParams, useLocation } from "react-router-dom";
 import Post from "./Post";
 import Button from "@mui/material/Button";
-import { useState } from "react";
-import { useMutation } from "react-query";
-import { addNewComment } from "../api/commentApi";
-
-//todo infinite query comments on post
+import Comment from "./Comment";
+import { Fragment, useEffect, useState } from "react";
+import { useMutation, useInfiniteQuery } from "react-query";
+import { addNewComment, getRecentComments } from "../api/commentApi";
 
 function Comments() {
+  const { data, fetchNextPage } = useInfiniteQuery(
+    "getRecentComments",
+    getRecentComments,
+    {
+      getNextPageParam: (_lastPage, pages) => {
+        if (pages[pages.length - 1].data.recentComments.length < 10) {
+        } else {
+          return pages.length + 1;
+        }
+      },
+    }
+  );
   const [comment, setComment] = useState("");
   const { mutate } = useMutation(addNewComment);
   const { id } = useParams();
   const location = useLocation();
   location.state.singlePost = true;
+
+  //scroll listener
+  useEffect(() => {
+    const handleScrollListener = () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        fetchNextPage();
+      }
+    };
+
+    window.addEventListener("scroll", handleScrollListener);
+
+    return () => {
+      window.removeEventListener("scroll", handleScrollListener);
+    };
+  }, []);
 
   const handleSubmit = () => {
     mutate({
@@ -36,15 +62,28 @@ function Comments() {
           className="input-box"
           placeholder="Add a comment here..."
         />
-        <Button
-          variant="contained"
-          className="submit-button"
-          margin="normal"
-          onClick={handleSubmit}
-        >
-          Submit
-        </Button>
+        {comment && (
+          <Button
+            variant="contained"
+            className="submit-button"
+            margin="normal"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        )}
       </div>
+      <h2>Comments</h2>
+      {data &&
+        data.pages.map((collection, i) => {
+          return (
+            <Fragment key={i}>
+              {collection.data.recentComments.map((comment) => {
+                return <Comment key={comment.id} comment={comment} />;
+              })}
+            </Fragment>
+          );
+        })}
     </div>
   );
 }

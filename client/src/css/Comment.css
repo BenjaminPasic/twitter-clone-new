@@ -1,0 +1,44 @@
+.single-comment {
+    display: flex;
+    max-width: 70%;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 10px;
+    border: 1px solid #2c2633;
+    background: #1f1b24;
+}
+
+.single-comment .upper-part {
+    margin-left: 8px;
+    height: fit-content;
+    width: 100%;
+    text-align: left;
+}
+
+.single-comment p {
+    text-align: left;
+    color: white;
+    margin: 5px 0 5px 0;
+}
+
+.single-comment .upper-part span {
+    margin: 0;
+    color: white;
+}
+
+.single-comment .upper-part .seperator {
+    margin: 0 4px 0 4px;
+    color: gray;
+}
+
+.single-comment .upper-part .username::before {
+    content: "@";
+}
+
+.single-comment .upper-part .username:hover {
+    color: dodgerblue;
+}
+
+.single-comment .upper-part .date {
+    color: gray;
+}
