@@ -7,12 +7,20 @@ const addNewComment = async (req, res) => {
   const { post_id, comment } = req.body;
   try {
     const userData = await decodeJwtToken(req.cookies.token);
-    await Comment.create({
-      written_by_user_id: userData.user_id,
-      written_on_post_id: post_id,
-      comment: comment,
-    });
-    res.status(200).end();
+    let lastComment = await Comment.create(
+      {
+        written_by_user_id: userData.user_id,
+        written_on_post_id: post_id,
+        comment: comment,
+      },
+      { raw: true }
+    );
+    lastComment = { ...lastComment.dataValues, username: userData.username };
+    console.log(lastComment);
+    res
+      .status(200)
+      .json({ ...lastComment, username: userData.username })
+      .end();
   } catch (e) {
     res.status(503).end();
   }
@@ -20,11 +28,7 @@ const addNewComment = async (req, res) => {
 
 const getRecentComments = async (req, res) => {
   const { page } = req.params;
-
-  let offset = 0;
-  if (page > 1) {
-    offset = page * 10 - 10;
-  }
+  const postId = req.query["post_id"];
 
   try {
     const recentComments = await dbConnection.query(
@@ -32,9 +36,9 @@ const getRecentComments = async (req, res) => {
           c.comment, u.username, u.createdAt
           FROM comments c
           JOIN users u on c.written_by_user_id = u.id
-          HAVING written_on_post_id = 54
+          HAVING written_on_post_id = ${postId}
           ORDER BY c.createdAt DESC
-          LIMIT 10 OFFSET ${offset}`,
+          LIMIT 10 OFFSET ${page}`,
       { type: QueryTypes.SELECT }
     );
     res.status(200).json({ recentComments }).end();

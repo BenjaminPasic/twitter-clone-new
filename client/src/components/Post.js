@@ -42,15 +42,19 @@ const Post = ({ post }) => {
   }, []);
 
   const handleLike = () => {
+    console.log("aa");
     mutate({
       post_id: post.post_id,
     });
-    setHasUserLiked(true);
-    setLikeCount((prev) => prev + 1);
+    setHasUserLiked((prev) => !prev);
+    if (hasUserLiked) {
+      setLikeCount((prev) => prev - 1);
+    } else {
+      setLikeCount((prev) => prev + 1);
+    }
   };
 
   const handleCommentClick = () => {
-    console.log("test", post);
     navigate(`/comments/${post.post_id}`, {
       state: post,
     });
@@ -74,9 +78,9 @@ const Post = ({ post }) => {
         <p style={{ fontSize: post.singlePost && "18px" }}>{post.post}</p>
         <div className="bottom-portion">
           {hasUserLiked ? (
-            <button disabled>already liked</button>
+            <button onClick={handleLike}>Dislike</button>
           ) : (
-            <button onClick={handleLike}>U can like</button>
+            <button onClick={handleLike}>Like</button>
           )}
           <span className="like-counter">{likeCount ? likeCount : 0}</span>
           {post.singlePost ? null : (

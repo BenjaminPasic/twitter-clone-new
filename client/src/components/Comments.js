@@ -1,36 +1,45 @@
 import "../css/Comments.css";
 import { useParams, useLocation } from "react-router-dom";
+import customAxios from "../api/customAxios";
 import Post from "./Post";
 import Button from "@mui/material/Button";
 import Comment from "./Comment";
-import { Fragment, useEffect, useState } from "react";
-import { useMutation, useInfiniteQuery } from "react-query";
-import { addNewComment, getRecentComments } from "../api/commentApi";
+import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
+import { addNewComment } from "../api/commentApi";
 
 function Comments() {
-  const { data, fetchNextPage } = useInfiniteQuery(
-    "getRecentComments",
-    getRecentComments,
-    {
-      getNextPageParam: (_lastPage, pages) => {
-        if (pages[pages.length - 1].data.recentComments.length < 10) {
-        } else {
-          return pages.length + 1;
-        }
-      },
-    }
-  );
+  const [offset, setOffset] = useState(0);
   const [comment, setComment] = useState("");
-  const { mutate } = useMutation(addNewComment);
+  const [localComments, setLocalComments] = useState([]);
+  const [dbComments, setDbComments] = useState([]);
+  const { mutate } = useMutation(addNewComment, {
+    onSuccess: (data) => {
+      const lastComment = data.data;
+      setLocalComments((prevState) => [lastComment, ...prevState]);
+    },
+  });
   const { id } = useParams();
   const location = useLocation();
   location.state.singlePost = true;
+
+  useEffect(() => {
+    customAxios
+      .get("/comment/recent/" + offset, {
+        params: {
+          post_id: id,
+        },
+      })
+      .then((data) => {
+        setDbComments((prevState) => [...prevState, data.data.recentComments]);
+      });
+  }, [offset]);
 
   //scroll listener
   useEffect(() => {
     const handleScrollListener = () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        fetchNextPage();
+        setOffset((prev) => prev + 10);
       }
     };
 
@@ -58,6 +67,7 @@ function Comments() {
       <Post post={location.state} />
       <div className="add-comment">
         <textarea
+          value={comment}
           onChange={(e) => handleChange(e)}
           className="input-box"
           placeholder="Add a comment here..."
@@ -74,15 +84,16 @@ function Comments() {
         )}
       </div>
       <h2>Comments</h2>
-      {data &&
-        data.pages.map((collection, i) => {
-          return (
-            <Fragment key={i}>
-              {collection.data.recentComments.map((comment) => {
-                return <Comment key={comment.id} comment={comment} />;
-              })}
-            </Fragment>
-          );
+      {localComments.length > 0
+        ? localComments.map((comment, i) => {
+            return <Comment key={i} comment={comment} />;
+          })
+        : null}
+      {dbComments &&
+        dbComments.map((collection) => {
+          return collection.map((comment) => {
+            return <Comment key={comment.id} comment={comment} />;
+          });
         })}
     </div>
   );

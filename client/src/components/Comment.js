@@ -2,6 +2,8 @@ import "../css/Comment.css";
 import { Avatar } from "@mui/material";
 import { dateFormat } from "../utils/DateFormatter";
 
+//todo add comment like routes and controller, as well as
+
 const Comment = ({ comment }) => {
   return (
     <div className="single-comment">
