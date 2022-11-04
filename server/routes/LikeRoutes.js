@@ -11,6 +11,6 @@ router.post("/new", verifyCredentials, addNewLike);
 
 router.get("/count", countLikes);
 
-router.get("/checkIfLiked", checkIfCurrentUserLikedPost);
+router.get("/checkifliked", checkIfCurrentUserLikedPost);
 
 module.exports = router;

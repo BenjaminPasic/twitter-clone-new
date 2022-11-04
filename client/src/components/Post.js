@@ -30,7 +30,7 @@ const Post = ({ post }) => {
         });
 
       customAxios
-        .get("/like/checkIfLiked", {
+        .get("/like/checkifliked", {
           params: {
             post_id: post.post_id,
           },

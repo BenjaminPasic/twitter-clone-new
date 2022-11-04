@@ -86,13 +86,23 @@ function Comments() {
       <h2>Comments</h2>
       {localComments.length > 0
         ? localComments.map((comment, i) => {
-            return <Comment key={i} comment={comment} />;
+            return (
+              <Comment
+                key={i}
+                comment={{ ...comment, post_id: location.state.post_id }}
+              />
+            );
           })
         : null}
       {dbComments &&
         dbComments.map((collection) => {
           return collection.map((comment) => {
-            return <Comment key={comment.id} comment={comment} />;
+            return (
+              <Comment
+                key={comment.id}
+                comment={{ ...comment, post_id: location.state.post_id }}
+              />
+            );
           });
         })}
     </div>

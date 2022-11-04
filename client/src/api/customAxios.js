@@ -10,6 +10,7 @@ customAxios.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log("Interceptor:", error);
     //Figure out how to do it without redownloading the entire document later...
     if (error.response.data === "Invalid token") {
       window.location.href = "/login";
