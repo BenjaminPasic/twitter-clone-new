@@ -16,13 +16,12 @@ const addNewComment = async (req, res) => {
       { raw: true }
     );
     lastComment = { ...lastComment.dataValues, username: userData.username };
-    console.log(lastComment);
-    res
+    return res
       .status(200)
       .json({ ...lastComment, username: userData.username })
       .end();
   } catch (e) {
-    res.status(503).end();
+    return res.status(503).end();
   }
 };
 
@@ -41,14 +40,31 @@ const getRecentComments = async (req, res) => {
           LIMIT 10 OFFSET ${page}`,
       { type: QueryTypes.SELECT }
     );
-    res.status(200).json({ recentComments }).end();
+    return res.status(200).json({ recentComments }).end();
   } catch (e) {
     console.log(e);
-    res.status(503).end();
+    return res.status(503).end();
+  }
+};
+
+const getCommentCount = async (req, res) => {
+  const postId = req.query["post_id"];
+
+  try {
+    const commentCount = await Comment.count({
+      where: {
+        written_on_post_id: postId,
+      },
+    });
+    return res.status(200).json(commentCount);
+  } catch (e) {
+    console.log(e);
+    return res.status(503).end();
   }
 };
 
 module.exports = {
   addNewComment,
   getRecentComments,
+  getCommentCount,
 };

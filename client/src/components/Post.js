@@ -11,6 +11,7 @@ import commentIcon from "../assets/icons/comment.svg";
 const Post = ({ post }) => {
   const { mutate } = useMutation(addNewLike);
   const [likeCount, setLikeCount] = useState(undefined);
+  const [commentCount, setCommentCount] = useState(undefined);
   const [hasUserLiked, setHasUserLiked] = useState(undefined);
   const navigate = useNavigate();
 
@@ -38,6 +39,14 @@ const Post = ({ post }) => {
         .then((res) => {
           setHasUserLiked(res.data.hasUserLiked);
         });
+
+      customAxios
+        .get("/comment/count", {
+          params: {
+            post_id: post.post_id,
+          },
+        })
+        .then((data) => setCommentCount(data.data));
     }
   }, []);
 
@@ -84,12 +93,15 @@ const Post = ({ post }) => {
           )}
           <span className="like-counter">{likeCount ? likeCount : 0}</span>
           {post.singlePost ? null : (
-            <img
-              src={commentIcon}
-              alt="comment icon"
-              className="comment-icon"
-              onClick={handleCommentClick}
-            />
+            <>
+              <img
+                src={commentIcon}
+                alt="comment icon"
+                className="comment-icon"
+                onClick={handleCommentClick}
+              />
+              <span>{commentCount}</span>
+            </>
           )}
         </div>
       </div>

@@ -11,8 +11,6 @@ const Comment = ({ comment }) => {
   const [commentLikes, setCommentLikes] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
 
-  //todo add dislike comment
-
   useEffect(() => {
     customAxios
       .get("/commentlike/count", {
