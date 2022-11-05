@@ -6,7 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Fragment, useEffect } from "react";
 
 export default function Posts({ localPost }) {
-  const { isLoading, isFetching, data, fetchNextPage } = useInfiniteQuery(
+  const { isFetching, data, fetchNextPage } = useInfiniteQuery(
     "getRecentPosts",
     getRecentPosts,
     {

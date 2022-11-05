@@ -1,29 +1,29 @@
-export const dateFormat = (date) => {
-  if (date === "now") return "now";
+import moment from "moment";
 
-  const currentTime = new Date();
-  const datePostedAt = new Date(date);
-  const whenWasPostCreatedInSeconds = Math.floor(
-    Math.abs((currentTime - datePostedAt) / 1000)
-  );
-
-  if (whenWasPostCreatedInSeconds < 60) {
-    return whenWasPostCreatedInSeconds + "s";
-  }
-  if (whenWasPostCreatedInSeconds > 60 && whenWasPostCreatedInSeconds < 3600) {
-    return Math.floor(whenWasPostCreatedInSeconds / 60) + "m";
-  }
-  if (whenWasPostCreatedInSeconds < 86400) {
-    return Math.floor(whenWasPostCreatedInSeconds / 60 / 60) + "h";
+const dateFormat = (date) => {
+  if (date === "now") {
+    return date;
   }
 
-  const day = datePostedAt.getDay() + 1;
-  const month = datePostedAt.toLocaleString("default", { month: "short" });
+  const currentDate = moment();
+  const datePosted = moment(date);
 
-  if (whenWasPostCreatedInSeconds > 525600) {
-    const year = datePostedAt.getFullYear();
-    return day + " " + month + " " + year;
+  const dateDiffInSeconds = currentDate.diff(datePosted, "seconds");
+  if (dateDiffInSeconds < 60) {
+    return dateDiffInSeconds + "s";
   }
 
-  return day + " " + month;
+  const dateDiffInMinutes = currentDate.diff(datePosted, "minutes");
+  if (dateDiffInMinutes < 60) {
+    return dateDiffInMinutes + "m";
+  }
+
+  const dateDiffInHours = currentDate.diff(datePosted, "hours");
+  if (dateDiffInHours < 60) {
+    return dateDiffInHours + "h";
+  }
+
+  return datePosted.format("DD/MM/YYYY");
 };
+
+export default dateFormat;

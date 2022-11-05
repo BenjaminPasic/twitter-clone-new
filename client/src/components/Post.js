@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { addNewLike } from "../api/likeApi";
 import { useEffect, useState } from "react";
-import { dateFormat } from "../utils/DateFormatter";
+import dateFormat from "../utils/DateFormatter";
 import commentIcon from "../assets/icons/comment.svg";
 
 const Post = ({ post }) => {
