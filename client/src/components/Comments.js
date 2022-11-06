@@ -7,12 +7,15 @@ import Comment from "./Comment";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { addNewComment } from "../api/commentApi";
+import FormDialog from "./FormDialog";
 
 function Comments() {
   const [offset, setOffset] = useState(0);
   const [comment, setComment] = useState("");
   const [localComments, setLocalComments] = useState([]);
   const [dbComments, setDbComments] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogData, setDialogData] = useState(undefined);
   const { mutate } = useMutation(addNewComment, {
     onSuccess: (data) => {
       const lastComment = data.data;
@@ -64,6 +67,18 @@ function Comments() {
     setComment(e.target.value);
   };
 
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const defineDialogData = (data) => {
+    setDialogData(data);
+  };
+
   return (
     <div className="comments">
       <Post post={location.state} />
@@ -103,10 +118,18 @@ function Comments() {
               <Comment
                 key={comment.id}
                 comment={{ ...comment, post_id: location.state.post_id }}
+                handleOpenDialog={handleOpenDialog}
+                defineDialogData={defineDialogData}
               />
             );
           });
         })}
+      <FormDialog
+        handleClose={handleCloseDialog}
+        open={openDialog}
+        dialogData={dialogData}
+      />
+      <Button onClick={handleOpenDialog}>Open Dialog</Button>
     </div>
   );
 }

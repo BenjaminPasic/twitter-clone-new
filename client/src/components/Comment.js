@@ -6,7 +6,7 @@ import { commentLike } from "../api/commentLikeApi";
 import customAxios from "../api/customAxios";
 import { useState, useEffect } from "react";
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, defineDialogData, handleOpenDialog }) => {
   const { mutate } = useMutation(commentLike);
   const [commentLikes, setCommentLikes] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
@@ -40,6 +40,11 @@ const Comment = ({ comment }) => {
     }
   };
 
+  const handleOpenComment = () => {
+    defineDialogData(comment);
+    handleOpenDialog();
+  };
+
   return (
     <div className="single-comment">
       <Avatar>B</Avatar>
@@ -54,7 +59,7 @@ const Comment = ({ comment }) => {
           <button onClick={handleLike}>Like</button>
         )}
         <span>{commentLikes}</span>
-        <button>Comment</button>
+        <button onClick={handleOpenComment}>Comment</button>
         <div className="modal"></div>
       </div>
     </div>
