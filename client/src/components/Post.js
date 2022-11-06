@@ -51,7 +51,6 @@ const Post = ({ post }) => {
   }, []);
 
   const handleLike = () => {
-    console.log("aa");
     mutate({
       post_id: post.post_id,
     });

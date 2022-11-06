@@ -54,6 +54,8 @@ const Comment = ({ comment }) => {
           <button onClick={handleLike}>Like</button>
         )}
         <span>{commentLikes}</span>
+        <button>Comment</button>
+        <div className="modal"></div>
       </div>
     </div>
   );

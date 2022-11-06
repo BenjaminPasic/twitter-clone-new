@@ -15,6 +15,12 @@
     text-align: left;
 }
 
+.single-comment .modal {
+    height: 100%;
+    width: 100%;
+    color: red;
+}
+
 .single-comment p {
     text-align: left;
     color: white;

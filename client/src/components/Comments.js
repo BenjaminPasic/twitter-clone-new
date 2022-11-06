@@ -21,6 +21,8 @@ function Comments() {
   });
   const { id } = useParams();
   const location = useLocation();
+
+  //If we're showing the post with comments, then set as single post
   location.state.singlePost = true;
 
   useEffect(() => {
