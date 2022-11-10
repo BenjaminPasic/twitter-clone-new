@@ -40,6 +40,7 @@ const getRecentComments = async (req, res) => {
           LIMIT 10 OFFSET ${page}`,
       { type: QueryTypes.SELECT }
     );
+
     return res.status(200).json({ recentComments }).end();
   } catch (e) {
     console.log(e);

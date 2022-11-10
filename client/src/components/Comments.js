@@ -8,10 +8,10 @@ import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { addNewComment } from "../api/commentApi";
 import FormDialog from "./FormDialog";
+import TextField from "./TextField";
 
 function Comments() {
   const [offset, setOffset] = useState(0);
-  const [comment, setComment] = useState("");
   const [localComments, setLocalComments] = useState([]);
   const [dbComments, setDbComments] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -55,16 +55,11 @@ function Comments() {
     };
   }, []);
 
-  const handleSubmit = () => {
+  const handlePostReply = (comment) => {
     mutate({
       post_id: id,
       comment,
     });
-    setComment("");
-  };
-
-  const handleChange = (e) => {
-    setComment(e.target.value);
   };
 
   const handleOpenDialog = () => {
@@ -82,23 +77,8 @@ function Comments() {
   return (
     <div className="comments">
       <Post post={location.state} />
-      <div className="add-comment">
-        <textarea
-          value={comment}
-          onChange={(e) => handleChange(e)}
-          className="input-box"
-          placeholder="Add a comment here..."
-        />
-        {comment && (
-          <Button
-            variant="contained"
-            className="submit-button"
-            margin="normal"
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
-        )}
+      <div>
+        <TextField handleSubmit={handlePostReply} />
       </div>
       <h2>Comments</h2>
       {localComments.length > 0
@@ -129,7 +109,6 @@ function Comments() {
         open={openDialog}
         dialogData={dialogData}
       />
-      <Button onClick={handleOpenDialog}>Open Dialog</Button>
     </div>
   );
 }

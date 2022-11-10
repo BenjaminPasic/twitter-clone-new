@@ -16,37 +16,10 @@ const Post = ({ post }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!post.isLocalPost) {
-      customAxios
-        .get("/like/count", {
-          params: {
-            post_id: post.post_id,
-          },
-        })
-        .then((res) => {
-          setLikeCount(res.data.postLikes);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      customAxios
-        .get("/like/checkifliked", {
-          params: {
-            post_id: post.post_id,
-          },
-        })
-        .then((res) => {
-          setHasUserLiked(res.data.hasUserLiked);
-        });
-
-      customAxios
-        .get("/comment/count", {
-          params: {
-            post_id: post.post_id,
-          },
-        })
-        .then((data) => setCommentCount(data.data));
+    if (post) {
+      setCommentCount(post.total_comments);
+      setLikeCount(post.total_likes);
+      setHasUserLiked(post.liked_by_current_user);
     }
   }, []);
 

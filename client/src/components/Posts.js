@@ -20,6 +20,10 @@ export default function Posts({ localPost }) {
   );
 
   useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  useEffect(() => {
     const handleScrollListener = () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
         fetchNextPage();
