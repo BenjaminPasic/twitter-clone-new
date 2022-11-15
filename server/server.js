@@ -10,6 +10,7 @@ const postRoutes = require("./routes/PostRoutes");
 const likeRoutes = require("./routes/LikeRoutes");
 const commentRoutes = require("./routes/CommentRoutes");
 const commentLikeRoutes = require("./routes/CommentLikeRoutes");
+const commentRepliesRoutes = require("./routes/CommentRepliesRoutes");
 
 //Cookie parser
 server.use(cookieParser());
@@ -30,5 +31,6 @@ server.use("/post", postRoutes);
 server.use("/like", likeRoutes);
 server.use("/comment", commentRoutes);
 server.use("/commentlike", commentLikeRoutes);
+server.use("/commentreply", commentRepliesRoutes);
 
 server.listen(3001);
