@@ -2,7 +2,6 @@ import "../css/Comments.css";
 import { useParams, useLocation } from "react-router-dom";
 import customAxios from "../api/customAxios";
 import Post from "./Post";
-import Button from "@mui/material/Button";
 import Comment from "./Comment";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
@@ -17,8 +16,8 @@ function Comments() {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogData, setDialogData] = useState(undefined);
   const { mutate } = useMutation(addNewComment, {
-    onSuccess: (data) => {
-      const lastComment = data.data;
+    onSuccess: ({ data }) => {
+      const lastComment = data;
       setLocalComments((prevState) => [lastComment, ...prevState]);
     },
   });
@@ -35,8 +34,8 @@ function Comments() {
           post_id: id,
         },
       })
-      .then((data) => {
-        setDbComments((prevState) => [...prevState, data.data.recentComments]);
+      .then(({ data }) => {
+        setDbComments((prevState) => [...prevState, data.recentComments]);
       });
   }, [offset]);
 

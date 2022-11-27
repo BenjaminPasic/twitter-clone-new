@@ -15,6 +15,26 @@ const addNewCommentReply = async (req, res) => {
   }
 };
 
+const getTenRecentComments = async (req, res) => {
+  const offset = +req.params.offset;
+  const commentId = +req.query["comment_id"];
+  try {
+    let replies = await CommentReplies.findAll({
+      where: {
+        written_on_comment_id: commentId,
+      },
+      limit: 10,
+      offset: offset,
+      raw: true,
+    });
+    return res.status(200).json(replies);
+  } catch (e) {
+    console.log(e);
+    return res.status(503);
+  }
+};
+
 module.exports = {
   addNewCommentReply,
+  getTenRecentComments,
 };

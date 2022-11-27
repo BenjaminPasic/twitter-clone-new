@@ -3,11 +3,12 @@ const router = express.Router();
 const verifyCredentials = require("../middleware/verifyCredentials");
 const {
   addNewCommentReply,
+  getTenRecentComments,
 } = require("../controllers/CommentRepliesController");
 
 router.post("/new", verifyCredentials, addNewCommentReply);
 
-//router.get("/recent/:page", getRecentComments);
+router.get("/recent/:offset", getTenRecentComments);
 
 //router.get("/count", getCommentCount);
 
