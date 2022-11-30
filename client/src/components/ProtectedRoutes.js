@@ -8,7 +8,6 @@ export default function ProtectedRoutes() {
   const { setIsAuth, isAuth } = useAuth();
 
   const { isFetching, isLoading } = useQuery("verifyToken", verifyToken, {
-    enabled: false,
     onSuccess: (data) => {
       if (data.data.isTokenValid) {
         setIsAuth(true);

@@ -1,0 +1,12 @@
+.profile {
+    width: 100%;
+    max-width: 70%;
+    margin: 0 auto;
+}
+
+.profile .wrapper {
+    max-width: 80%;
+    width: 100%;
+    margin: 0 auto;
+}
+

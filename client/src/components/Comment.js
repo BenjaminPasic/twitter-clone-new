@@ -4,7 +4,7 @@ import dateFormat from "../utils/DateFormatter";
 import { useMutation } from "react-query";
 import { commentLike } from "../api/commentLikeApi";
 import customAxios from "../api/customAxios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Reply from "./Reply";
 
 const Comment = ({ comment, defineDialogData, handleOpenDialog }) => {
