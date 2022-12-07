@@ -6,7 +6,7 @@ import Comment from "./Comment";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { addNewComment } from "../api/commentApi";
-import FormDialog from "./FormDialog";
+import CommentFormDialog from "./CommentFormDialog";
 import TextField from "./TextField";
 
 function Comments() {
@@ -103,7 +103,7 @@ function Comments() {
             );
           });
         })}
-      <FormDialog
+      <CommentFormDialog
         handleClose={handleCloseDialog}
         open={openDialog}
         dialogData={dialogData}

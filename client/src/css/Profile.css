@@ -1,12 +1,71 @@
 .profile {
     width: 100%;
-    max-width: 70%;
+    max-width: 45%;
     margin: 0 auto;
 }
 
-.profile .wrapper {
-    max-width: 80%;
+.profile .banner {
+    max-height: 200px;
     width: 100%;
-    margin: 0 auto;
+    height: auto;
 }
 
+.profile .row-1 {
+    display: flex;
+    justify-content: space-between;
+    height: fit-content;
+    position: relative;
+}
+
+.profile .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: dodgerblue;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    border: 2px solid black;
+    bottom: -20px;
+    left: 10px;
+    font-size: 2em;
+}
+
+.profile .username-container {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.profile .username-container .fullname {
+    font-size: 1.25em;
+    color: #E7E9EA;
+}
+
+.profile .username-container .username {
+    color: #808080;
+}
+
+.profile .bio {
+    color: #E7E9EA;
+}
+
+.profile .icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.profile .join-date {
+    color: #808080;
+    margin-right: 10px;
+
+}
+
+.profile .location {
+    color: #808080;
+}

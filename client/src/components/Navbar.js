@@ -13,7 +13,7 @@ export default function Navbar() {
   const { isLoading, isFetching, refetch } = useQuery("logout", logout, {
     enabled: false,
   });
-  const { setIsAuth } = useAuth();
+  const { setIsAuth, username } = useAuth();
   const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
 
@@ -38,6 +38,10 @@ export default function Navbar() {
     navigate("/");
   };
 
+  const handleAvatarClick = () => {
+    navigate("/profile/" + username);
+  };
+
   if (isLoading || isFetching) {
     return (
       <div className="fullScreen">
@@ -56,7 +60,9 @@ export default function Navbar() {
           onChange={(e) => handleChange(e)}
         />
         <div>
-          <Avatar sx={{ bgcolor: "red" }}>B</Avatar>
+          <Avatar onClick={handleAvatarClick} sx={{ bgcolor: "red" }}>
+            {username ? username.charAt(0) : null}
+          </Avatar>
           <img
             src={logoutIcon}
             alt="logout icon"

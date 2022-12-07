@@ -23,11 +23,21 @@ const User = dbConnection.define("user", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  bio: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: null,
+  },
+  location: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: null,
+  },
 });
 
 (async () => {
   try {
-    await User.sync();
+    await User.sync({ alter: true });
     console.log("User sync complete");
   } catch (error) {
     console.log("Sync error: ", error);

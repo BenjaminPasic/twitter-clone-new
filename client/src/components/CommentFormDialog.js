@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import { addNewCommentReply } from "../api/commentReplyApi";
 import { useMutation } from "react-query";
 
-const FormDialog = ({ handleClose, open, dialogData }) => {
+const CommentFormDialog = ({ handleClose, open, dialogData }) => {
   const { mutate } = useMutation(addNewCommentReply);
 
   const handleSubmit = (reply) => {
@@ -34,4 +34,4 @@ const FormDialog = ({ handleClose, open, dialogData }) => {
   );
 };
 
-export default FormDialog;
+export default CommentFormDialog;

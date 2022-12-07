@@ -29,7 +29,6 @@ const getRecentComments = async (req, res) => {
   const { page } = req.params;
   const postId = req.query["post_id"];
   const userInfo = await decodeJwtToken(req.cookies.token);
-  console.log(userInfo);
   try {
     let recentComments = await dbConnection.query(
       `SELECT c.id, c.written_by_user_id,

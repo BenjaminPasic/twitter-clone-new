@@ -1,6 +1,6 @@
 import "../css/Comment.css";
 import { Avatar } from "@mui/material";
-import dateFormat from "../utils/DateFormatter";
+import { dateFormat } from "../utils/DateFormatter";
 import { useMutation } from "react-query";
 import { commentLike } from "../api/commentLikeApi";
 import customAxios from "../api/customAxios";

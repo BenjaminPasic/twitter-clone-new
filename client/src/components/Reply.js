@@ -1,5 +1,5 @@
 import { Avatar } from "@mui/material";
-import dateFormat from "../utils/DateFormatter";
+import { dateFormat } from "../utils/DateFormatter";
 import "../css/Reply.css";
 
 const Reply = ({ reply, username }) => {

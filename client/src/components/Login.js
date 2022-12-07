@@ -9,7 +9,7 @@ import { login } from "../api/userApi";
 
 export default function Login() {
   const { mutate, isLoading, error } = useMutation(login);
-  const { setIsAuth, isAuth } = useAuth();
+  const { setIsAuth, isAuth, setUsername } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -77,8 +77,9 @@ export default function Login() {
 
     if (!error) {
       mutate(formData, {
-        onSuccess: () => {
+        onSuccess: ({ data }) => {
           setIsAuth(true);
+          setUsername(data);
         },
       });
     }
