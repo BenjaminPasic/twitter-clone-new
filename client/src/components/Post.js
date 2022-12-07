@@ -1,6 +1,5 @@
 import "../css/Post.css";
 import { Avatar } from "@mui/material";
-import customAxios from "../api/customAxios";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { addNewLike } from "../api/likeApi";
@@ -41,6 +40,10 @@ const Post = ({ post }) => {
     });
   };
 
+  const handleRedirect = () => {
+    navigate("/profile/" + post.username);
+  };
+
   return (
     <div
       className="post"
@@ -49,10 +52,12 @@ const Post = ({ post }) => {
         margin: post.singlePost && "0 auto",
       }}
     >
-      <Avatar>{post.username.charAt(0)}</Avatar>
+      <Avatar onClick={handleRedirect}>{post.username.charAt(0)}</Avatar>
       <div className="wrapper">
         <div className="top-portion">
-          <span className="username">{post.username}</span>
+          <span className="username" onClick={handleRedirect}>
+            {post.username}
+          </span>
           <span className="separator">&#183;</span>
           <span className="date">{dateFormat(post.createdAt)}</span>
         </div>

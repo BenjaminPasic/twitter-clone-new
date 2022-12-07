@@ -37,7 +37,7 @@
     margin-top: 25px;
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
 }
 
 .profile .username-container .fullname {
