@@ -37,7 +37,7 @@ const User = dbConnection.define("user", {
 
 (async () => {
   try {
-    await User.sync({ alter: true });
+    await User.sync();
     console.log("User sync complete");
   } catch (error) {
     console.log("Sync error: ", error);

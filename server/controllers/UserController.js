@@ -1,10 +1,12 @@
 const User = require("../models/User");
+const dbConnection = require("../config/dbConnection");
 const { encryptPassword, decryptPassword } = require("../utils/bcrypt");
 const {
   createJwtToken,
   verifyJwtToken,
   decodeJwtToken,
 } = require("../utils/jwt");
+const { QueryTypes } = require("sequelize");
 
 const registerUser = async (req, res) => {
   try {
@@ -75,22 +77,40 @@ const getUsername = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
   const userData = await decodeJwtToken(req.cookies.token);
-  const username = req.query.username;
+  const currentUsername = req.query.username;
   try {
-    const { name, surname, id, createdAt, location, bio } = await User.findOne({
-      where: {
-        username,
-      },
-      raw: true,
-    });
+    const [user] = await dbConnection.query(
+      `select id, name, surname, location, bio, createdAt,
+       (SELECT COUNT(*) FROM follows WHERE follows_user_id = ${userData.user_id}) as follows,
+       (SELECT COUNT(*) FROM follows WHERE user_id = ${userData.user_id}) as followers,
+       EXISTS(SELECT 1 FROM follows f left join users u on f.follows_user_id = u.id where u.username = "${currentUsername}" AND f.user_id = ${userData.user_id}) as is_following
+        from users u
+        where username = "${currentUsername}";`,
+      { type: QueryTypes.SELECT }
+    );
+    console.log(user);
+    const {
+      name,
+      surname,
+      id,
+      createdAt,
+      location,
+      bio,
+      followers,
+      follows,
+      is_following,
+    } = user;
     let returnData = {
       name,
       surname,
       id,
       location,
       bio,
+      followers,
+      follows,
       is_current_user: false,
-      createdAt: createdAt,
+      is_following,
+      createdAt,
     };
     if (userData.user_id === id) {
       return res.status(200).json({ ...returnData, is_current_user: true });

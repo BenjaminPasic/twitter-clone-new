@@ -13,15 +13,21 @@ import { dateFormatMonthYear } from "../utils/DateFormatter";
 
 const Profile = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(undefined);
   const { username } = useParams();
   const {
     data: profileData,
     isFetching,
     refetch,
-  } = useQuery(["profile", username], () => getUserProfile(username));
+  } = useQuery(["profile", username], () => getUserProfile(username), {
+    onSuccess: ({ data }) => {
+      setIsFollowing(data.is_following === 1);
+    },
+  });
   const { mutate } = useMutation(addNewFollow);
 
   const handleFollow = () => {
+    setIsFollowing(!isFollowing);
     mutate(profileData.data.id);
   };
 
@@ -52,6 +58,15 @@ const Profile = () => {
             >
               Edit Profile
             </Button>
+          ) : isFollowing ? (
+            <Button
+              onClick={handleFollow}
+              sx={{ maxHeight: 36, marginLeft: "auto" }}
+              variant="contained"
+              color="error"
+            >
+              Unfollow
+            </Button>
           ) : (
             <Button
               onClick={handleFollow}
@@ -76,10 +91,20 @@ const Profile = () => {
             <span className="join-date">
               Joined {dateFormatMonthYear(profileData?.data?.createdAt)}
             </span>
-            <img src={mapMarkerIcon} alt="Map marker icon" />
-            <span className="location">{profileData?.data?.location}</span>
+            {profileData?.data?.location && (
+              <>
+                <img src={mapMarkerIcon} alt="Map marker icon" />
+                <span className="location">{profileData?.data?.location}</span>
+              </>
+            )}
           </div>
           <p className="bio">{profileData?.data?.bio}</p>
+          <div className="follows">
+            <span>{profileData?.data?.followers} </span>
+            <span className="follow-color">Followers</span>
+            <span>{profileData?.data?.follows} </span>
+            <span className="follow-color">Following</span>
+          </div>
           //todo follower count and how many people the user follows and recent
           posts with a tab
         </div>

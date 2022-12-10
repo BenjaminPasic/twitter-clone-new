@@ -51,6 +51,7 @@
 
 .profile .bio {
     color: #E7E9EA;
+    margin-bottom: 5px;
 }
 
 .profile .icons {
@@ -68,4 +69,9 @@
 
 .profile .location {
     color: #808080;
+}
+
+.profile .follow-color {
+    color: #808080;
+    margin-right: 10px;
 }
