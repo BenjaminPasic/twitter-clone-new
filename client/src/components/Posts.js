@@ -5,7 +5,7 @@ import "../css/Posts.css";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Fragment, useEffect } from "react";
 
-export default function Posts({ localPost }) {
+export default function Posts({ localPost, isProfile }) {
   const { isFetching, data, fetchNextPage } = useInfiniteQuery(
     "getRecentPosts",
     getRecentPosts,
@@ -34,10 +34,10 @@ export default function Posts({ localPost }) {
   }, []);
 
   return (
-    <div className="posts">
+    <div className="posts" style={isProfile && { width: "90%" }}>
       {localPost.length !== 0 &&
         localPost.map((post, i) => {
-          return <Post key={i} post={post} />;
+          return <Post key={i} post={post} isLocalPost={true} />;
         })}
       {data &&
         data.pages.map((collection, i) => {

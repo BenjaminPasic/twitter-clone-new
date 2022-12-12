@@ -3,6 +3,7 @@ import "../css/Profile.css";
 import { useParams } from "react-router-dom";
 import { getUserProfile } from "../api/userApi";
 import Button from "@mui/material/Button";
+import Posts from "./Posts";
 import { useEffect, useState } from "react";
 import EditFormDialog from "./EditFormDialog";
 import { addNewFollow } from "../api/followApi";
@@ -105,9 +106,9 @@ const Profile = () => {
             <span>{profileData?.data?.follows} </span>
             <span className="follow-color">Following</span>
           </div>
-          //todo follower count and how many people the user follows and recent
-          posts with a tab
         </div>
+        <h2 className="posts-h2">Posts</h2>
+        <Posts localPost={[]} isProfile={true} />
       </div>
       <EditFormDialog
         user={profileData?.data}

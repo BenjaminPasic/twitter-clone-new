@@ -42,12 +42,12 @@ const getRecentComments = async (req, res) => {
             LIMIT 10 OFFSET ${page}`,
       { type: QueryTypes.SELECT }
     );
-    console.log(recentComments);
     recentComments = recentComments.map((comment) => {
       if (comment.liked_by_user_id === userInfo.user_id) {
         return { ...comment, liked_by_current_user: true };
+      } else {
+        return { ...comment, liked_by_current_user: false };
       }
-      return { ...comment, liked_by_current_user: false };
     });
     return res.status(200).json({ recentComments }).end();
   } catch (e) {

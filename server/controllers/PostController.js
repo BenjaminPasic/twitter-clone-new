@@ -46,7 +46,7 @@ const getRecentPosts = async (req, res) => {
       if (post.liked_by_user_id === currentUserId) {
         return { ...post, liked_by_current_user: true };
       }
-      return post;
+      return { ...post, liked_by_current_user: false };
     });
     res.status(200).json({ recentPosts }).end();
   } catch (e) {

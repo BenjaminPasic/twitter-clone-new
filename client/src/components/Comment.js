@@ -81,9 +81,11 @@ const Comment = ({ comment, defineDialogData, handleOpenDialog }) => {
           );
         })}
         <div className="reply-count">
-          <span className="wrapper" onClick={handleShowReply}>
-            Load more
-          </span>
+          {comment.total_replies > 0 && (
+            <span className="wrapper" onClick={handleShowReply}>
+              Load more
+            </span>
+          )}
         </div>
       </div>
     </div>

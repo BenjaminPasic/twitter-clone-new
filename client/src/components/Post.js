@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { dateFormat } from "../utils/DateFormatter";
 import commentIcon from "../assets/icons/comment.svg";
 
-const Post = ({ post }) => {
+const Post = ({ post, isLocalPost }) => {
   const { mutate } = useMutation(addNewLike);
   const [likeCount, setLikeCount] = useState(undefined);
   const [commentCount, setCommentCount] = useState(undefined);
@@ -23,14 +23,23 @@ const Post = ({ post }) => {
   }, []);
 
   const handleLike = () => {
-    mutate({
-      post_id: post.post_id,
-    });
-    setHasUserLiked((prev) => !prev);
-    if (hasUserLiked) {
-      setLikeCount((prev) => prev - 1);
+    if (isLocalPost) {
+      setHasUserLiked((prev) => !prev);
+      if (hasUserLiked) {
+        setLikeCount((prev) => prev - 1);
+      } else {
+        setLikeCount((prev) => prev + 1);
+      }
     } else {
-      setLikeCount((prev) => prev + 1);
+      mutate({
+        post_id: post?.post_id,
+      });
+      setHasUserLiked((prev) => !prev);
+      if (hasUserLiked) {
+        setLikeCount((prev) => prev - 1);
+      } else {
+        setLikeCount((prev) => prev + 1);
+      }
     }
   };
 

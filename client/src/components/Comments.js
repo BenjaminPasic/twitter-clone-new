@@ -86,6 +86,8 @@ function Comments() {
               <Comment
                 key={i}
                 comment={{ ...comment, post_id: location.state.post_id }}
+                handleOpenDialog={handleOpenDialog}
+                defineDialogData={defineDialogData}
               />
             );
           })
