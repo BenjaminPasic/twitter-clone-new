@@ -3,9 +3,10 @@ import { getRecentPosts } from "../api/postApi";
 import Post from "./Post";
 import "../css/Posts.css";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 export default function Posts({ localPost, isProfile }) {
+  const [posts, setPosts] = useState(undefined);
   const { isFetching, data, fetchNextPage } = useInfiniteQuery(
     "getRecentPosts",
     getRecentPosts,
@@ -18,6 +19,25 @@ export default function Posts({ localPost, isProfile }) {
       },
     }
   );
+
+  //Check why error occurs!
+  const filterDeletedPost = (postId) => {
+    setPosts((prevPosts) =>
+      prevPosts.filter((posts) => posts.post_id !== postId)
+    );
+  };
+
+  useEffect(() => {
+    console.log(posts);
+  }, [posts]);
+
+  useEffect(() => {
+    let combinedArray = data?.pages.reduce(
+      (acc, collection) => acc.concat(collection.data.recentPosts),
+      []
+    );
+    setPosts(combinedArray);
+  }, [data]);
 
   useEffect(() => {
     const handleScrollListener = () => {
@@ -33,20 +53,22 @@ export default function Posts({ localPost, isProfile }) {
     };
   }, []);
 
+  console.log(posts);
+
   return (
     <div className="posts" style={isProfile && { width: "90%" }}>
       {localPost.length !== 0 &&
         localPost.map((post, i) => {
           return <Post key={i} post={post} isLocalPost={true} />;
         })}
-      {data &&
-        data.pages.map((collection, i) => {
+      {posts &&
+        posts.map((post, i) => {
           return (
-            <Fragment key={i}>
-              {collection.data.recentPosts.map((post) => {
-                return <Post key={post.post_id} post={post} />;
-              })}
-            </Fragment>
+            <Post
+              key={post.post_id}
+              post={post}
+              filterDeletedPost={filterDeletedPost}
+            />
           );
         })}
       {isFetching ? <CircularProgress /> : null}

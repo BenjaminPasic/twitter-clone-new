@@ -10,10 +10,10 @@ const addNewPost = async (req, res) => {
       post: req.body.post,
       user_id: decodedToken.user_id,
     });
-    res.status(200).json({ username: decodedToken.username }).end();
+    return res.status(200).json({ username: decodedToken.username }).end();
   } catch (error) {
     console.log(error);
-    res.status(301).json(error).end();
+    return res.status(301).json(error).end();
   }
 };
 
@@ -27,7 +27,8 @@ const getRecentPosts = async (req, res) => {
   try {
     const { user_id: currentUserId } = await decodeJwtToken(req.cookies.token);
     let recentPosts = await dbConnection.query(
-      `SELECT p.id AS post_id, u.id AS user_id,
+      `SELECT p.id AS post_id,
+            u.id AS user_id,
             p.post, p.createdAt, u.username,
             l.user_id as liked_by_user_id,
             count(l.user_id) as total_likes,
@@ -43,10 +44,15 @@ const getRecentPosts = async (req, res) => {
     );
     //Check if current user liked the post, so we can show it accordingly in the frontend
     recentPosts = recentPosts.map((post) => {
+      let editedPost = { ...post };
       if (post.liked_by_user_id === currentUserId) {
-        return { ...post, liked_by_current_user: true };
+        editedPost = { ...editedPost, liked_by_current_user: true };
       }
-      return { ...post, liked_by_current_user: false };
+      if (post.user_id === currentUserId) {
+        editedPost = { ...editedPost, created_by_current_user: true };
+        return editedPost;
+      }
+      return editedPost;
     });
     res.status(200).json({ recentPosts }).end();
   } catch (e) {
@@ -54,7 +60,28 @@ const getRecentPosts = async (req, res) => {
   }
 };
 
+const deletePost = async (req, res) => {
+  const { user_id: currentUserId } = await decodeJwtToken(req.cookies.token);
+  let { post_id: postId, user_id: userId } = req.query;
+  postId = +postId;
+  userId = +userId;
+  if (currentUserId === userId) {
+    try {
+      await Post.destroy({
+        where: {
+          id: postId,
+        },
+      });
+      return res.status(200).json(postId).end();
+    } catch (e) {
+      console.log(e);
+      return res.status(503).end();
+    }
+  }
+};
+
 module.exports = {
   addNewPost,
   getRecentPosts,
+  deletePost,
 };

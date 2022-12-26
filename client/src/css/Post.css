@@ -59,3 +59,8 @@
 .post .like-counter {
     margin-left: 5px;
 }
+
+.post .dot-icon {
+    margin-left: auto;
+    cursor: pointer;
+}
