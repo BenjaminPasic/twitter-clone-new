@@ -80,8 +80,23 @@ const deletePost = async (req, res) => {
   }
 };
 
+const editPost = async (req, res) => {
+  const { user_id: currentUserId } = await decodeJwtToken(req.cookies.token);
+  let { post_id, user_id, editInput: newPost } = req.body;
+  if (currentUserId === user_id) {
+    try {
+      await Post.update({ post: newPost }, { where: { id: post_id } });
+      return res.status(200).end();
+    } catch (e) {
+      console.log(e);
+      return res.status(503).end();
+    }
+  }
+};
+
 module.exports = {
   addNewPost,
   getRecentPosts,
   deletePost,
+  editPost,
 };

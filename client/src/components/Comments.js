@@ -11,6 +11,7 @@ import TextField from "./TextField";
 
 function Comments() {
   const [offset, setOffset] = useState(0);
+  const [localReplies, setLocalReplies] = useState([]);
   const [localComments, setLocalComments] = useState([]);
   const [dbComments, setDbComments] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -80,18 +81,17 @@ function Comments() {
         <TextField handleSubmit={handlePostReply} />
       </div>
       <h2>Comments</h2>
-      {localComments.length > 0
-        ? localComments.map((comment, i) => {
-            return (
-              <Comment
-                key={i}
-                comment={{ ...comment, post_id: location.state.post_id }}
-                handleOpenDialog={handleOpenDialog}
-                defineDialogData={defineDialogData}
-              />
-            );
-          })
-        : null}
+      {localComments !== undefined &&
+        localComments.map((comment, i) => {
+          return (
+            <Comment
+              key={i}
+              comment={{ ...comment, post_id: location.state.post_id }}
+              handleOpenDialog={handleOpenDialog}
+              defineDialogData={defineDialogData}
+            />
+          );
+        })}
       {dbComments &&
         dbComments.map((collection) => {
           return collection.map((comment) => {
@@ -101,6 +101,7 @@ function Comments() {
                 comment={{ ...comment, post_id: location.state.post_id }}
                 handleOpenDialog={handleOpenDialog}
                 defineDialogData={defineDialogData}
+                localReplies={localReplies}
               />
             );
           });
@@ -109,6 +110,7 @@ function Comments() {
         handleClose={handleCloseDialog}
         open={openDialog}
         dialogData={dialogData}
+        setLocalReplies={setLocalReplies}
       />
     </div>
   );

@@ -6,12 +6,20 @@ import { commentLike } from "../api/commentLikeApi";
 import customAxios from "../api/customAxios";
 import { useState } from "react";
 import Reply from "./Reply";
+import useAuth from "../hooks/useAuth";
 
-const Comment = ({ comment, defineDialogData, handleOpenDialog }) => {
+const Comment = ({
+  comment,
+  defineDialogData,
+  handleOpenDialog,
+  localReplies,
+  isReplyComment,
+}) => {
   const [offset, setOffset] = useState(0);
   const [replies, setReplies] = useState([]);
   const [isReplyHidden, setIsReplyHidden] = useState(true);
   const { mutate } = useMutation(commentLike);
+  const { username } = useAuth();
 
   const handleLike = () => {
     mutate({ comment_id: comment.id, post_id: comment.post_id });
@@ -35,8 +43,7 @@ const Comment = ({ comment, defineDialogData, handleOpenDialog }) => {
         },
       })
       .then(({ data }) => {
-        console.log(data);
-        setReplies((prevState) => [...prevState, ...data]);
+        setReplies((prevState) => [...data, ...prevState]);
         setOffset((prevState) => prevState + 10);
       });
   };
@@ -44,7 +51,7 @@ const Comment = ({ comment, defineDialogData, handleOpenDialog }) => {
   return (
     <div className="single-comment-wrapper">
       <div className="single-comment">
-        <Avatar>B</Avatar>
+        <Avatar>{comment.username.charAt(0)}</Avatar>
         <div className="upper-part">
           <span className="username">{comment.username}</span>
           <span className="seperator">&#183;</span>
@@ -75,10 +82,22 @@ const Comment = ({ comment, defineDialogData, handleOpenDialog }) => {
         ) : null}
       </div>
       <div className={`replies ${isReplyHidden ? "hide" : ""}`}>
+        {!isReplyComment &&
+          localReplies.length > 0 &&
+          localReplies.map((reply, index) => {
+            return (
+              <Reply
+                key={index}
+                reply={{
+                  username,
+                  createdAt: "now",
+                  reply,
+                }}
+              />
+            );
+          })}
         {replies.map((reply) => {
-          return (
-            <Reply key={reply.id} reply={reply} username={comment.username} />
-          );
+          return <Reply key={reply.id} reply={reply} />;
         })}
         <div className="reply-count">
           {comment.total_replies > 0 && (

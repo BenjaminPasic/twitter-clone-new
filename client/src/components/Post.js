@@ -5,11 +5,12 @@ import { useMutation } from "react-query";
 import { addNewLike } from "../api/likeApi";
 import { useEffect, useState } from "react";
 import { dateFormat } from "../utils/DateFormatter";
-import { deletePost } from "../api/postApi";
+import { deletePost, editPost } from "../api/postApi";
 import commentIcon from "../assets/icons/comment.svg";
 import downIcon from "../assets/icons/down-button.png";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import Button from "@mui/material/Button";
 
 const Post = ({ post, isLocalPost, filterDeletedPost }) => {
   const { mutate } = useMutation(addNewLike);
@@ -18,7 +19,16 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
       filterDeletedPost(res.data);
     },
   });
+  const { mutate: editPostMutate } = useMutation(editPost, {
+    onSuccess: () => {
+      post.post = editInput;
+      setEditInput("");
+    },
+  });
   const [likeCount, setLikeCount] = useState(undefined);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editInput, setEditInput] = useState("");
+  const [editError, setEditError] = useState("");
   const [commentCount, setCommentCount] = useState(undefined);
   const [hasUserLiked, setHasUserLiked] = useState(undefined);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -30,7 +40,6 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
       setCommentCount(post.total_comments);
       setLikeCount(post.total_likes);
       setHasUserLiked(post.liked_by_current_user);
-      console.log(post);
     }
   }, []);
 
@@ -61,6 +70,14 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
     });
   };
 
+  const handleFinishEditClick = () => {
+    setIsEditing(false);
+    if (post.post !== editInput) {
+      let { post_id, user_id } = post;
+      editPostMutate({ post_id, user_id, editInput });
+    }
+  };
+
   const handleRedirect = () => {
     navigate("/profile/" + post.username);
   };
@@ -75,12 +92,22 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
 
   const handleEditClick = () => {
     //edit show editable text
+    setIsEditing(true);
+    setEditInput(post.post);
   };
 
   const handleDeleteClick = () => {
     let { post_id, user_id } = post;
     deletePostMutate({ post_id, user_id });
-    //delete post user created, check if it's truly the user that made the post
+  };
+
+  const handleEditInput = (value) => {
+    if (value.length >= 250) {
+      setEditError("Too many characters.");
+    } else {
+      setEditInput(value);
+      if (editError) setEditError("");
+    }
   };
 
   return (
@@ -105,7 +132,34 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
             </span>
           )}
         </div>
-        <p style={{ fontSize: post.singlePost && "18px" }}>{post.post}</p>
+        {isEditing ? (
+          <>
+            <textarea
+              value={editInput}
+              onChange={(e) => handleEditInput(e.target.value)}
+            />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginTop: "4px",
+              }}
+            >
+              {editError && <p style={{ color: "red" }}>Too many characters</p>}
+              <Button
+                sx={{ marginLeft: "auto" }}
+                variant="contained"
+                className="button"
+                onClick={handleFinishEditClick}
+                margin="normal"
+              >
+                Done
+              </Button>
+            </div>
+          </>
+        ) : (
+          <p style={{ fontSize: post.singlePost && "18px" }}>{post.post}</p>
+        )}
         <div className="bottom-portion">
           {hasUserLiked ? (
             <button onClick={handleLike}>Dislike</button>

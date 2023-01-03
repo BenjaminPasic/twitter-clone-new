@@ -16,3 +16,9 @@ export const deletePost = ({ post_id, user_id }) => {
     },
   });
 };
+
+export const editPost = ({ post_id, user_id, editInput }) => {
+  //check why some variables end up as undefined...
+  console.log(post_id, user_id, editInput);
+  return customAxios.put("/post/edit", { post_id, user_id, editInput });
+};

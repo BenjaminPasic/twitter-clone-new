@@ -8,10 +8,16 @@ import Button from "@mui/material/Button";
 import { addNewCommentReply } from "../api/commentReplyApi";
 import { useMutation } from "react-query";
 
-const CommentFormDialog = ({ handleClose, open, dialogData }) => {
+const CommentFormDialog = ({
+  handleClose,
+  open,
+  dialogData,
+  setLocalReplies,
+}) => {
   const { mutate } = useMutation(addNewCommentReply);
 
   const handleSubmit = (reply) => {
+    setLocalReplies((prevState) => [...prevState, reply]);
     mutate({
       written_on_comment_id: dialogData.id,
       reply,
@@ -21,9 +27,11 @@ const CommentFormDialog = ({ handleClose, open, dialogData }) => {
   return (
     <div>
       <Dialog open={open} fullWidth>
-        <DialogTitle sx={{ backgroundColor: "black" }}>Reply</DialogTitle>
+        <DialogTitle sx={{ backgroundColor: "black", color: "white" }}>
+          Reply
+        </DialogTitle>
         <DialogContent sx={{ backgroundColor: "black" }}>
-          {dialogData ? <Comment comment={dialogData} /> : null}
+          {dialogData && <Comment comment={dialogData} isReplyComment={true} />}
           <TextField handleSubmit={handleSubmit} />
         </DialogContent>
         <DialogActions sx={{ backgroundColor: "black" }}>

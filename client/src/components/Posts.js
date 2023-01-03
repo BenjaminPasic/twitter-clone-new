@@ -20,16 +20,11 @@ export default function Posts({ localPost, isProfile }) {
     }
   );
 
-  //Check why error occurs!
   const filterDeletedPost = (postId) => {
     setPosts((prevPosts) =>
       prevPosts.filter((posts) => posts.post_id !== postId)
     );
   };
-
-  useEffect(() => {
-    console.log(posts);
-  }, [posts]);
 
   useEffect(() => {
     let combinedArray = data?.pages.reduce(
@@ -52,8 +47,6 @@ export default function Posts({ localPost, isProfile }) {
       window.removeEventListener("scroll", handleScrollListener);
     };
   }, []);
-
-  console.log(posts);
 
   return (
     <div className="posts" style={isProfile && { width: "90%" }}>
