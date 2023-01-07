@@ -53,9 +53,15 @@ const Comment = ({
       <div className="single-comment">
         <Avatar>{comment.username.charAt(0)}</Avatar>
         <div className="upper-part">
-          <span className="username">{comment.username}</span>
-          <span className="seperator">&#183;</span>
-          <span className="date">{dateFormat(comment.createdAt)}</span>
+          <div style={{ display: "flex" }}>
+            <span className="username">{comment.username}</span>
+            <span className="seperator">&#183;</span>
+            <span className="date">{dateFormat(comment.createdAt)}</span>
+            <span className="delete-icon">
+              //todo Add delete icon, and delete the thing.
+              <img src="https://via.placeholder.com/10" />
+            </span>
+          </div>
           <p>{comment.comment}</p>
           {comment.liked_by_current_user ? (
             <button onClick={handleLike}>Dislike</button>
@@ -83,7 +89,7 @@ const Comment = ({
       </div>
       <div className={`replies ${isReplyHidden ? "hide" : ""}`}>
         {!isReplyComment &&
-          localReplies.length > 0 &&
+          localReplies?.length > 0 &&
           localReplies.map((reply, index) => {
             return (
               <Reply

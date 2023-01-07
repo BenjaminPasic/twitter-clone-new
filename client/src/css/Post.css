@@ -99,3 +99,24 @@
     outline: none;
     border: 1px solid gray;
 }
+
+.post .is-edited {
+    font-size: 10px;
+    color: deepskyblue;
+}
+
+.post .is-edited:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.post .previous-edit {
+    text-align: left;
+    font-style: italic;
+    padding: 10px;
+    margin: 10px 20px 10px 20px;
+    background: #2c2633;
+    color: grey;
+    border-left: 1px solid #121212;
+    border-bottom: 1px solid #121212;
+}

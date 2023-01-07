@@ -61,6 +61,7 @@ const verifyToken = async (req, res) => {
 
 const getUsername = async (req, res) => {
   const userData = await decodeJwtToken(req.cookies.token);
+  console.log(userData);
   try {
     const user = await User.findOne({
       attributes: ["username"],

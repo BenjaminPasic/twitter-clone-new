@@ -29,7 +29,7 @@ const getRecentPosts = async (req, res) => {
     let recentPosts = await dbConnection.query(
       `SELECT p.id AS post_id,
             u.id AS user_id,
-            p.post, p.createdAt, u.username,
+            p.post, p.old_post, p.createdAt, u.username, p.updatedAt,
             l.user_id as liked_by_user_id,
             count(l.user_id) as total_likes,
             count(c.comment) as total_comments
@@ -82,11 +82,23 @@ const deletePost = async (req, res) => {
 
 const editPost = async (req, res) => {
   const { user_id: currentUserId } = await decodeJwtToken(req.cookies.token);
-  let { post_id, user_id, editInput: newPost } = req.body;
+  let { post_id, user_id, editInput: newPost, post: oldPost } = req.body;
+  console.log(oldPost);
   if (currentUserId === user_id) {
     try {
-      await Post.update({ post: newPost }, { where: { id: post_id } });
-      return res.status(200).end();
+      const currentPost = await Post.findOne({
+        where: { id: post_id },
+        raw: true,
+      });
+      if (currentPost.old_post !== null) {
+        return res.status(403).json("Post has already been edited.").end();
+      } else {
+        await Post.update(
+          { post: newPost, old_post: oldPost },
+          { where: { id: post_id } }
+        );
+        return res.status(200).end();
+      }
     } catch (e) {
       console.log(e);
       return res.status(503).end();

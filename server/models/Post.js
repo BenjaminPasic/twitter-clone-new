@@ -10,6 +10,11 @@ const Post = dbConnection.define("post", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  old_post: {
+    type: DataTypes.STRING,
+    defaultValue: null,
+    allowNull: true,
+  },
 });
 
 (async () => {

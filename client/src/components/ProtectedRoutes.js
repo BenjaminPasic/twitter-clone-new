@@ -13,8 +13,7 @@ export default function ProtectedRoutes() {
     isFetching: isFetchingUsername,
   } = useQuery("getUsername", getUsername, {
     onSuccess: ({ data }) => {
-      setUsername(data.username);
-      console.log(data.username);
+      setUsername(data?.username);
     },
     enabled: false,
   });

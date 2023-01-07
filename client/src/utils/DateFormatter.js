@@ -47,3 +47,8 @@ export const dateFormatMonthYear = (date) => {
 
   return datePosted.format("MMMM YYYY");
 };
+
+export const fullDate = (date) => {
+  const datePosted = moment(date);
+  return datePosted.format("D/M/YYYY - h:mm a");
+};

@@ -18,6 +18,10 @@
     text-align: left;
 }
 
+.single-comment .upper-part .delete-icon {
+    margin-left: auto;
+}
+
 .single-comment .modal {
     height: 100%;
     width: 100%;

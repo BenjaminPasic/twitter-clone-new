@@ -10,11 +10,13 @@ customAxios.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log("Interceptor:", error);
-    //Figure out how to do it without redownloading the entire document later...
+    if (error.response.status === 403) {
+      return Promise.reject(error.response.data);
+    }
     if (error.response.data === "Invalid token") {
       window.location.href = "/login";
     }
+    console.log("Interceptor:", error);
   }
 );
 

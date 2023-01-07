@@ -3,11 +3,13 @@ import { Avatar, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { addNewLike } from "../api/likeApi";
+import toast, { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { dateFormat } from "../utils/DateFormatter";
+import { dateFormat, fullDate } from "../utils/DateFormatter";
 import { deletePost, editPost } from "../api/postApi";
 import commentIcon from "../assets/icons/comment.svg";
 import downIcon from "../assets/icons/down-button.png";
+import editIcon from "../assets/icons/edit-icon.png";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
@@ -23,6 +25,10 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
     onSuccess: () => {
       post.post = editInput;
       setEditInput("");
+      toast.success("Successfuly edited your post.");
+    },
+    onError: (res) => {
+      toast.error("You already edited this post once.");
     },
   });
   const [likeCount, setLikeCount] = useState(undefined);
@@ -31,9 +37,12 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
   const [editError, setEditError] = useState("");
   const [commentCount, setCommentCount] = useState(undefined);
   const [hasUserLiked, setHasUserLiked] = useState(undefined);
+  const [showPreviousEdit, setShowPreviousEdit] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+
+  console.log(post);
 
   useEffect(() => {
     if (post) {
@@ -72,9 +81,9 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
 
   const handleFinishEditClick = () => {
     setIsEditing(false);
-    if (post.post !== editInput) {
-      let { post_id, user_id } = post;
-      editPostMutate({ post_id, user_id, editInput });
+    if (post.post !== editInput && post) {
+      const { post_id, user_id } = post;
+      editPostMutate({ post_id, user_id, editInput, post: post.post });
     }
   };
 
@@ -108,6 +117,10 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
       setEditInput(value);
       if (editError) setEditError("");
     }
+  };
+
+  const handleShowEditedPost = () => {
+    setShowPreviousEdit(!showPreviousEdit);
   };
 
   return (
@@ -159,6 +172,15 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
           </>
         ) : (
           <p style={{ fontSize: post.singlePost && "18px" }}>{post.post}</p>
+        )}
+        {post.old_post && (
+          <p className="is-edited" onClick={handleShowEditedPost}>
+            <img src={editIcon} alt="edit icon" />
+            Last edited: {fullDate(post.updatedAt)}
+          </p>
+        )}
+        {showPreviousEdit && (
+          <div className="previous-edit">{post.old_post}</div>
         )}
         <div className="bottom-portion">
           {hasUserLiked ? (
@@ -224,6 +246,7 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
           Delete
         </MenuItem>
       </Menu>
+      <Toaster />
     </div>
   );
 };
