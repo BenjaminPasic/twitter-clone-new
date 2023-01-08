@@ -3,10 +3,18 @@ import { Avatar } from "@mui/material";
 import { dateFormat } from "../utils/DateFormatter";
 import { useMutation } from "react-query";
 import { commentLike } from "../api/commentLikeApi";
+import { deleteComment } from "../api/commentApi";
 import customAxios from "../api/customAxios";
 import { useState } from "react";
 import Reply from "./Reply";
 import useAuth from "../hooks/useAuth";
+import trashIcon from "../assets/icons/trash-icon.png";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContentText from "@mui/material/DialogContentText";
+import Button from "@mui/material/Button";
 
 const Comment = ({
   comment,
@@ -14,12 +22,27 @@ const Comment = ({
   handleOpenDialog,
   localReplies,
   isReplyComment,
+  filterDeletedCommentById,
 }) => {
   const [offset, setOffset] = useState(0);
   const [replies, setReplies] = useState([]);
   const [isReplyHidden, setIsReplyHidden] = useState(true);
   const { mutate } = useMutation(commentLike);
+  const { mutate: deleteCommentMutate } = useMutation(deleteComment, {
+    onSuccess: () => {
+      filterDeletedCommentById(comment.id);
+    },
+  });
   const { username } = useAuth();
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+
+  const handleOpenConfirmDialog = () => {
+    setOpenConfirmDialog(true);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setOpenConfirmDialog(false);
+  };
 
   const handleLike = () => {
     mutate({ comment_id: comment.id, post_id: comment.post_id });
@@ -32,6 +55,11 @@ const Comment = ({
 
   const handleHideReplies = () => {
     setIsReplyHidden(true);
+  };
+
+  const handleDeleteComment = () => {
+    deleteCommentMutate(comment.id);
+    handleCloseConfirmDialog();
   };
 
   const handleShowReply = () => {
@@ -57,9 +85,8 @@ const Comment = ({
             <span className="username">{comment.username}</span>
             <span className="seperator">&#183;</span>
             <span className="date">{dateFormat(comment.createdAt)}</span>
-            <span className="delete-icon">
-              //todo Add delete icon, and delete the thing.
-              <img src="https://via.placeholder.com/10" />
+            <span className="delete-icon" onClick={handleOpenConfirmDialog}>
+              <img src={trashIcon} alt="trash icon" />
             </span>
           </div>
           <p>{comment.comment}</p>
@@ -68,7 +95,7 @@ const Comment = ({
           ) : (
             <button onClick={handleLike}>Like</button>
           )}
-          <span>{comment.total_likes}</span>
+          <span>{comment.total_likes}</span>f
           <button onClick={handleOpenComment}>Comment</button>
           <div className="modal"></div>
         </div>
@@ -113,6 +140,25 @@ const Comment = ({
           )}
         </div>
       </div>
+      <Dialog
+        open={openConfirmDialog}
+        onClose={handleCloseConfirmDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirm</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete your comment?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmDialog}>Close</Button>
+          <Button onClick={handleDeleteComment} autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

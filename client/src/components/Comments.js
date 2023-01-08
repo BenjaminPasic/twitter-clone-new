@@ -36,7 +36,7 @@ function Comments() {
         },
       })
       .then(({ data }) => {
-        setDbComments((prevState) => [...prevState, data.recentComments]);
+        setDbComments((prevState) => [...prevState, ...data.recentComments]);
       });
   }, [offset]);
 
@@ -74,6 +74,10 @@ function Comments() {
     setDialogData(data);
   };
 
+  const filterDeletedCommentById = (commentId) => {
+    setDbComments(dbComments.filter((comment) => comment.id !== commentId));
+  };
+
   return (
     <div className="comments">
       <Post post={location.state} />
@@ -93,18 +97,17 @@ function Comments() {
           );
         })}
       {dbComments &&
-        dbComments.map((collection) => {
-          return collection.map((comment) => {
-            return (
-              <Comment
-                key={comment.id}
-                comment={{ ...comment, post_id: location.state.post_id }}
-                handleOpenDialog={handleOpenDialog}
-                defineDialogData={defineDialogData}
-                localReplies={localReplies}
-              />
-            );
-          });
+        dbComments.map((comment) => {
+          return (
+            <Comment
+              key={comment.id}
+              comment={{ ...comment, post_id: location.state.post_id }}
+              handleOpenDialog={handleOpenDialog}
+              defineDialogData={defineDialogData}
+              localReplies={localReplies}
+              filterDeletedCommentById={filterDeletedCommentById}
+            />
+          );
         })}
       <CommentFormDialog
         handleClose={handleCloseDialog}

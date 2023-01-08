@@ -25,6 +25,21 @@ const addNewComment = async (req, res) => {
   }
 };
 
+const deleteComment = async (req, res) => {
+  const commentId = req.query.commentId;
+  try {
+    await Comment.destroy({
+      where: {
+        id: commentId,
+      },
+    });
+    return res.status(200).end();
+  } catch (e) {
+    console.log(e);
+    return res.status(503).end();
+  }
+};
+
 const getRecentComments = async (req, res) => {
   const { page } = req.params;
   const postId = req.query["post_id"];
@@ -76,4 +91,5 @@ module.exports = {
   addNewComment,
   getRecentComments,
   getCommentCount,
+  deleteComment,
 };
