@@ -1,8 +1,13 @@
 const express = require("express");
 const server = express();
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+
+//Express has to be set up this way in order to work with express on the same port
+const httpServer = createServer(server);
 
 //Route imports
 const userRoutes = require("./routes/UserRoutes");
@@ -35,4 +40,13 @@ server.use("/commentlike", commentLikeRoutes);
 server.use("/commentreply", commentRepliesRoutes);
 server.use("/follow", followRoutes);
 
-server.listen(3001);
+//socketio seperated logic
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+require("./config/socket-io")(io);
+
+httpServer.listen(3001);
