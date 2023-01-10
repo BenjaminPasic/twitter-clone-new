@@ -1,4 +1,5 @@
 const dbConnection = require("../config/dbConnection");
+const CommentReplies = require("../models/CommentReplies");
 const { decodeJwtToken } = require("../utils/jwt");
 const { QueryTypes } = require("sequelize");
 

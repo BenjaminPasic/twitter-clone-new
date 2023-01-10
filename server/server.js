@@ -17,6 +17,7 @@ const commentRoutes = require("./routes/CommentRoutes");
 const commentLikeRoutes = require("./routes/CommentLikeRoutes");
 const commentRepliesRoutes = require("./routes/CommentRepliesRoutes");
 const followRoutes = require("./routes/FollowRoutes");
+const conversationRoutes = require("./routes/ConversationRoutes");
 
 //Cookie parser
 server.use(cookieParser());
@@ -39,6 +40,7 @@ server.use("/comment", commentRoutes);
 server.use("/commentlike", commentLikeRoutes);
 server.use("/commentreply", commentRepliesRoutes);
 server.use("/follow", followRoutes);
+server.use("/conversation", conversationRoutes);
 
 //socketio seperated logic
 const io = new Server(httpServer, {

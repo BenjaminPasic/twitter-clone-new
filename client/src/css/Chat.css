@@ -1,0 +1,27 @@
+.chat p {
+    color: white;
+    margin: 0;
+}
+
+.chat .container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.chat .chat-interface {
+    flex: 1;
+    background: slategray;
+}
+
+.chat .received {
+    text-align: right;
+    background: red;
+}
+
+.chat .sent {
+    text-align: left;
+    background: blue;
+}

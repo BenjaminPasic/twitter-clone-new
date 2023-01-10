@@ -1,8 +1,9 @@
 const Follow = require("../models/Follow");
+const dbConnection = require("../config/dbConnection");
 const { decodeJwtToken } = require("../utils/jwt");
+const { QueryTypes } = require("sequelize");
 
 const addNewFollow = async (req, res) => {
-  console.log("trigga");
   const userData = await decodeJwtToken(req.cookies.token);
   const { profile_id } = req.body;
   try {
@@ -42,7 +43,6 @@ const addNewFollow = async (req, res) => {
 };
 
 const unfollow = async (user_id, follows_user_id) => {
-  console.log("unfollwo trigga");
   try {
     await Follow.destroy({
       where: {
@@ -55,6 +55,23 @@ const unfollow = async (user_id, follows_user_id) => {
   }
 };
 
+const findEveryoneUserFollows = async (req, res) => {
+  const userData = await decodeJwtToken(req.cookies.token);
+  try {
+    const results = await dbConnection.query(
+      `SELECT u.id, u.name, u.surname, u.username FROM follows f
+                                            JOIN users u ON f.follows_user_id = u.id
+                                            where f.user_id = ${userData.user_id}`,
+      { type: QueryTypes.SELECT }
+    );
+    return res.status(200).json(results).end();
+  } catch (e) {
+    console.log(e);
+    return res.status(503).end();
+  }
+};
+
 module.exports = {
   addNewFollow,
+  findEveryoneUserFollows,
 };

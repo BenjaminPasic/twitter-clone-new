@@ -61,7 +61,6 @@ const verifyToken = async (req, res) => {
 
 const getUsername = async (req, res) => {
   const userData = await decodeJwtToken(req.cookies.token);
-  console.log(userData);
   try {
     const user = await User.findOne({
       attributes: ["username"],
@@ -89,7 +88,6 @@ const getUserProfile = async (req, res) => {
         where username = "${currentUsername}";`,
       { type: QueryTypes.SELECT }
     );
-    console.log(user);
     const {
       name,
       surname,
