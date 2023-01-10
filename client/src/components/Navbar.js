@@ -28,6 +28,7 @@ export default function Navbar() {
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       if (searchInput) {
+        navigate("/search/" + searchInput);
       }
     }
   };

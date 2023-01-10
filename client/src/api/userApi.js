@@ -31,3 +31,19 @@ export const getUsername = () => {
 export const updateUserProfile = (updateData) => {
   return customAxios.put("/user/profileUpdate", updateData);
 };
+
+export const getUsersBySearchParam = (searchParam) => {
+  return customAxios.get("/user/userSearch", {
+    params: {
+      searchParam,
+    },
+  });
+};
+
+export const checkIfFollows = (otherUserId) => {
+  return customAxios.get("/user/checkIfFollows", {
+    params: {
+      otherUserId,
+    },
+  });
+};

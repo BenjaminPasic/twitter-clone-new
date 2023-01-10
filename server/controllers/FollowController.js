@@ -2,6 +2,7 @@ const Follow = require("../models/Follow");
 const { decodeJwtToken } = require("../utils/jwt");
 
 const addNewFollow = async (req, res) => {
+  console.log("trigga");
   const userData = await decodeJwtToken(req.cookies.token);
   const { profile_id } = req.body;
   try {
@@ -41,6 +42,7 @@ const addNewFollow = async (req, res) => {
 };
 
 const unfollow = async (user_id, follows_user_id) => {
+  console.log("unfollwo trigga");
   try {
     await Follow.destroy({
       where: {

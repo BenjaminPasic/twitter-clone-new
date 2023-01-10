@@ -49,7 +49,7 @@ const Profile = () => {
           alt="placeholder banner"
         />
         <div className="row-1">
-          <span className="avatar">B</span>
+          <span className="avatar">{username.charAt(0).toUpperCase()}</span>
           {profileData?.data?.is_current_user ? (
             <Button
               onClick={handleOpenDialog}
@@ -80,7 +80,7 @@ const Profile = () => {
         </div>
         <div className="username-container">
           <span className="fullname">
-            {`${profileData?.data?.name} ${profileData?.data?.surname}`}
+            {`${profileData?.data.name} ${profileData?.data?.surname}`}
           </span>
           <span className="username">@{username}</span>
           <div className="icons">

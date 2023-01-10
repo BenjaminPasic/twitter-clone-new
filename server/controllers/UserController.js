@@ -6,7 +6,7 @@ const {
   verifyJwtToken,
   decodeJwtToken,
 } = require("../utils/jwt");
-const { QueryTypes } = require("sequelize");
+const { QueryTypes, Op } = require("sequelize");
 
 const registerUser = async (req, res) => {
   try {
@@ -142,6 +142,52 @@ const profileUpdate = async (req, res) => {
   }
 };
 
+const getUserBySearchParam = async (req, res) => {
+  const { searchParam } = req.query;
+  const filteredSearhParam = searchParam.trim().toLowerCase();
+  try {
+    const users = await dbConnection.query(
+      `SELECT id, name, surname, username, bio, location FROM users
+         where username LIKE "%${filteredSearhParam}%" 
+         or name LIKE "%${filteredSearhParam}%" 
+         or surname LIKE "%${filteredSearhParam}%"`,
+      { type: QueryTypes.SELECT }
+    );
+    return res.status(200).json(users).end();
+  } catch (e) {
+    console.log(e);
+    return res.status(503).end();
+  }
+};
+
+const checkIfFollows = async (req, res) => {
+  const userData = await decodeJwtToken(req.cookies.token);
+  let { otherUserId } = req.query;
+  otherUserId = +otherUserId;
+  if (otherUserId === userData.user_id) {
+    return res.status(200).json("You").end();
+  }
+  try {
+    const result = await dbConnection.query(
+      `SELECT
+            CASE WHEN EXISTS
+            (
+                select * from follows where user_id=${userData.user_id} and follows_user_id=${otherUserId}
+            )
+            THEN 1
+            ELSE 0
+        END as does_follow`,
+      { type: QueryTypes.SELECT }
+    );
+    return res
+      .status(200)
+      .json(result[0].does_follow ? true : false)
+      .end();
+  } catch (e) {
+    return res.status(503).end();
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -150,4 +196,6 @@ module.exports = {
   getUserProfile,
   profileUpdate,
   getUsername,
+  getUserBySearchParam,
+  checkIfFollows,
 };

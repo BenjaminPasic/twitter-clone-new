@@ -1,0 +1,35 @@
+.user-search-result {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+.user-search-result p {
+    margin: 0;
+    text-align: left;
+    color: white;
+}
+
+.user-search-result .full-name:hover {
+    color: dodgerblue;
+    cursor: pointer;
+}
+
+.user-search-result .username {
+    color: #808080;
+}
+
+.user-search-result .username:hover {
+    cursor: pointer;
+    color: dodgerblue;
+}
+
+.user-search-result .bio {
+    margin-top: 5px
+}
+
+.user-search-result .flex-row-2 {
+    padding-left: 10px;
+    position: relative;
+    flex: 1
+}

@@ -8,7 +8,10 @@ const {
   getUserProfile,
   profileUpdate,
   getUsername,
+  getUserBySearchParam,
+  checkIfFollows,
 } = require("../controllers/UserController");
+const verifyCredentials = require("../middleware/verifyCredentials");
 
 router.post("/register", registerUser);
 
@@ -22,6 +25,10 @@ router.get("/profile", getUserProfile);
 
 router.get("/username", getUsername);
 
-router.put("/profileUpdate", profileUpdate);
+router.put("/profileUpdate", verifyCredentials, profileUpdate);
+
+router.get("/userSearch", verifyCredentials, getUserBySearchParam);
+
+router.get("/checkIfFollows", verifyCredentials, checkIfFollows);
 
 module.exports = router;

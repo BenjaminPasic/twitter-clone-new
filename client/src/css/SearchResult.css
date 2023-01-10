@@ -1,0 +1,16 @@
+.search-result {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.search-result .container {
+    width: 60%;
+    margin: 0 auto;
+    background: #1f1b24;
+}
+
+.search-result h2 {
+    color: white;
+}

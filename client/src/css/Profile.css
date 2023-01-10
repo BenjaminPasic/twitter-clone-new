@@ -51,7 +51,8 @@
 
 .profile .bio {
     color: #E7E9EA;
-    margin-bottom: 5px;
+    text-align: left;
+    margin: 1px 0 1px 0;
 }
 
 .profile .icons {

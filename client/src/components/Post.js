@@ -42,8 +42,6 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
-  console.log(post);
-
   useEffect(() => {
     if (post) {
       setCommentCount(post.total_comments);
