@@ -5,7 +5,7 @@ const Conversation = dbConnection.define("conversation", {
   room_id: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: false,
   },
   sender_id: {
     type: DataTypes.INTEGER,
@@ -15,11 +15,15 @@ const Conversation = dbConnection.define("conversation", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  message: {
+    type: DataTypes.STRING,
+    default: null,
+  },
 });
 
 (async () => {
   try {
-    await Conversation.sync();
+    await Conversation.sync({ alter: true });
     console.log("Conversation sync complete");
   } catch (error) {
     console.log("Sync error: ", error);

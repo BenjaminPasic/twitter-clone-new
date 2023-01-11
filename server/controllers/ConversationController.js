@@ -2,13 +2,14 @@ const Conversation = require("../models/Conversation");
 const { decodeJwtToken } = require("../utils/jwt");
 const randomstring = require("randomstring");
 const { Op } = require("sequelize");
+const { logger } = require("sequelize/lib/utils/logger");
 
 const getConvoInfo = async (req, res) => {
   const userData = await decodeJwtToken(req.cookies.token);
   let { followeeId } = req.query;
   followeeId = +followeeId;
   try {
-    const result = await Conversation.findAll({
+    let result = await Conversation.findAll({
       where: {
         [Op.or]: [
           {
@@ -25,8 +26,20 @@ const getConvoInfo = async (req, res) => {
     });
     if (result === null || result.length === 0) {
       const roomId = await createNewConversation(userData.user_id, followeeId);
-      return res.status(200).json(roomId).end();
+      return res
+        .status(200)
+        .json([{ room_id: roomId }])
+        .end();
     } else {
+      result = result
+        .map((res) => {
+          if (res.sender_id === userData.user_id) {
+            return { ...res, received: false };
+          } else {
+            return { ...res, received: true };
+          }
+        })
+        .filter((res) => res.message !== null);
       return res.status(200).json(result).end();
     }
   } catch (e) {

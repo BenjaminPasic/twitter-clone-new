@@ -46,7 +46,9 @@ server.use("/conversation", conversationRoutes);
 const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:3000",
+    credentials: true,
   },
+  cookie: true,
 });
 
 require("./config/socket-io")(io);
