@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useQuery } from "react-query";
 import { findEveryoneUserFollows } from "../api/followApi";
 import { TextField, Button } from "@mui/material";
@@ -14,11 +14,21 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [currentRoomId, setCurrentRoomId] = useState(undefined);
+  const chatInputRef = useRef(null);
   const { data: users } = useQuery("follows", findEveryoneUserFollows, {
     cacheTime: 0,
   });
 
+  const handleScroll = () => {
+    window.scrollTo({
+      top: chatInputRef.offsetTop,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+
   useEffect(() => {
+    handleScroll();
     if (currentUser) {
       customAxios
         .get("/conversation/convoInfo", {
@@ -27,7 +37,6 @@ const Chat = () => {
           },
         })
         .then((res) => {
-          console.log(res);
           setCurrentRoomId(res.data[0].room_id);
           if (Object.keys(res.data[0]).length > 1) {
             setDbMessages(res.data);
@@ -55,7 +64,10 @@ const Chat = () => {
     };
   }, []);*/
 
+  console.log(messages);
+
   const sendMessage = () => {
+    console.log("click");
     setMessages((prevState) => [
       ...prevState,
       { message: chatInput, received: false },
@@ -65,6 +77,8 @@ const Chat = () => {
 
   const handleUsernameClick = (followee) => {
     setCurrentUser(followee);
+    setDbMessages(undefined);
+    setMessages([]);
   };
 
   const handleInput = (e) => {
@@ -93,19 +107,85 @@ const Chat = () => {
         <div className="chat-interface">
           {/*database messages*/}
           {dbMessages &&
-            dbMessages.map((message) => {
+            dbMessages.map((message, index, messageArray) => {
               if (message.received === true) {
-                return (
-                  <p key={message.id} className="received">
-                    {message.message}
-                  </p>
-                );
+                if (index === 0) {
+                  return (
+                    <span
+                      style={{ marginBottom: "2px" }}
+                      className="received-message-container"
+                    >
+                      <div className="received-message">{message.message}</div>
+                      <Avatar>
+                        {currentUser.username.charAt(0).toUpperCase()}
+                      </Avatar>
+                    </span>
+                  );
+                }
+                if (
+                  messageArray[index - 1 < 0 ? 0 : index - 1].received === true
+                ) {
+                  return (
+                    <span className="received-message-container-no-margin">
+                      <div className="received-message">{message.message}</div>
+                      <Avatar
+                        sx={{
+                          background: "#2c2633",
+                          color: "#2c2633",
+                        }}
+                      >
+                        nothing
+                      </Avatar>
+                    </span>
+                  );
+                } else {
+                  return (
+                    <span className="received-message-container">
+                      <div className="received-message">{message.message}</div>
+                      <Avatar>
+                        {currentUser.username.charAt(0).toUpperCase()}
+                      </Avatar>
+                    </span>
+                  );
+                }
               } else {
-                return (
-                  <p key={message.id} className="sent">
-                    {message.message}
-                  </p>
-                );
+                if (index === 0) {
+                  return (
+                    <span
+                      style={{ marginBottom: "2px" }}
+                      className="sent-message-container"
+                    >
+                      <Avatar>You</Avatar>
+                      <div className="sent-message">{message.message}</div>
+                    </span>
+                  );
+                }
+                if (
+                  messageArray[index - 1 < 0 ? 0 : index - 1].received === false
+                ) {
+                  return (
+                    <span className="sent-message-container-no-margin">
+                      <Avatar
+                        sx={{
+                          background: "#2c2633",
+                          color: "#2c2633",
+                        }}
+                      >
+                        nothing
+                      </Avatar>
+                      <div className="sent-message">{message.message}</div>
+                    </span>
+                  );
+                } else {
+                  return (
+                    <span className="sent-message-container">
+                      <Avatar>
+                        {currentUser.username.charAt(0).toUpperCase()}
+                      </Avatar>
+                      <div className="sent-message">{message.message}</div>
+                    </span>
+                  );
+                }
               }
             })}
           {/*local messages*/}
