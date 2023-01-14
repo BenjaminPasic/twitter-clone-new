@@ -26,17 +26,22 @@ const addNewComment = async (req, res) => {
 };
 
 const deleteComment = async (req, res) => {
-  const commentId = req.query.commentId;
-  try {
-    await Comment.destroy({
-      where: {
-        id: commentId,
-      },
-    });
-    return res.status(200).end();
-  } catch (e) {
-    console.log(e);
-    return res.status(503).end();
+  const userData = await decodeJwtToken(req.cookies.token);
+  const { commentId, writtenByUserId } = req.query;
+  if (userData.user_id === writtenByUserId) {
+    try {
+      await Comment.destroy({
+        where: {
+          id: commentId,
+        },
+      });
+      return res.status(200).end();
+    } catch (e) {
+      console.log(e);
+      return res.status(503).end();
+    }
+  } else {
+    return res.status(401).end();
   }
 };
 
@@ -58,11 +63,18 @@ const getRecentComments = async (req, res) => {
       { type: QueryTypes.SELECT }
     );
     recentComments = recentComments.map((comment) => {
+      let modifiedComment = { ...comment };
       if (comment.liked_by_user_id === userInfo.user_id) {
-        return { ...comment, liked_by_current_user: true };
+        modifiedComment = { ...modifiedComment, liked_by_current_user: true };
       } else {
-        return { ...comment, liked_by_current_user: false };
+        modifiedComment = { ...modifiedComment, liked_by_current_user: false };
       }
+      if (comment.written_by_user_id === userInfo.user_id) {
+        modifiedComment = { ...modifiedComment, can_delete: true };
+      } else {
+        modifiedComment = { ...modifiedComment, can_delete: false };
+      }
+      return modifiedComment;
     });
     return res.status(200).json({ recentComments }).end();
   } catch (e) {

@@ -2,9 +2,10 @@ import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { findEveryoneUserFollows } from "../api/followApi";
-import { getConvoInfo } from "../api/conversationApi";
+import { TextField, Button } from "@mui/material";
 import customAxios from "../api/customAxios";
 import "../css/Chat.css";
+import { Avatar } from "@mui/material";
 const socket = io.connect("http://localhost:3001", { withCredentials: true });
 
 const Chat = () => {
@@ -36,7 +37,7 @@ const Chat = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    socket.emit("join-room", currentRoomId);
+    if (currentRoomId) socket.emit("join-room", currentRoomId);
   }, [currentRoomId]);
 
   useEffect(() => {
@@ -47,6 +48,12 @@ const Chat = () => {
       ]);
     });
   }, [socket]);
+
+  /*useEffect(() => {
+    return () => {
+      if (socket) socket.close();
+    };
+  }, []);*/
 
   const sendMessage = () => {
     setMessages((prevState) => [
@@ -71,14 +78,20 @@ const Chat = () => {
           {users &&
             users.data.map((user, i) => {
               return (
-                <button key={i} onClick={() => handleUsernameClick(user)}>
-                  {user.username}
-                </button>
+                <div className="user" onClick={() => handleUsernameClick(user)}>
+                  <Avatar sx={{ background: "red" }}>
+                    {user.username.charAt(0).toUpperCase()}
+                  </Avatar>
+                  <div className="name-container">
+                    <p className="name">{user.name}</p>
+                    <p className="username">@{user.username}</p>
+                  </div>
+                </div>
               );
             })}
         </div>
         <div className="chat-interface">
-          {/*database*/}
+          {/*database messages*/}
           {dbMessages &&
             dbMessages.map((message) => {
               if (message.received === true) {
@@ -95,7 +108,7 @@ const Chat = () => {
                 );
               }
             })}
-          {/*local*/}
+          {/*local messages*/}
           {messages.length > 0 &&
             messages.map((message, i) => {
               if (message.received === true) {
@@ -112,12 +125,24 @@ const Chat = () => {
                 );
               }
             })}
-          <input onChange={(e) => handleInput(e)} />
-          {currentUser === undefined && currentRoomId === undefined ? (
-            <button disabled>Send Message</button>
-          ) : (
-            <button onClick={sendMessage}>Send message</button>
-          )}
+          <div className="chat-input">
+            <TextField
+              variant="outlined"
+              sx={{ flex: "1" }}
+              size="small"
+              multiline
+              onChange={(e) => handleInput(e)}
+            />
+            {currentUser === undefined && currentRoomId === undefined ? (
+              <Button variant="contained" disabled>
+                Disabled
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={sendMessage}>
+                Send message
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>

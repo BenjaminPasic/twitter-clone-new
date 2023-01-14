@@ -2,6 +2,7 @@ import "../css/Navbar.css";
 import logo from "../assets/Chitter-logos/Chatter.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Menu, MenuItem, IconButton } from "@mui/material";
+import Chat from "@mui/icons-material/Chat";
 import { Avatar } from "@mui/material";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
@@ -46,6 +47,10 @@ export default function Navbar() {
     navigate("/profile/" + username);
   };
 
+  const handleChatClick = () => {
+    navigate("/chat");
+  };
+
   const handleIconClick = (e) => {
     setAnchorEl(e.currentTarget);
   };
@@ -74,7 +79,7 @@ export default function Navbar() {
         <div>
           <IconButton onClick={(e) => handleIconClick(e)} size="small">
             <Avatar sx={{ bgcolor: "red" }}>
-              {username ? username.charAt(0) : null}
+              {username && username.charAt(0)}
             </Avatar>
           </IconButton>
         </div>
@@ -115,7 +120,14 @@ export default function Navbar() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={handleAvatarClick}>
-          <Avatar /> Profile
+          <Avatar>{username && username.charAt(0)}</Avatar>
+          Profile
+        </MenuItem>
+        <MenuItem onClick={handleChatClick}>
+          <ListItemIcon>
+            <Chat fontSize="small" />
+          </ListItemIcon>
+          Chat
         </MenuItem>
         <MenuItem onClick={handleSignout}>
           <ListItemIcon>

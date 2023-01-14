@@ -3,17 +3,71 @@
     margin: 0;
 }
 
+.chat {
+    height: 100vh;
+    margin-top: 30px;
+}
+
 .chat .container {
     display: flex;
     flex-direction: row;
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
+    height: 70%;
+}
+
+.chat .chat-input {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+}
+
+.chat .chat-input input {
+    flex: 1;
+}
+
+.chat .users {
+    min-width: 25%;
+    max-width: 25%;
+    width: 100%;
+    background: #1f1b24;
+}
+
+.chat .user {
+    padding: 5px;
+    display: flex;
+}
+
+.chat .name-container {
+    flex:1;
+    padding-left: 10px
+}
+
+.chat .name-container p {
+    text-align: left;
+}
+
+.chat .user .name {
+    color: #FFFFFF;
+}
+
+.chat .user .username {
+    color: #808080;
+}
+
+.chat .user:hover {
+    background: rgb(60,60,60);
 }
 
 .chat .chat-interface {
+    position: relative;
+    min-width: 75%;
+    max-width: 75%;
+    width: 100%;
     flex: 1;
-    background: slategray;
+    background: #2c2633;
 }
 
 .chat .received {

@@ -36,6 +36,8 @@ const Comment = ({
   const { username } = useAuth();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
+  console.log(comment);
+
   const handleOpenConfirmDialog = () => {
     setOpenConfirmDialog(true);
   };
@@ -58,7 +60,10 @@ const Comment = ({
   };
 
   const handleDeleteComment = () => {
-    deleteCommentMutate(comment.id);
+    deleteCommentMutate({
+      commentId: comment.id,
+      writtenByUserId: comment.written_by_user_id,
+    });
     handleCloseConfirmDialog();
   };
 
@@ -85,9 +90,11 @@ const Comment = ({
             <span className="username">{comment.username}</span>
             <span className="seperator">&#183;</span>
             <span className="date">{dateFormat(comment.createdAt)}</span>
-            <span className="delete-icon" onClick={handleOpenConfirmDialog}>
-              <img src={trashIcon} alt="trash icon" />
-            </span>
+            {comment.can_delete && (
+              <span className="delete-icon" onClick={handleOpenConfirmDialog}>
+                <img src={trashIcon} alt="trash icon" />
+              </span>
+            )}
           </div>
           <p>{comment.comment}</p>
           {comment.liked_by_current_user ? (
