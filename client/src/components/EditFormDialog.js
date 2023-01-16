@@ -119,13 +119,17 @@ const EditFormDialog = ({ user, handleClose, open, refetch }) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button variant="contained" color="error" onClick={handleClose}>
+            Cancel
+          </Button>
           {isLoading ? (
             <LoadingButton loading variant="outlined">
               Submit
             </LoadingButton>
           ) : (
-            <Button onClick={handleSubmit}>Save</Button>
+            <Button variant="contained" onClick={handleSubmit}>
+              Save
+            </Button>
           )}
         </DialogActions>
       </Dialog>

@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 const UserSearchResult = ({ user }) => {
   const [isFollowing, setIsFollowing] = useState(undefined);
   const navigate = useNavigate();
-  const { data, isFetching } = useQuery(
+  const { isFetching } = useQuery(
     "user" + user.username,
     () => checkIfFollows(user.id),
     {
@@ -33,8 +33,8 @@ const UserSearchResult = ({ user }) => {
 
   if (isFetching) {
     return (
-      <div className="user-search-result">
-        <CircularProgress sx={{ margin: "0 auto" }} />
+      <div className="fullScreen">
+        <CircularProgress />
       </div>
     );
   }

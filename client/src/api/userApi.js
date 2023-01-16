@@ -47,3 +47,11 @@ export const checkIfFollows = (otherUserId) => {
     },
   });
 };
+
+export const getCurrentUserPosts = (username) => {
+  return customAxios.get("/user/currentUserPosts", {
+    params: {
+      username,
+    },
+  });
+};

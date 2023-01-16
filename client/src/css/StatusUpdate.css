@@ -52,3 +52,24 @@
 .status-update .char-over-limit {
   background: red;
 }
+
+@media screen and (max-width: 768px) {
+  .status-update {
+    width: 65%
+
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .status-update {
+    width: 90%
+
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .status-update {
+    width: 100%
+
+  }
+}

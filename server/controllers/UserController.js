@@ -196,6 +196,45 @@ const checkIfFollows = async (req, res) => {
   }
 };
 
+const getCurrentUserPosts = async (req, res) => {
+  const { user_id: currentUserId } = await decodeJwtToken(req.cookies.token);
+  const { username } = req.query;
+  try {
+    let recentPosts = await dbConnection.query(
+      `SELECT p.id AS post_id,
+            u.id AS user_id,
+            p.post, p.old_post, p.createdAt, u.username, p.updatedAt,
+            l.user_id as liked_by_user_id,
+            count(l.user_id) as total_likes,
+            count(c.comment) as total_comments
+            FROM posts p
+            JOIN users u on p.user_id = u.id
+            LEFT JOIN likes l ON l.post_id = p.id
+            LEFT JOIN comments c on c.written_on_post_id = p.id
+            WHERE u.username = "${username}"
+            GROUP BY p.id, l.user_id
+            ORDER BY total_likes desc
+            LIMIT 10`,
+      { type: QueryTypes.SELECT }
+    );
+    recentPosts = recentPosts.map((post) => {
+      let editedPost = { ...post };
+      if (post.liked_by_user_id === currentUserId) {
+        editedPost = { ...editedPost, liked_by_current_user: true };
+      }
+      if (post.user_id === currentUserId) {
+        editedPost = { ...editedPost, created_by_current_user: true };
+        return editedPost;
+      }
+      return editedPost;
+    });
+    res.status(200).json({ recentPosts }).end();
+  } catch (e) {
+    console.log(e);
+    return res.status(503).end();
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -206,4 +245,5 @@ module.exports = {
   getUsername,
   getUserBySearchParam,
   checkIfFollows,
+  getCurrentUserPosts,
 };

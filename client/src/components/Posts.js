@@ -1,13 +1,11 @@
-import { useInfiniteQuery } from "react-query";
-import { getRecentPosts } from "../api/postApi";
 import Post from "./Post";
 import "../css/Posts.css";
+import { useQuery } from "react-query";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useEffect } from "react";
 
 export default function Posts({
   filterDeletedPost,
-  isProfile,
   fetchNextPage,
   isFetching,
   posts,
@@ -28,13 +26,11 @@ export default function Posts({
 
   if (isFetching) {
     return (
-      <div className="posts">
+      <div className="fullScreen">
         <CircularProgress />
       </div>
     );
   }
-
-  console.log(posts);
 
   return (
     <div className="posts">

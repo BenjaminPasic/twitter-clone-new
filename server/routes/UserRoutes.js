@@ -10,6 +10,7 @@ const {
   getUsername,
   getUserBySearchParam,
   checkIfFollows,
+  getCurrentUserPosts,
 } = require("../controllers/UserController");
 const verifyCredentials = require("../middleware/verifyCredentials");
 
@@ -30,5 +31,7 @@ router.put("/profileUpdate", verifyCredentials, profileUpdate);
 router.get("/userSearch", verifyCredentials, getUserBySearchParam);
 
 router.get("/checkIfFollows", verifyCredentials, checkIfFollows);
+
+router.get("/currentUserPosts", getCurrentUserPosts);
 
 module.exports = router;

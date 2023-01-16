@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "react-query";
 import "../css/Profile.css";
 import { useParams } from "react-router-dom";
-import { getUserProfile } from "../api/userApi";
+import { getUserProfile, getCurrentUserPosts } from "../api/userApi";
 import Button from "@mui/material/Button";
 import Posts from "./Posts";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import placeholderBanner from "../assets/images/banner-placeholder.jpeg";
 import calendarIcon from "../assets/icons/calendar-icon.png";
 import mapMarkerIcon from "../assets/icons/map-marker-icon.png";
 import { dateFormatMonthYear } from "../utils/DateFormatter";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Profile = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -25,6 +26,14 @@ const Profile = () => {
       setIsFollowing(data.is_following === 1);
     },
   });
+
+  const { data: profilePosts, isFetching: isFetchingPosts } = useQuery(
+    ["userPosts", username],
+    () => getCurrentUserPosts(username)
+  );
+
+  console.log(profilePosts);
+
   const { mutate } = useMutation(addNewFollow);
 
   const handleFollow = () => {
@@ -39,6 +48,14 @@ const Profile = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+
+  if (isFetchingPosts || isFetching) {
+    return (
+      <div className="fullScreen">
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -107,8 +124,8 @@ const Profile = () => {
             <span className="follow-color">Following</span>
           </div>
         </div>
-        <h2 className="posts-h2">Posts</h2>
-        <Posts localPost={[]} isProfile={true} />
+        <h2 className="posts-h2">Most liked posts</h2>
+        <Posts posts={profilePosts.data.recentPosts} />
       </div>
       <EditFormDialog
         user={profileData?.data}

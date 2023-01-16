@@ -1,7 +1,11 @@
 .profile {
     width: 100%;
-    max-width: 45%;
+    max-width: 700px;
     margin: 0 auto;
+}
+
+.profile .posts {
+    width: 80%
 }
 
 .profile .banner {
@@ -80,4 +84,23 @@
 .profile .posts-h2 {
     color: white;
     margin-bottom: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    .profile {
+        width: 80%
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .profile .posts {
+        width: 90%
+    }
+}
+
+
+@media screen and (max-width: 450px) {
+    .profile {
+        width: 90%
+    }
 }

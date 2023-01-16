@@ -3,6 +3,7 @@ import "../css/SearchResult.css";
 import { getUsersBySearchParam } from "../api/userApi";
 import { useQuery } from "react-query";
 import UserSearchResult from "./UserSearchResult";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const SearchResult = () => {
   const { search: searchInput } = useParams();
@@ -10,14 +11,26 @@ const SearchResult = () => {
     getUsersBySearchParam(searchInput)
   );
 
+  if (isFetching) {
+    return (
+      <div className="fullScreen">
+        <CircularProgress />
+      </div>
+    );
+  }
+
   return (
     <div className="search-result">
       <h2>Results for: {searchInput}</h2>
       <div className="container">
         <div className="user-results">
-          {data?.data.map((user) => {
-            return <UserSearchResult user={user} key={user.username} />;
-          })}
+          {data?.data.length === 0 ? (
+            <h2>No users found</h2>
+          ) : (
+            data?.data.map((user) => {
+              return <UserSearchResult user={user} key={user.username} />;
+            })
+          )}
         </div>
       </div>
     </div>
