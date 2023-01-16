@@ -9,12 +9,22 @@ const {
 const { QueryTypes, Op } = require("sequelize");
 
 const registerUser = async (req, res) => {
-  try {
-    const hashedPassword = await encryptPassword(req.body.password);
-    await User.create({ ...req.body, password: hashedPassword });
-    res.status(200).json("successfully registered");
-  } catch (error) {
-    res.status(400).json(error.errors[0].message);
+  const doesUserExist = await User.findOne({
+    where: {
+      username: req.body.username,
+    },
+    raw: true,
+  });
+  if (doesUserExist === null) {
+    try {
+      const hashedPassword = await encryptPassword(req.body.password);
+      await User.create({ ...req.body, password: hashedPassword });
+      return res.status(200).json("successfully registered");
+    } catch (error) {
+      return res.status(500).end();
+    }
+  } else {
+    return res.status(403).json("Username already exists").end();
   }
 };
 

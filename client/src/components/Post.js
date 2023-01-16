@@ -182,20 +182,56 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
         )}
         <div className="bottom-portion">
           {hasUserLiked ? (
-            <button onClick={handleLike}>Dislike</button>
+            <Button
+              color="error"
+              variant="contained"
+              size="small"
+              sx={{
+                height: "25px",
+                minWidth: "0px",
+                paddingRight: "5px",
+                paddingLeft: "5px",
+                fontSize: "12px",
+              }}
+              onClick={handleLike}
+            >
+              Dislike
+            </Button>
           ) : (
-            <button onClick={handleLike}>Like</button>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{
+                height: "25px",
+                minWidth: "0px",
+                paddingRight: "15px",
+                paddingLeft: "15px",
+                fontSize: "12px",
+              }}
+              onClick={handleLike}
+            >
+              Like
+            </Button>
           )}
           <span className="like-counter">{likeCount ? likeCount : 0}</span>
           {post.singlePost ? null : (
             <>
-              <img
-                src={commentIcon}
-                alt="comment icon"
-                className="comment-icon"
+              <Button
                 onClick={handleCommentClick}
-              />
-              <span>{commentCount}</span>
+                sx={{
+                  height: "25px",
+                  minWidth: "0px",
+                  paddingRight: "5px",
+                  paddingLeft: "5px",
+                  marginLeft: "3px",
+                  fontSize: "12px",
+                }}
+                variant="contained"
+                color="success"
+              >
+                Comments
+              </Button>
+              <span className="comment-counter">{commentCount}</span>
             </>
           )}
         </div>

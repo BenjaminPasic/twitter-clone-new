@@ -6,36 +6,25 @@ import { useMutation } from "react-query";
 import { newPost } from "../api/postApi";
 import useAuth from "../hooks/useAuth";
 
-export default function StatusUpdate({ addNewLocalPost }) {
+export default function StatusUpdate({ addRecentlyCreatedPost }) {
   const CHAR_LIMIT = 200;
   const [status, setStatus] = useState("");
   const [tempStatus, setTempStatus] = useState("");
   const [statusCharCount, setStatusCharCount] = useState(0);
-  const { isLoading, mutate, error, data } = useMutation(newPost);
-  const { setIsAuth } = useAuth();
+  const { isLoading, mutate, data } = useMutation(newPost);
 
   useEffect(() => {
-    if (error === "Invalid token") {
-      setIsAuth(false);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (data && tempStatus) {
-      const { username } = data.data;
-      addNewLocalPost((prevData) => {
-        return [
-          {
-            username,
-            createdAt: "now",
-            post: tempStatus,
-            isLocalPost: true,
-          },
-          ...prevData,
-        ];
+    if (data) {
+      const { username, id, user_id, post } = data.data;
+      addRecentlyCreatedPost({
+        username,
+        createdAt: "now",
+        post,
+        post_id: id,
+        user_id,
+        total_likes: 0,
+        total_comments: 0,
       });
-
-      setTempStatus();
     }
   }, [data, tempStatus]);
 

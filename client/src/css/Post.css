@@ -56,7 +56,10 @@
     width: 20px
 }
 
-.post .like-counter {
+.post .like-counter, .comment-counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-left: 5px;
 }
 
@@ -101,7 +104,7 @@
 }
 
 .post .is-edited {
-    font-size: 10px;
+    font-size: 12px;
     color: deepskyblue;
 }
 

@@ -32,18 +32,17 @@ export default function Login() {
 
   useEffect(() => {
     if (error) {
-      const { data: errorMessage } = error.response;
-      if (errorMessage === "Invalid username") {
+      if (error === "Invalid username") {
         setFormError((prevData) => ({
           ...prevData,
-          username: errorMessage,
+          username: error,
         }));
       }
 
-      if (errorMessage === "Passwords do not match") {
+      if (error === "Passwords do not match") {
         setFormError((prevData) => ({
           ...prevData,
-          password: errorMessage,
+          password: error,
         }));
       }
     }
@@ -103,6 +102,7 @@ export default function Login() {
           fullWidth
           label="Password"
           name="password"
+          type="password"
           onChange={(e) => handleChange(e)}
           error={formError.password ? true : false}
           helperText={formError.password ? formError.password : ""}

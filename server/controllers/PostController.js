@@ -4,13 +4,27 @@ const { decodeJwtToken } = require("../utils/jwt");
 const { QueryTypes } = require("sequelize");
 
 const addNewPost = async (req, res) => {
-  const decodedToken = await decodeJwtToken(req.cookies.token);
+  const userData = await decodeJwtToken(req.cookies.token);
   try {
-    await Post.create({
-      post: req.body.post,
-      user_id: decodedToken.user_id,
-    });
-    return res.status(200).json({ username: decodedToken.username }).end();
+    const createdPost = await Post.create(
+      {
+        post: req.body.post,
+        user_id: userData.user_id,
+      },
+      {
+        raw: true,
+      }
+    );
+    const { id, user_id, post } = createdPost.dataValues;
+    return res
+      .status(200)
+      .json({
+        id,
+        user_id,
+        post,
+        username: userData.username,
+      })
+      .end();
   } catch (error) {
     console.log(error);
     return res.status(301).json(error).end();

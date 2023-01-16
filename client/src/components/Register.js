@@ -12,9 +12,8 @@ const Register = () => {
   const { isLoading, mutate, error } = useMutation(register);
 
   useEffect(() => {
-    const errorMessage = error?.response?.data;
-    if (errorMessage === "username must be unique") {
-      setFormError({ ...formError, username: "Username is already taken" });
+    if (error === "Username already exists") {
+      setFormError({ ...formError, username: error });
     }
   }, [error]);
 
