@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import { CircularProgress } from "@mui/material";
 import { useMutation } from "react-query";
 import { newPost } from "../api/postApi";
-import useAuth from "../hooks/useAuth";
 
 export default function StatusUpdate({ addRecentlyCreatedPost }) {
   const CHAR_LIMIT = 200;

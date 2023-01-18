@@ -15,3 +15,30 @@
     width: 90px;
     margin-top: 10px;
 }
+
+.text-field {
+    border: 1px solid #2c2633;
+    background: #1f1b24;
+    max-width: 70%;
+    width: 100%;
+    margin: 10px auto 0;
+    padding: 25px 25px 15px 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.text-field .input-box {
+    width: 100%;
+    background-color: #2c2633;
+    border: 1px solid #2c2633;
+    resize: none;
+    outline: none;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.text-field .input-box:hover {
+    border: 1px solid gray;
+    cursor: pointer;
+}

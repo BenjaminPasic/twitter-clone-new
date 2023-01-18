@@ -15,14 +15,17 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContentText from "@mui/material/DialogContentText";
 import Button from "@mui/material/Button";
 import CommentFormDialog from "./CommentFormDialog";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Comment = ({ comment, filterDeletedCommentById }) => {
   const [offset, setOffset] = useState(0);
   const [replies, setReplies] = useState([]);
   const [isReplyHidden, setIsReplyHidden] = useState(true);
   const [recentlyAdded, setRecentlyAdded] = useState(false);
+  const [isFetchingReplies, setIsFetchingReplies] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [commentReplyCount, setCommentReplyCount] = useState(0);
+  const [isLiked, setIsLiked] = useState(undefined);
   const { mutate } = useMutation(commentLike);
   const { mutate: deleteCommentMutate } = useMutation(deleteComment, {
     onSuccess: () => {
@@ -32,7 +35,12 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
   useEffect(() => {
+    console.log(commentReplyCount);
+  }, [commentReplyCount]);
+
+  useEffect(() => {
     setCommentReplyCount(comment.total_replies);
+    setIsLiked(comment.liked_by_current_user);
   }, []);
 
   const handleOpenConfirmDialog = () => {
@@ -45,6 +53,7 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
 
   const handleLike = () => {
     mutate({ comment_id: comment.id, post_id: comment.post_id });
+    setIsLiked(!isLiked);
   };
 
   const handleHideReplies = () => {
@@ -65,6 +74,7 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
 
   const handleShowReply = () => {
     setIsReplyHidden(false);
+    setIsFetchingReplies(true);
     customAxios
       .get("/commentreply/recent/" + offset, {
         params: {
@@ -74,6 +84,8 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
       .then(({ data }) => {
         setReplies((prevState) => [...data, ...prevState]);
         setOffset((prevState) => prevState + data.length);
+        setRecentlyAdded(false);
+        setIsFetchingReplies(false);
       });
   };
 
@@ -93,12 +105,39 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
             )}
           </div>
           <p>{comment.comment}</p>
-          {comment.liked_by_current_user ? (
-            <button onClick={handleLike}>Dislike</button>
+          {isLiked ? (
+            <Button
+              color="error"
+              variant="contained"
+              size="small"
+              sx={{
+                height: "25px",
+                minWidth: "0px",
+                paddingRight: "5px",
+                paddingLeft: "5px",
+                fontSize: "12px",
+              }}
+              onClick={handleLike}
+            >
+              Dislike
+            </Button>
           ) : (
-            <button onClick={handleLike}>Like</button>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{
+                height: "25px",
+                minWidth: "0px",
+                paddingRight: "15px",
+                paddingLeft: "15px",
+                fontSize: "12px",
+              }}
+              onClick={handleLike}
+            >
+              Like
+            </Button>
           )}
-          <span>{comment.total_likes}</span>
+          <span>{isLiked ? comment.total_likes + 1 : comment.total_likes}</span>
           <button
             onClick={() => {
               setOpenDialog(true);
@@ -116,6 +155,7 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
               <span onClick={handleShowReply}>
                 Show {commentReplyCount}{" "}
                 {commentReplyCount > 1 ? "replies" : "reply"}
+                {isFetchingReplies && <CircularProgress />}
               </span>
             ) : (
               <span onClick={handleHideReplies}>Hide replies</span>
@@ -141,7 +181,6 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
         dialogData={comment}
         setCommentReplyCount={setCommentReplyCount}
         setRecentlyAdded={setRecentlyAdded}
-        setOffset={setOffset}
       />
       <Dialog
         open={openConfirmDialog}

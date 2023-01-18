@@ -17,7 +17,12 @@ const addNewComment = async (req, res) => {
     );
     return res
       .status(200)
-      .json({ ...lastComment.dataValues, username: userData.username })
+      .json({
+        ...lastComment.dataValues,
+        username: userData.username,
+        total_likes: 0,
+        total_comments: 0,
+      })
       .end();
   } catch (e) {
     return res.status(503).end();
@@ -75,7 +80,6 @@ const getRecentComments = async (req, res) => {
       }
       return modifiedComment;
     });
-    console.log(recentComments);
     return res.status(200).json({ recentComments }).end();
   } catch (e) {
     console.log(e);

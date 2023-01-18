@@ -6,15 +6,17 @@ import Comment from "./Comment";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { addNewComment } from "../api/commentApi";
-import TextField from "./TextField";
+import Button from "@mui/material/Button";
 
 function Comments() {
   const [offset, setOffset] = useState(0);
   const [dbComments, setDbComments] = useState([]);
+  const [comment, setComment] = useState("");
   const { mutate } = useMutation(addNewComment, {
     onSuccess: ({ data }) => {
+      console.log(data);
       setDbComments((prevState) => [
-        { ...data, total_likes: 0, createdAt: "now" },
+        { ...data, createdAt: "now", total_replies: 0 },
         ...prevState,
       ]);
     },
@@ -66,8 +68,26 @@ function Comments() {
   return (
     <div className="comments">
       <Post post={location.state} />
-      <div>
-        <TextField handleSubmit={handlePostReply} />
+      <div className="text-field">
+        <textarea
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          className="input-box"
+          placeholder="Add a comment here..."
+        />
+        {comment && (
+          <Button
+            variant="contained"
+            className="submit-button"
+            margin="normal"
+            onClick={() => {
+              handlePostReply(comment);
+              setComment("");
+            }}
+          >
+            Submit
+          </Button>
+        )}
       </div>
       <h2>Comments</h2>
       {dbComments &&

@@ -51,24 +51,10 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
   }, []);
 
   const handleLike = () => {
-    if (isLocalPost) {
-      setHasUserLiked((prev) => !prev);
-      if (hasUserLiked) {
-        setLikeCount((prev) => prev - 1);
-      } else {
-        setLikeCount((prev) => prev + 1);
-      }
-    } else {
-      mutate({
-        post_id: post?.post_id,
-      });
-      setHasUserLiked((prev) => !prev);
-      if (hasUserLiked) {
-        setLikeCount((prev) => prev - 1);
-      } else {
-        setLikeCount((prev) => prev + 1);
-      }
-    }
+    mutate({
+      post_id: post?.post_id,
+    });
+    setHasUserLiked(!hasUserLiked);
   };
 
   const handleCommentClick = () => {
@@ -213,7 +199,9 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
               Like
             </Button>
           )}
-          <span className="like-counter">{likeCount ? likeCount : 0}</span>
+          <span className="like-counter">
+            {hasUserLiked ? post.total_likes + 1 : post.total_likes}
+          </span>
           {post.singlePost ? null : (
             <>
               <Button

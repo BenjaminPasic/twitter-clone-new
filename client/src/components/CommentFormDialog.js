@@ -13,6 +13,7 @@ const CommentFormDialog = ({
   open,
   dialogData,
   setRecentlyAdded,
+  setCommentReplyCount,
 }) => {
   const { mutate } = useMutation(addNewCommentReply);
 
@@ -24,6 +25,7 @@ const CommentFormDialog = ({
       },
       {
         onSuccess: () => {
+          setCommentReplyCount((prevState) => prevState + 1);
           setRecentlyAdded(true);
         },
       }
