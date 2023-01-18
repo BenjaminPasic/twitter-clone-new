@@ -5,9 +5,8 @@ import { useMutation } from "react-query";
 import { commentLike } from "../api/commentLikeApi";
 import { deleteComment } from "../api/commentApi";
 import customAxios from "../api/customAxios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Reply from "./Reply";
-import useAuth from "../hooks/useAuth";
 import trashIcon from "../assets/icons/trash-icon.png";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -15,28 +14,26 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContentText from "@mui/material/DialogContentText";
 import Button from "@mui/material/Button";
+import CommentFormDialog from "./CommentFormDialog";
 
-const Comment = ({
-  comment,
-  defineDialogData,
-  handleOpenDialog,
-  localReplies,
-  isReplyComment,
-  filterDeletedCommentById,
-}) => {
+const Comment = ({ comment, filterDeletedCommentById }) => {
   const [offset, setOffset] = useState(0);
   const [replies, setReplies] = useState([]);
   const [isReplyHidden, setIsReplyHidden] = useState(true);
+  const [recentlyAdded, setRecentlyAdded] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [commentReplyCount, setCommentReplyCount] = useState(0);
   const { mutate } = useMutation(commentLike);
   const { mutate: deleteCommentMutate } = useMutation(deleteComment, {
     onSuccess: () => {
       filterDeletedCommentById(comment.id);
     },
   });
-  const { username } = useAuth();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
-  console.log(comment);
+  useEffect(() => {
+    setCommentReplyCount(comment.total_replies);
+  }, []);
 
   const handleOpenConfirmDialog = () => {
     setOpenConfirmDialog(true);
@@ -48,11 +45,6 @@ const Comment = ({
 
   const handleLike = () => {
     mutate({ comment_id: comment.id, post_id: comment.post_id });
-  };
-
-  const handleOpenComment = () => {
-    defineDialogData(comment);
-    handleOpenDialog();
   };
 
   const handleHideReplies = () => {
@@ -67,6 +59,10 @@ const Comment = ({
     handleCloseConfirmDialog();
   };
 
+  const handleCloseCommentDialog = () => {
+    setOpenDialog(false);
+  };
+
   const handleShowReply = () => {
     setIsReplyHidden(false);
     customAxios
@@ -77,7 +73,7 @@ const Comment = ({
       })
       .then(({ data }) => {
         setReplies((prevState) => [...data, ...prevState]);
-        setOffset((prevState) => prevState + 10);
+        setOffset((prevState) => prevState + data.length);
       });
   };
 
@@ -102,51 +98,51 @@ const Comment = ({
           ) : (
             <button onClick={handleLike}>Like</button>
           )}
-          <span>{comment.total_likes}</span>f
-          <button onClick={handleOpenComment}>Comment</button>
+          <span>{comment.total_likes}</span>
+          <button
+            onClick={() => {
+              setOpenDialog(true);
+            }}
+          >
+            Reply
+          </button>
           <div className="modal"></div>
         </div>
       </div>
       <div className="reply-count">
-        {comment.total_replies > 0 ? (
+        {commentReplyCount > 0 && (
           <span className="wrapper">
             {isReplyHidden ? (
               <span onClick={handleShowReply}>
-                Show {comment.total_replies}{" "}
-                {comment.total_replies > 1 ? "replies" : "reply"}
+                Show {commentReplyCount}{" "}
+                {commentReplyCount > 1 ? "replies" : "reply"}
               </span>
             ) : (
               <span onClick={handleHideReplies}>Hide replies</span>
             )}
           </span>
-        ) : null}
+        )}
       </div>
       <div className={`replies ${isReplyHidden ? "hide" : ""}`}>
-        {!isReplyComment &&
-          localReplies?.length > 0 &&
-          localReplies.map((reply, index) => {
-            return (
-              <Reply
-                key={index}
-                reply={{
-                  username,
-                  createdAt: "now",
-                  reply,
-                }}
-              />
-            );
-          })}
         {replies.map((reply) => {
           return <Reply key={reply.id} reply={reply} />;
         })}
         <div className="reply-count">
-          {comment.total_replies > 0 && (
+          {(commentReplyCount % 10 === 0 || recentlyAdded) && (
             <span className="wrapper" onClick={handleShowReply}>
               Load more
             </span>
           )}
         </div>
       </div>
+      <CommentFormDialog
+        handleClose={handleCloseCommentDialog}
+        open={openDialog}
+        dialogData={comment}
+        setCommentReplyCount={setCommentReplyCount}
+        setRecentlyAdded={setRecentlyAdded}
+        setOffset={setOffset}
+      />
       <Dialog
         open={openConfirmDialog}
         onClose={handleCloseConfirmDialog}

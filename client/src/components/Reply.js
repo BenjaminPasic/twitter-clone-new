@@ -27,7 +27,6 @@ const Reply = ({ reply }) => {
           <span className="date">
             {reply.createdAt === "now" ? "now" : dateFormat(reply.createdAt)}
           </span>
-          <span className="">aa</span>
           <p>{reply.reply}</p>
         </div>
       </div>

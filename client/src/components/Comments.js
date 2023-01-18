@@ -6,20 +6,17 @@ import Comment from "./Comment";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { addNewComment } from "../api/commentApi";
-import CommentFormDialog from "./CommentFormDialog";
 import TextField from "./TextField";
 
 function Comments() {
   const [offset, setOffset] = useState(0);
-  const [localReplies, setLocalReplies] = useState([]);
-  const [localComments, setLocalComments] = useState([]);
   const [dbComments, setDbComments] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dialogData, setDialogData] = useState(undefined);
   const { mutate } = useMutation(addNewComment, {
     onSuccess: ({ data }) => {
-      const lastComment = data;
-      setLocalComments((prevState) => [lastComment, ...prevState]);
+      setDbComments((prevState) => [
+        { ...data, total_likes: 0, createdAt: "now" },
+        ...prevState,
+      ]);
     },
   });
   const { id } = useParams();
@@ -62,18 +59,6 @@ function Comments() {
     });
   };
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const defineDialogData = (data) => {
-    setDialogData(data);
-  };
-
   const filterDeletedCommentById = (commentId) => {
     setDbComments(dbComments.filter((comment) => comment.id !== commentId));
   };
@@ -85,36 +70,16 @@ function Comments() {
         <TextField handleSubmit={handlePostReply} />
       </div>
       <h2>Comments</h2>
-      {localComments !== undefined &&
-        localComments.map((comment, i) => {
-          return (
-            <Comment
-              key={i}
-              comment={{ ...comment, post_id: location.state.post_id }}
-              handleOpenDialog={handleOpenDialog}
-              defineDialogData={defineDialogData}
-            />
-          );
-        })}
       {dbComments &&
         dbComments.map((comment) => {
           return (
             <Comment
               key={comment.id}
               comment={{ ...comment, post_id: location.state.post_id }}
-              handleOpenDialog={handleOpenDialog}
-              defineDialogData={defineDialogData}
-              localReplies={localReplies}
               filterDeletedCommentById={filterDeletedCommentById}
             />
           );
         })}
-      <CommentFormDialog
-        handleClose={handleCloseDialog}
-        open={openDialog}
-        dialogData={dialogData}
-        setLocalReplies={setLocalReplies}
-      />
     </div>
   );
 }

@@ -64,15 +64,14 @@ const Chat = () => {
     };
   }, []);*/
 
-  console.log(messages);
-
   const sendMessage = () => {
-    console.log("click");
-    setMessages((prevState) => [
-      ...prevState,
-      { message: chatInput, received: false },
-    ]);
-    socket.emit("send-message", chatInput, currentRoomId, currentUser.id);
+    if (chatInput) {
+      setDbMessages((prevState) => [
+        ...prevState,
+        { message: chatInput, received: false },
+      ]);
+      socket.emit("send-message", chatInput, currentRoomId, currentUser.id);
+    }
   };
 
   const handleUsernameClick = (followee) => {
@@ -105,7 +104,6 @@ const Chat = () => {
             })}
         </div>
         <div className="chat-interface">
-          {/*database messages*/}
           {dbMessages &&
             dbMessages.map((message, index, messageArray) => {
               if (message.received === true) {
@@ -186,23 +184,6 @@ const Chat = () => {
                     </span>
                   );
                 }
-              }
-            })}
-          {/*local messages*/}
-          {messages.length > 0 &&
-            messages.map((message, i) => {
-              if (message.received === true) {
-                return (
-                  <p key={i} className="received">
-                    {message.message}
-                  </p>
-                );
-              } else {
-                return (
-                  <p key={i} className="sent">
-                    {message.message}
-                  </p>
-                );
               }
             })}
           <div className="chat-input">

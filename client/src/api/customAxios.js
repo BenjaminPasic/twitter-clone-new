@@ -10,6 +10,7 @@ customAxios.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log("axios", error);
     if (error.response.status === 403 || error.response.status === 401) {
       return Promise.reject(error.response.data);
     }

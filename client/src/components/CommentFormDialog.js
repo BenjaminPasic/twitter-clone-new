@@ -12,16 +12,22 @@ const CommentFormDialog = ({
   handleClose,
   open,
   dialogData,
-  setLocalReplies,
+  setRecentlyAdded,
 }) => {
   const { mutate } = useMutation(addNewCommentReply);
 
   const handleSubmit = (reply) => {
-    setLocalReplies((prevState) => [...prevState, reply]);
-    mutate({
-      written_on_comment_id: dialogData.id,
-      reply,
-    });
+    mutate(
+      {
+        written_on_comment_id: dialogData.id,
+        reply,
+      },
+      {
+        onSuccess: () => {
+          setRecentlyAdded(true);
+        },
+      }
+    );
   };
 
   return (

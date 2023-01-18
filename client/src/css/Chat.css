@@ -5,10 +5,11 @@
 
 .chat {
     height: 100vh;
-    margin-top: 30px;
+    margin-top: 90px;
 }
 
 .chat .container {
+    border: 1px solid black;
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -23,6 +24,7 @@
     display: flex;
 }
 
+
 .chat .chat-input input {
     flex: 1;
 }
@@ -32,6 +34,7 @@
     max-width: 25%;
     width: 100%;
     background: #1f1b24;
+    overflow-y: scroll;
 }
 
 .chat .user {
@@ -91,7 +94,7 @@
 }
 
 .chat .received-message-container-no-margin {
-    margin-right: auto;
+    margin-left: auto;
     display: flex;
     flex-direction: row;
     justify-content: end;
@@ -106,17 +109,21 @@
 }
 
 .chat .received-message {
-    max-width: 200px;
-    margin-right: 10px;
+    max-width: 250px;
+    margin-right: 12px;
     padding: 10px;
     background: #1f1b24;
     border-radius: 10px;
+    overflow-wrap: break-word;
+    text-align: left;
 }
 
 .chat .sent-message {
-    max-width: 200px;
+    max-width: 250px;
     margin-left: 10px;
     padding: 10px;
     background: #1f1b24;
     border-radius: 10px;
+    overflow-wrap: break-word;
+    text-align: left;
 }

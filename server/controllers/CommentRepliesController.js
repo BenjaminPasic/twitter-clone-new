@@ -2,18 +2,27 @@ const dbConnection = require("../config/dbConnection");
 const CommentReplies = require("../models/CommentReplies");
 const { decodeJwtToken } = require("../utils/jwt");
 const { QueryTypes } = require("sequelize");
+const { raw } = require("express");
 
 const addNewCommentReply = async (req, res) => {
   const userData = await decodeJwtToken(req.cookies.token);
   try {
-    await CommentReplies.create({
-      ...req.body,
-      written_by_user_id: userData.user_id,
-    });
-    return res.status(200);
+    const addedReply = await CommentReplies.create(
+      {
+        ...req.body,
+        written_by_user_id: userData.user_id,
+      },
+      {
+        raw: true,
+      }
+    );
+    return res
+      .status(200)
+      .json({ ...addedReply.dataValues, username: userData.username })
+      .end();
   } catch (e) {
     console.log(e);
-    return res.status(503);
+    return res.status(503).end();
   }
 };
 
@@ -35,10 +44,10 @@ const getTenRecentComments = async (req, res) => {
       }
       return reply;
     });
-    return res.status(200).json(replies);
+    return res.status(200).json(replies).end();
   } catch (e) {
     console.log(e);
-    return res.status(503);
+    return res.status(503).end();
   }
 };
 
