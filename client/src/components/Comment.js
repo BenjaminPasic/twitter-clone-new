@@ -35,10 +35,6 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
   useEffect(() => {
-    console.log(commentReplyCount);
-  }, [commentReplyCount]);
-
-  useEffect(() => {
     setCommentReplyCount(comment.total_replies);
     setIsLiked(comment.liked_by_current_user);
   }, []);
@@ -137,14 +133,25 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
               Like
             </Button>
           )}
-          <span>{isLiked ? comment.total_likes + 1 : comment.total_likes}</span>
-          <button
+          <span style={{ margin: "0 5px 0 5px" }}>
+            {isLiked ? comment.total_likes + 1 : comment.total_likes}
+          </span>
+          <Button
+            variant="contained"
+            color="success"
+            sx={{
+              height: "25px",
+              minWidth: "0px",
+              paddingRight: "15px",
+              paddingLeft: "15px",
+              fontSize: "12px",
+            }}
             onClick={() => {
               setOpenDialog(true);
             }}
           >
             Reply
-          </button>
+          </Button>
           <div className="modal"></div>
         </div>
       </div>

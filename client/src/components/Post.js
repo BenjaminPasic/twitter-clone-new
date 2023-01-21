@@ -7,18 +7,25 @@ import toast, { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { dateFormat, fullDate } from "../utils/DateFormatter";
 import { deletePost, editPost } from "../api/postApi";
-import commentIcon from "../assets/icons/comment.svg";
 import downIcon from "../assets/icons/down-button.png";
 import editIcon from "../assets/icons/edit-icon.png";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
 
-const Post = ({ post, isLocalPost, filterDeletedPost }) => {
-  const { mutate } = useMutation(addNewLike);
+const Post = ({ post, filterDeletedPost }) => {
+  const { mutate } = useMutation(addNewLike, {
+    onSuccess: () => {
+      hasUserLiked
+        ? setLikeCount((prevState) => prevState - 1)
+        : setLikeCount((prevState) => prevState + 1);
+      setHasUserLiked(!hasUserLiked);
+    },
+  });
   const { mutate: deletePostMutate } = useMutation(deletePost, {
     onSuccess: (res) => {
       filterDeletedPost(res.data);
+      toast.success("Successfuly deleted your post.");
     },
   });
   const { mutate: editPostMutate } = useMutation(editPost, {
@@ -27,15 +34,15 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
       setEditInput("");
       toast.success("Successfuly edited your post.");
     },
-    onError: (res) => {
+    onError: () => {
       toast.error("You already edited this post once.");
     },
   });
-  const [likeCount, setLikeCount] = useState(undefined);
   const [isEditing, setIsEditing] = useState(false);
   const [editInput, setEditInput] = useState("");
   const [editError, setEditError] = useState("");
   const [commentCount, setCommentCount] = useState(undefined);
+  const [likeCount, setLikeCount] = useState(undefined);
   const [hasUserLiked, setHasUserLiked] = useState(undefined);
   const [showPreviousEdit, setShowPreviousEdit] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -199,9 +206,7 @@ const Post = ({ post, isLocalPost, filterDeletedPost }) => {
               Like
             </Button>
           )}
-          <span className="like-counter">
-            {hasUserLiked ? post.total_likes + 1 : post.total_likes}
-          </span>
+          <span className="like-counter">{likeCount}</span>
           {post.singlePost ? null : (
             <>
               <Button

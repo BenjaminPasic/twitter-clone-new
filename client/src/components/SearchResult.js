@@ -25,7 +25,7 @@ const SearchResult = () => {
       <div className="container">
         <div className="user-results">
           {data?.data.length === 0 ? (
-            <h2>No users found</h2>
+            <h2 style={{ background: "#121212" }}>No results found</h2>
           ) : (
             data?.data.map((user) => {
               return <UserSearchResult user={user} key={user.username} />;

@@ -12,11 +12,18 @@ function Comments() {
   const [offset, setOffset] = useState(0);
   const [dbComments, setDbComments] = useState([]);
   const [comment, setComment] = useState("");
+  console.log(dbComments);
   const { mutate } = useMutation(addNewComment, {
     onSuccess: ({ data }) => {
       console.log(data);
       setDbComments((prevState) => [
-        { ...data, createdAt: "now", total_replies: 0 },
+        {
+          ...data,
+          createdAt: "now",
+          total_replies: 0,
+          can_delete: true,
+          written_on_post_id: +data.written_on_post_id,
+        },
         ...prevState,
       ]);
     },

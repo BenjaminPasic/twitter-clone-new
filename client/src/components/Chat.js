@@ -84,6 +84,8 @@ const Chat = () => {
     setChatInput(e.target.value);
   };
 
+  console.log(currentUser);
+
   return (
     <div className="chat">
       <div className="container">
@@ -91,7 +93,11 @@ const Chat = () => {
           {users &&
             users.data.map((user, i) => {
               return (
-                <div className="user" onClick={() => handleUsernameClick(user)}>
+                <div
+                  key={user.id}
+                  className="user"
+                  onClick={() => handleUsernameClick(user)}
+                >
                   <Avatar sx={{ background: "red" }}>
                     {user.username.charAt(0).toUpperCase()}
                   </Avatar>
@@ -117,6 +123,7 @@ const Chat = () => {
                       <Avatar>
                         {currentUser.username.charAt(0).toUpperCase()}
                       </Avatar>
+                      <span>{currentUser.username}</span>
                     </span>
                   );
                 }
@@ -189,7 +196,12 @@ const Chat = () => {
           <div className="chat-input">
             <TextField
               variant="outlined"
-              sx={{ flex: "1" }}
+              sx={{
+                flex: "1",
+                "& .MuiInputBase-root": {
+                  color: "white",
+                },
+              }}
               size="small"
               multiline
               onChange={(e) => handleInput(e)}

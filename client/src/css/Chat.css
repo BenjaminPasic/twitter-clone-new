@@ -81,7 +81,6 @@
     margin-left: auto;
     display: flex;
     flex-direction: row;
-    margin-bottom: 10px;
     justify-content: end;
 }
 
@@ -89,7 +88,6 @@
     margin-right: auto;
     display: flex;
     flex-direction: row;
-    margin-bottom: 10px;
     justify-content: start;
 }
 
@@ -116,6 +114,8 @@
     border-radius: 10px;
     overflow-wrap: break-word;
     text-align: left;
+    background: dodgerblue;
+    margin-bottom: 5px;
 }
 
 .chat .sent-message {
@@ -126,4 +126,5 @@
     border-radius: 10px;
     overflow-wrap: break-word;
     text-align: left;
+    margin-bottom: 5px;
 }

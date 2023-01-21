@@ -27,6 +27,7 @@ const CommentFormDialog = ({
         onSuccess: () => {
           setCommentReplyCount((prevState) => prevState + 1);
           setRecentlyAdded(true);
+          handleClose();
         },
       }
     );

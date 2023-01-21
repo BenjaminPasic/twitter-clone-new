@@ -31,7 +31,9 @@ const addNewComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
   const userData = await decodeJwtToken(req.cookies.token);
-  const { commentId, writtenByUserId } = req.query;
+  let { commentId, writtenByUserId } = req.query;
+  commentId = +commentId;
+  writtenByUserId = +writtenByUserId;
   if (userData.user_id === writtenByUserId) {
     try {
       await Comment.destroy({

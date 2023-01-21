@@ -1,6 +1,5 @@
 import Post from "./Post";
 import "../css/Posts.css";
-import { useQuery } from "react-query";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useEffect } from "react";
 
