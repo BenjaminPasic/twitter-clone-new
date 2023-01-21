@@ -1,7 +1,6 @@
 import customAxios from "./customAxios";
 
 export const addNewComment = (postData) => {
-  console.log(postData);
   return customAxios.post("/comment/new", postData);
 };
 

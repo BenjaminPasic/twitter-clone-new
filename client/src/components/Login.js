@@ -25,7 +25,6 @@ export default function Login() {
   useEffect(() => {
     if (isAuth === true) {
       navigate("/");
-      console.log("aaaa");
     }
     console.log(isAuth);
   }, [isAuth]);

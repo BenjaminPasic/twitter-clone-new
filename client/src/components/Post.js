@@ -22,6 +22,7 @@ const Post = ({ post, filterDeletedPost }) => {
       setHasUserLiked(!hasUserLiked);
     },
   });
+
   const { mutate: deletePostMutate } = useMutation(deletePost, {
     onSuccess: (res) => {
       filterDeletedPost(res.data);

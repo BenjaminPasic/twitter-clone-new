@@ -41,7 +41,6 @@ const EditFormDialog = ({ user, handleClose, open, refetch }) => {
   };
 
   const handleLocationChange = (e) => {
-    console.log(e.target.value.length);
     if (e.target.value.length < 32) {
       setForm((prevState) => ({ ...prevState, location: e.target.value }));
     } else {

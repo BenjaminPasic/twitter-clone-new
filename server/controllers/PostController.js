@@ -97,7 +97,6 @@ const deletePost = async (req, res) => {
 const editPost = async (req, res) => {
   const { user_id: currentUserId } = await decodeJwtToken(req.cookies.token);
   let { post_id, user_id, editInput: newPost, post: oldPost } = req.body;
-  console.log(oldPost);
   if (currentUserId === user_id) {
     try {
       const currentPost = await Post.findOne({

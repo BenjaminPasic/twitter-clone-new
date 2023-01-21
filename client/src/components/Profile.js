@@ -32,8 +32,6 @@ const Profile = () => {
     () => getCurrentUserPosts(username)
   );
 
-  console.log(profilePosts);
-
   const { mutate } = useMutation(addNewFollow);
 
   const handleFollow = () => {

@@ -84,8 +84,6 @@ const Chat = () => {
     setChatInput(e.target.value);
   };
 
-  console.log(currentUser);
-
   return (
     <div className="chat">
       <div className="container">

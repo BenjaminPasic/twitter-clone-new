@@ -77,7 +77,6 @@ const getUsername = async (req, res) => {
       where: { id: userData.user_id },
       raw: true,
     });
-    console.log(user);
     return res.status(200).json(user);
   } catch (e) {
     console.log(e);
