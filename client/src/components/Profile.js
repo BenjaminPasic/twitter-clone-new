@@ -55,6 +55,12 @@ const Profile = () => {
     );
   }
 
+  if (profileData.data === "No user found") {
+    return (
+      <h1 style={{ color: "white" }}>No user found, redirecting back...</h1>
+    );
+  }
+
   return (
     <>
       <div className="profile">

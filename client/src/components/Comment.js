@@ -10,6 +10,7 @@ import Reply from "./Reply";
 import trashIcon from "../assets/icons/trash-icon.png";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useNavigate } from "react-router-dom";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -25,7 +26,9 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
   const [isFetchingReplies, setIsFetchingReplies] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [commentReplyCount, setCommentReplyCount] = useState(0);
+  const [likeCount, setLikeCount] = useState(0);
   const [isLiked, setIsLiked] = useState(undefined);
+  const navigate = useNavigate();
   const { mutate } = useMutation(commentLike);
   const { mutate: deleteCommentMutate } = useMutation(deleteComment, {
     onSuccess: () => {
@@ -37,6 +40,7 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
   useEffect(() => {
     setCommentReplyCount(comment.total_replies);
     setIsLiked(comment.liked_by_current_user);
+    setLikeCount(comment.total_likes);
   }, []);
 
   const handleOpenConfirmDialog = () => {
@@ -49,7 +53,10 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
 
   const handleLike = () => {
     mutate({ comment_id: comment.id, post_id: comment.post_id });
-    setIsLiked(!isLiked);
+    isLiked
+      ? setLikeCount((prevState) => prevState - 1)
+      : setLikeCount((prevState) => prevState + 1);
+    setIsLiked((prevState) => !prevState);
   };
 
   const handleHideReplies = () => {
@@ -66,6 +73,10 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
 
   const handleCloseCommentDialog = () => {
     setOpenDialog(false);
+  };
+
+  const handleUsernameClick = () => {
+    navigate("/profile/" + comment.username);
   };
 
   const handleShowReply = () => {
@@ -88,10 +99,14 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
   return (
     <div className="single-comment-wrapper">
       <div className="single-comment">
-        <Avatar>{comment.username.charAt(0)}</Avatar>
+        <Avatar onClick={handleUsernameClick}>
+          {comment.username.charAt(0)}
+        </Avatar>
         <div className="upper-part">
           <div style={{ display: "flex" }}>
-            <span className="username">{comment.username}</span>
+            <span className="username" onClick={handleUsernameClick}>
+              {comment.username}
+            </span>
             <span className="seperator">&#183;</span>
             <span className="date">{dateFormat(comment.createdAt)}</span>
             {comment.can_delete && (
@@ -133,9 +148,7 @@ const Comment = ({ comment, filterDeletedCommentById }) => {
               Like
             </Button>
           )}
-          <span style={{ margin: "0 5px 0 5px" }}>
-            {isLiked ? comment.total_likes + 1 : comment.total_likes}
-          </span>
+          <span style={{ margin: "0 5px 0 5px" }}>{likeCount}</span>
           <Button
             variant="contained"
             color="success"

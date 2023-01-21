@@ -62,6 +62,7 @@ const EditFormDialog = ({ user, handleClose, open, refetch }) => {
       });
       mutate({ ...form, updateUserId: user.id });
     }
+    handleClose();
   };
 
   return (

@@ -97,6 +97,9 @@ const getUserProfile = async (req, res) => {
         where username = "${currentUsername}";`,
       { type: QueryTypes.SELECT }
     );
+    if (!user) {
+      return res.status(200).json("No user found").end();
+    }
     const {
       name,
       surname,
