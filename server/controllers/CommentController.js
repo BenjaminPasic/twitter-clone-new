@@ -71,7 +71,6 @@ const getRecentComments = async (req, res) => {
       { type: QueryTypes.SELECT }
     );
     recentComments = recentComments.map((comment) => {
-      console.log(comment);
       let modifiedComment = { ...comment };
       if (comment.liked_by_user_id === userInfo.user_id) {
         modifiedComment = { ...modifiedComment, liked_by_current_user: true };

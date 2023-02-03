@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { findEveryoneUserFollows } from "../api/followApi";
 import { TextField, Button } from "@mui/material";
 import customAxios from "../api/customAxios";
+import useAuth from "../hooks/useAuth";
 import "../css/Chat.css";
 import { Avatar } from "@mui/material";
 const socket = io.connect("http://localhost:3001", { withCredentials: true });
@@ -75,9 +76,11 @@ const Chat = () => {
   };
 
   const handleUsernameClick = (followee) => {
-    setCurrentUser(followee);
-    setDbMessages(undefined);
-    setMessages([]);
+    if (followee !== currentUser) {
+      setCurrentUser(followee);
+      setDbMessages(undefined);
+      setMessages([]);
+    }
   };
 
   const handleInput = (e) => {
@@ -116,12 +119,12 @@ const Chat = () => {
                     <span
                       style={{ marginBottom: "2px" }}
                       className="received-message-container"
+                      key={index}
                     >
                       <div className="received-message">{message.message}</div>
                       <Avatar>
                         {currentUser.username.charAt(0).toUpperCase()}
                       </Avatar>
-                      <span>{currentUser.username}</span>
                     </span>
                   );
                 }
@@ -129,7 +132,10 @@ const Chat = () => {
                   messageArray[index - 1 < 0 ? 0 : index - 1].received === true
                 ) {
                   return (
-                    <span className="received-message-container-no-margin">
+                    <span
+                      className="received-message-container-no-margin"
+                      key={index}
+                    >
                       <div className="received-message">{message.message}</div>
                       <Avatar
                         sx={{
@@ -143,7 +149,7 @@ const Chat = () => {
                   );
                 } else {
                   return (
-                    <span className="received-message-container">
+                    <span className="received-message-container" key={index}>
                       <div className="received-message">{message.message}</div>
                       <Avatar>
                         {currentUser.username.charAt(0).toUpperCase()}
@@ -155,6 +161,7 @@ const Chat = () => {
                 if (index === 0) {
                   return (
                     <span
+                      key={index}
                       style={{ marginBottom: "2px" }}
                       className="sent-message-container"
                     >
@@ -167,7 +174,10 @@ const Chat = () => {
                   messageArray[index - 1 < 0 ? 0 : index - 1].received === false
                 ) {
                   return (
-                    <span className="sent-message-container-no-margin">
+                    <span
+                      className="sent-message-container-no-margin"
+                      key={index}
+                    >
                       <Avatar
                         sx={{
                           background: "#2c2633",
@@ -181,10 +191,8 @@ const Chat = () => {
                   );
                 } else {
                   return (
-                    <span className="sent-message-container">
-                      <Avatar>
-                        {currentUser.username.charAt(0).toUpperCase()}
-                      </Avatar>
+                    <span className="sent-message-container" key={index}>
+                      <Avatar>You</Avatar>
                       <div className="sent-message">{message.message}</div>
                     </span>
                   );
@@ -202,6 +210,7 @@ const Chat = () => {
               }}
               size="small"
               multiline
+              value={chatInput}
               onChange={(e) => handleInput(e)}
             />
             {currentUser === undefined && currentRoomId === undefined ? (

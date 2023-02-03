@@ -1,6 +1,7 @@
 import "../css/StatusUpdate.css";
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
+import { LoadingButton } from "@mui/lab";
 import { CircularProgress } from "@mui/material";
 import { useMutation } from "react-query";
 import { newPost } from "../api/postApi";
@@ -56,17 +57,27 @@ export default function StatusUpdate({ addRecentlyCreatedPost }) {
           value={statusCharCount * 0.5}
         />
         {isLoading ? (
-          <p>Waiting.</p>
-        ) : (
-          <Button
+          <LoadingButton
             variant="contained"
             type="submit"
             className="button"
             margin="normal"
-            onClick={handleClick}
+            disabled
           >
-            Post
-          </Button>
+            Posting...
+          </LoadingButton>
+        ) : (
+          status && (
+            <Button
+              variant="contained"
+              type="submit"
+              className="button"
+              margin="normal"
+              onClick={handleClick}
+            >
+              Post
+            </Button>
+          )
         )}
       </div>
     </div>

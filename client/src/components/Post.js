@@ -13,7 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
 
-const Post = ({ post, filterDeletedPost }) => {
+const Post = ({ post, filterDeletedPost, isCopied }) => {
   const { mutate } = useMutation(addNewLike, {
     onSuccess: () => {
       hasUserLiked
