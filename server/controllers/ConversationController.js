@@ -39,7 +39,6 @@ const getConvoInfo = async (req, res) => {
             return { ...res, received: true };
           }
         })
-        .filter((res) => res.message !== null);
       return res.status(200).json(result).end();
     }
   } catch (e) {

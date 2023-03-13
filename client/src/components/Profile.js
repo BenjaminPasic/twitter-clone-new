@@ -128,8 +128,14 @@ const Profile = () => {
             <span className="follow-color">Following</span>
           </div>
         </div>
-        <h2 className="posts-h2">Most liked posts</h2>
-        <Posts posts={profilePosts.data.recentPosts} />
+        {profilePosts.data.length > 0 ? (
+          <>
+            <Posts posts={profilePosts.data.recentPosts} />
+            <h2 className="posts-h2">Most liked posts</h2>
+          </>
+        ) : (
+          <h1 style={{ color: "white" }}>This user hasn't posted anything</h1>
+        )}
       </div>
       <EditFormDialog
         user={profileData?.data}

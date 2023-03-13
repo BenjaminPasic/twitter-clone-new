@@ -1,17 +1,15 @@
-import { io } from "socket.io-client";
-import { useEffect, useState, useRef } from "react";
+import { Avatar, Button, TextField } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
-import { findEveryoneUserFollows } from "../api/followApi";
-import { TextField, Button } from "@mui/material";
+import { io } from "socket.io-client";
 import customAxios from "../api/customAxios";
-import useAuth from "../hooks/useAuth";
+import { findEveryoneUserFollows } from "../api/followApi";
 import "../css/Chat.css";
-import { Avatar } from "@mui/material";
 const socket = io.connect("http://localhost:3001", { withCredentials: true });
 
 const Chat = () => {
   const [chatInput, setChatInput] = useState("");
-  const [dbMessages, setDbMessages] = useState(undefined);
+  const [dbMessages, setDbMessages] = useState([]);
   const [messages, setMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [currentRoomId, setCurrentRoomId] = useState(undefined);
@@ -54,7 +52,7 @@ const Chat = () => {
     socket.on("receive-message", (message) => {
       setMessages((prevState) => [
         ...prevState,
-        { message: message, received: true },
+        { message, received: true },
       ]);
     });
   }, [socket]);
@@ -91,7 +89,7 @@ const Chat = () => {
     <div className="chat">
       <div className="container">
         <div className="users">
-          {users &&
+          {users?.data.length > 0 ? (
             users.data.map((user, i) => {
               return (
                 <div
@@ -108,7 +106,12 @@ const Chat = () => {
                   </div>
                 </div>
               );
-            })}
+            })
+          ) : (
+            <h2 style={{ color: "white" }}>
+              Follow someone to start chatting!
+            </h2>
+          )}
         </div>
         <div className="chat-interface">
           {dbMessages &&
@@ -158,7 +161,9 @@ const Chat = () => {
                   );
                 }
               } else {
-                if (index === 0) {
+                if (index === 0 && message.message !== null) {
+                  debugger
+                  console.log(message.message);
                   return (
                     <span
                       key={index}
@@ -171,7 +176,7 @@ const Chat = () => {
                   );
                 }
                 if (
-                  messageArray[index - 1 < 0 ? 0 : index - 1].received === false
+                  messageArray[index - 1 < 0 ? 0 : index - 1].received === false && message.message !== null
                 ) {
                   return (
                     <span
@@ -190,12 +195,14 @@ const Chat = () => {
                     </span>
                   );
                 } else {
-                  return (
-                    <span className="sent-message-container" key={index}>
-                      <Avatar>You</Avatar>
-                      <div className="sent-message">{message.message}</div>
-                    </span>
-                  );
+                  if(message.message !== null){
+                    return (
+                      <span className="sent-message-container" key={index}>
+                        <Avatar>You</Avatar>
+                        <div className="sent-message">{message.message}</div>
+                      </span>
+                    );
+                  }
                 }
               }
             })}
