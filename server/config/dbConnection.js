@@ -12,7 +12,7 @@ require("dotenv").config({ path: "../.env" });
 //   }
 // );
 
-const dbConnection = new Sequelize('mysql://root:eakVX39yarkNVSH8xkzw@containers-us-west-199.railway.app:5634/railway')
+const dbConnection = new Sequelize('mysql://root:ivKRTJ7CUFMglBkDJkT9@containers-us-west-190.railway.app:5925/railway')
 
 dbConnection
   .authenticate()
