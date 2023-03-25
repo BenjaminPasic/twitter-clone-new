@@ -18,6 +18,8 @@ const Chat = () => {
     cacheTime: 0,
   });
 
+  console.log(dbMessages)
+
   const handleScroll = () => {
     window.scrollTo({
       top: chatInputRef.offsetTop,
@@ -241,7 +243,7 @@ const Chat = () => {
               value={chatInput}
               onChange={(e) => handleInput(e)}
             />
-           <Button variant="contained" disabled={currentUser===undefined && currentRoomId===undefined}>
+           <Button onClick={sendMessage} variant="contained" disabled={currentUser===undefined && currentRoomId===undefined}>
                 {(currentUser===undefined && currentRoomId === undefined)? "Disabled" : "Send"}
             </Button>
           </div>}
