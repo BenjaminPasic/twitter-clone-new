@@ -23,6 +23,7 @@ const getConvoInfo = async (req, res) => {
       },
       raw: true,
     });
+    console.log("backend result data", result);
     if (result === null || result.length === 0) {
       const roomId = await createNewConversation(userData.user_id, followeeId);
       return res

@@ -49,6 +49,8 @@ const io = new Server(httpServer, {
   cors: {
     origin: "https://main--neon-madeleine-1c09fe.netlify.app",
     credentials: true,
+    sameSite: "none",
+    secure: true,
   },
   cookie: true,
 });
