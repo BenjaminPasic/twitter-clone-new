@@ -53,7 +53,8 @@ const Chat = () => {
   useEffect(() => {
     socket.on("receive-message", (message) => {
       console.log("received message", message);
-      setMessages((prevState) => [
+      // mozda
+      setDbMessages((prevState) => [
         ...prevState,
         { message, received: true },
       ]);
