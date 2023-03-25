@@ -25,7 +25,7 @@ const conversationRoutes = require("./routes/ConversationRoutes");
 server.use(cookieParser());
 
 //Cors setup
-server.use(cors({ origin: "https://main--neon-madeleine-1c09fe.netlify.app/", credentials: true }));
+server.use(cors({ origin: "https://main--neon-madeleine-1c09fe.netlify.app", credentials: true }));
 
 //Logger for requests
 server.use(morgan("tiny"));
@@ -47,7 +47,7 @@ server.use("/conversation", conversationRoutes);
 //socketio seperated logic
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://main--neon-madeleine-1c09fe.netlify.app/",
+    origin: "https://main--neon-madeleine-1c09fe.netlify.app",
     credentials: true,
   },
   cookie: true,
