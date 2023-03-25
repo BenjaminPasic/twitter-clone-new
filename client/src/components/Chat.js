@@ -11,8 +11,8 @@ const Chat = () => {
   const [chatInput, setChatInput] = useState("");
   const [dbMessages, setDbMessages] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [currentUser, setCurrentUser] = useState(undefined);
-  const [currentRoomId, setCurrentRoomId] = useState(undefined);
+  const [currentUser, setCurrentUser] = useState("");
+  const [currentRoomId, setCurrentRoomId] = useState("");
   const chatInputRef = useRef(null);
   const { data: users } = useQuery("follows", findEveryoneUserFollows, {
     cacheTime: 0,
@@ -50,6 +50,7 @@ const Chat = () => {
 
   useEffect(() => {
     socket.on("receive-message", (message) => {
+      console.log("received message", message);
       setMessages((prevState) => [
         ...prevState,
         { message, received: true },
@@ -69,6 +70,7 @@ const Chat = () => {
         ...prevState,
         { message: chatInput, received: false },
       ]);
+      console.log("sent message", dbMessages);
       socket.emit("send-message", chatInput, currentRoomId, currentUser.id);
     }
   };
