@@ -74,7 +74,7 @@ const Chat = () => {
   const handleUsernameClick = (followee) => {
     if (followee !== currentUser) {
       setCurrentUser(followee);
-      setDbMessages(undefined);
+      setDbMessages([]);
       setMessages([]);
     }
   };
@@ -227,7 +227,7 @@ const Chat = () => {
                 }
               }
             })} */}
-          <div className="chat-input">
+          {<div className="chat-input">
             <TextField
               variant="outlined"
               sx={{
@@ -241,16 +241,10 @@ const Chat = () => {
               value={chatInput}
               onChange={(e) => handleInput(e)}
             />
-            {currentUser === undefined && currentRoomId === undefined ? (
-              <Button variant="contained" disabled>
-                Disabled
-              </Button>
-            ) : (
-              <Button variant="contained" onClick={sendMessage}>
-                Send message
-              </Button>
-            )}
-          </div>
+           <Button variant="contained" disabled={currentUser===undefined && currentRoomId===undefined}>
+                {(currentUser===undefined && currentRoomId === undefined)? "Disabled" : "Send"}
+            </Button>
+          </div>}
         </div>
       </div>
     </div>
