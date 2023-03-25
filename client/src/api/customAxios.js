@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const customAxios = axios.create({
-  baseURL: "https://twitter-clone-backend-production-1af3.up.railway.app",
+  baseURL: "https://twitter-clone-7wmm.onrender.com",
   withCredentials: true,
 });
 
