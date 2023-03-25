@@ -7,7 +7,6 @@ const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-
 //Express has to be set up this way in order to work with express on the same port
 const httpServer = createServer(server);
 
@@ -49,10 +48,11 @@ const io = new Server(httpServer, {
   cors: {
     origin: "https://main--neon-madeleine-1c09fe.netlify.app",
     credentials: true,
+  },
+  cookie: {
     sameSite: "none",
     secure: true,
-  },
-  cookie: true,
+  }
 });
 
 require("./config/socket-io")(io);
