@@ -58,11 +58,6 @@ const Chat = () => {
     });
   }, [socket]);
 
-  /*useEffect(() => {
-    return () => {
-      if (socket) socket.close();
-    };
-  }, []);*/
 
   const sendMessage = () => {
     if (chatInput) {
@@ -71,6 +66,7 @@ const Chat = () => {
         { message: chatInput, received: false },
       ]);
       console.log("sent message", dbMessages);
+      setChatInput("");
       socket.emit("send-message", chatInput, currentRoomId, currentUser.id);
     }
   };
@@ -116,7 +112,32 @@ const Chat = () => {
           )}
         </div>
         <div className="chat-interface">
-          {dbMessages &&
+          {dbMessages.map((message, index, messageArray) => {
+            if(message.received === true){
+              return (
+                <span
+                      style={{ marginBottom: "2px" }}
+                      className="received-message-container"
+                      key={index}
+                    >
+                      <div className="received-message">{message.message}</div>
+                      <Avatar>
+                        {currentUser.username.charAt(0).toUpperCase()}
+                      </Avatar>
+                    </span>
+              )
+            } else {
+              return (
+                <span className="received-message-container" key={index}>
+                      <div className="received-message">{message.message}</div>
+                      <Avatar>
+                        {currentUser.username.charAt(0).toUpperCase()}
+                      </Avatar>
+                    </span>
+              )
+            }
+          })}
+          {/* {dbMessages &&
             dbMessages.map((message, index, messageArray) => {
               if (message.received === true) {
                 if (index === 0) {
@@ -205,7 +226,7 @@ const Chat = () => {
                   }
                 }
               }
-            })}
+            })} */}
           <div className="chat-input">
             <TextField
               variant="outlined"
