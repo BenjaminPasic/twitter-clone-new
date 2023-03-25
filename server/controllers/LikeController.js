@@ -4,7 +4,6 @@ const dbConnection = require("../config/dbConnection");
 const { QueryTypes } = require("sequelize");
 
 const deleteExistingLike = async (postId, userId) => {
-  console.log(postId, userId);
   try {
     await Like.destroy({
       where: {
@@ -21,6 +20,8 @@ const addNewLike = async (req, res) => {
   const postInfo = req.body;
   const userInfo = await decodeJwtToken(req.cookies.token);
 
+  console.log("Here", postInfo, userInfo)
+
   const post = await Like.count({
     where: {
       post_id: postInfo.post_id,
@@ -34,8 +35,7 @@ const addNewLike = async (req, res) => {
       await deleteExistingLike(postInfo.post_id, userInfo.user_id);
       return res.status(200).end();
     } catch (e) {
-      return res.status(503).json({ error: "error" }).end();
-      console.log(e);
+      return res.status(503).json(e).end();
     }
   } else {
     try {
@@ -46,7 +46,7 @@ const addNewLike = async (req, res) => {
       return res.status(200).json({ isSuccess: true }).end();
     } catch (e) {
       console.log(e);
-      return res.status(503).json({ error: "server error" }).end();
+      return res.status(503).json(e).end();
     }
   }
 };

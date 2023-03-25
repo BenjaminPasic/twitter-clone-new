@@ -1,17 +1,17 @@
-import "../css/Post.css";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { Avatar, Menu, MenuItem } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "react-query";
-import { addNewLike } from "../api/likeApi";
-import toast, { Toaster } from "react-hot-toast";
+import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
-import { dateFormat, fullDate } from "../utils/DateFormatter";
+import toast, { Toaster } from "react-hot-toast";
+import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { addNewLike } from "../api/likeApi";
 import { deletePost, editPost } from "../api/postApi";
 import downIcon from "../assets/icons/down-button.png";
 import editIcon from "../assets/icons/edit-icon.png";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import Button from "@mui/material/Button";
+import "../css/Post.css";
+import { dateFormat, fullDate } from "../utils/DateFormatter";
 
 const Post = ({ post, filterDeletedPost, isCopied }) => {
   const { mutate } = useMutation(addNewLike, {
@@ -133,7 +133,7 @@ const Post = ({ post, filterDeletedPost, isCopied }) => {
           <span className="date">{dateFormat(post.createdAt)}</span>
           {post.created_by_current_user && (
             <span className="dot-icon" onClick={(e) => handleDotsClick(e)}>
-              <img src={downIcon} />
+              <img src={downIcon} alt="Down icon" />
             </span>
           )}
         </div>

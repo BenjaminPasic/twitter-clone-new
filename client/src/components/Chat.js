@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import customAxios from "../api/customAxios";
 import { findEveryoneUserFollows } from "../api/followApi";
 import "../css/Chat.css";
-const socket = io.connect("http://localhost:3001", { withCredentials: true });
+const socket = io.connect("https://twitter-clone-backend-production-1af3.up.railway.app:3001", { withCredentials: true });
 
 const Chat = () => {
   const [chatInput, setChatInput] = useState("");
@@ -162,8 +162,6 @@ const Chat = () => {
                 }
               } else {
                 if (index === 0 && message.message !== null) {
-                  debugger
-                  console.log(message.message);
                   return (
                     <span
                       key={index}

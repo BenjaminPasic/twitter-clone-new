@@ -1,2 +1,2 @@
 # twitter-clone-new
-Improved twitter clone
+Twitter clone app!

@@ -2,7 +2,6 @@ const Conversation = require("../models/Conversation");
 const { decodeJwtToken } = require("../utils/jwt");
 const randomstring = require("randomstring");
 const { Op } = require("sequelize");
-const { logger } = require("sequelize/lib/utils/logger");
 
 const getConvoInfo = async (req, res) => {
   const userData = await decodeJwtToken(req.cookies.token);

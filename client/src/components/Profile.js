@@ -1,17 +1,17 @@
-import { useQuery, useMutation } from "react-query";
-import "../css/Profile.css";
-import { useParams } from "react-router-dom";
-import { getUserProfile, getCurrentUserPosts } from "../api/userApi";
 import Button from "@mui/material/Button";
-import Posts from "./Posts";
-import { useEffect, useState } from "react";
-import EditFormDialog from "./EditFormDialog";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 import { addNewFollow } from "../api/followApi";
-import placeholderBanner from "../assets/images/banner-placeholder.jpeg";
+import { getCurrentUserPosts, getUserProfile } from "../api/userApi";
 import calendarIcon from "../assets/icons/calendar-icon.png";
 import mapMarkerIcon from "../assets/icons/map-marker-icon.png";
+import placeholderBanner from "../assets/images/banner-placeholder.jpeg";
+import "../css/Profile.css";
 import { dateFormatMonthYear } from "../utils/DateFormatter";
-import CircularProgress from "@mui/material/CircularProgress";
+import EditFormDialog from "./EditFormDialog";
+import Posts from "./Posts";
 
 const Profile = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -128,10 +128,10 @@ const Profile = () => {
             <span className="follow-color">Following</span>
           </div>
         </div>
-        {profilePosts.data.length > 0 ? (
+        {profilePosts.data.recentPosts.length > 0 ? (
           <>
+            <h2 className="posts-h2">Top posts</h2>
             <Posts posts={profilePosts.data.recentPosts} />
-            <h2 className="posts-h2">Most liked posts</h2>
           </>
         ) : (
           <h1 style={{ color: "white" }}>This user hasn't posted anything</h1>

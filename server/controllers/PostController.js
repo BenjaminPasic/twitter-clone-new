@@ -34,6 +34,8 @@ const addNewPost = async (req, res) => {
 const getRecentPosts = async (req, res) => {
   const { page } = req.params;
 
+
+
   let offset = 0;
   if (page > 1) {
     offset = page * 10 - 10;
@@ -68,9 +70,9 @@ const getRecentPosts = async (req, res) => {
       }
       return editedPost;
     });
-    res.status(200).json({ recentPosts }).end();
+    return res.status(200).json({ recentPosts }).end();
   } catch (e) {
-    res.status(503).json({ error: "server error" }).end();
+    return res.status(503).json(e).end();
   }
 };
 

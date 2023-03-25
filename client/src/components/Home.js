@@ -1,9 +1,9 @@
-import "../css/Home.css";
-import StatusUpdate from "./StatusUpdate";
-import Posts from "./Posts";
 import { useEffect, useState } from "react";
 import { useInfiniteQuery } from "react-query";
 import { getRecentPosts } from "../api/postApi";
+import "../css/Home.css";
+import Posts from "./Posts";
+import StatusUpdate from "./StatusUpdate";
 
 export default function Home() {
   const [posts, setPosts] = useState(undefined);

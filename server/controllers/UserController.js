@@ -6,7 +6,7 @@ const {
   verifyJwtToken,
   decodeJwtToken,
 } = require("../utils/jwt");
-const { QueryTypes, Op } = require("sequelize");
+const { QueryTypes } = require("sequelize");
 
 const registerUser = async (req, res) => {
   const doesUserExist = await User.findOne({
