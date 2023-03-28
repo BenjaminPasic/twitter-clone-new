@@ -110,32 +110,74 @@ const Chat = () => {
           )}
         </div>
         <div className="chat-interface">
-          {dbMessages.map((message, index, messageArray) => {
-            console.log(message);
-            if (message.received === true) {
-              return (
-                <span
-                  style={{ marginBottom: "2px" }}
-                  className="received-message-container"
-                  key={index}
-                >
-                  <div className="received-message">{message.message}</div>
-                  <Avatar>
-                    {currentUser.username.charAt(0).toUpperCase()}x
-                  </Avatar>
-                </span>
-              );
-            } else {
-              return (
-                <span className="received-message-container" key={index}>
-                  <div className="received-message">{message.message}</div>
-                  <Avatar>
-                    {currentUser.username.charAt(0).toUpperCase()}
-                  </Avatar>
-                </span>
-              );
-            }
-          })}
+          {dbMessages
+            .filter((message) => message.message !== null)
+            .map((message, index, messageArray) => {
+              console.log(message);
+              if (message.received === true) {
+                if (messageArray[index - 1].id !== message.id) {
+                  return (
+                    <span
+                      style={{ marginBottom: "2px" }}
+                      className="received-message-container"
+                      key={index}
+                    >
+                      <div className="received-message">{message.message}</div>
+                      <Avatar>
+                        {currentUser.username.charAt(0).toUpperCase()}
+                      </Avatar>
+                    </span>
+                  );
+                } else {
+                  return (
+                    <span
+                      className="received-message-container-no-margin"
+                      key={index}
+                    >
+                      <div className="received-message">{message.message}</div>
+                      <Avatar
+                        sx={{
+                          background: "#2c2633",
+                          color: "#2c2633",
+                        }}
+                      >
+                        nothing
+                      </Avatar>
+                    </span>
+                  );
+                }
+              } else {
+                if (messageArray[index - 1].id !== message.id) {
+                  return (
+                    <span
+                      key={index}
+                      style={{ marginBottom: "2px" }}
+                      className="sent-message-container"
+                    >
+                      <Avatar>You</Avatar>
+                      <div className="sent-message">{message.message}</div>
+                    </span>
+                  );
+                } else {
+                  return (
+                    <span
+                      className="sent-message-container-no-margin"
+                      key={index}
+                    >
+                      <Avatar
+                        sx={{
+                          background: "#2c2633",
+                          color: "#2c2633",
+                        }}
+                      >
+                        nothing
+                      </Avatar>
+                      <div className="sent-message">{message.message}</div>
+                    </span>
+                  );
+                }
+              }
+            })}
           {/* {dbMessages &&
             dbMessages.map((message, index, messageArray) => {
               if (message.received === true) {
