@@ -65,8 +65,8 @@ const Chat = () => {
         { message: chatInput, received: false },
       ]);
       console.log("sent message", dbMessages);
-      setChatInput("");
       socket.emit("send-message", chatInput, currentRoomId, currentUser.id);
+      setChatInput("");
     }
   };
 
