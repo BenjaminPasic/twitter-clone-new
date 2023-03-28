@@ -13,6 +13,7 @@ const socketEventsInit = (io) => {
 
     socket.on("send-message", async (message, room, receiverId) => {
       const senderData = await decodeJwtToken(socket.request.cookies.token);
+      console.log("message backend socket", message);
       socket.to(room).emit("receive-message", message);
       try {
         await Conversation.create({

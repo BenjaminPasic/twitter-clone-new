@@ -25,7 +25,10 @@ server.use(function (req, res, next) {
 //Cors setup
 server.use(
   cors({
-    origin: "https://neon-madeleine-1c09fe.netlify.app",
+    origin: [
+      "https://neon-madeleine-1c09fe.netlify.app",
+      "https://twitter-clone-frontend-27sl.onrender.com",
+    ],
     credentials: true,
   })
 );
@@ -33,7 +36,10 @@ server.use(
 //socketio seperated logic
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://neon-madeleine-1c09fe.netlify.app",
+    origin: [
+      "https://neon-madeleine-1c09fe.netlify.app",
+      "https://twitter-clone-frontend-27sl.onrender.com",
+    ],
     credentials: true,
   },
   cookie: {
