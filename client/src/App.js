@@ -1,18 +1,19 @@
-import Register from "./components/Register";
+import { useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Chat from "./components/Chat";
+import CheckIfLoggedIn from "./components/CheckIfLoggedIn";
+import Comments from "./components/Comments";
 import Home from "./components/Home";
 import Login from "./components/Login";
-import ProtectedRoutes from "./components/ProtectedRoutes";
-import NotFound from "./components/NotFound";
-import Comments from "./components/Comments";
 import Navbar from "./components/Navbar";
+import NotFound from "./components/NotFound";
 import Profile from "./components/Profile";
-import Chat from "./components/Chat";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import Register from "./components/Register";
 import SearchResult from "./components/SearchResult";
-import CheckIfLoggedIn from "./components/CheckIfLoggedIn";
-import { Route, Routes } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
 import useAuth from "./hooks/useAuth";
-import "./App.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,6 +25,10 @@ const queryClient = new QueryClient({
 
 function App() {
   const { isAuth } = useAuth();
+
+  useEffect(() => {
+    document.title = "Chatter";
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

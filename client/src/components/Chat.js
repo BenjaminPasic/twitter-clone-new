@@ -5,7 +5,9 @@ import { io } from "socket.io-client";
 import customAxios from "../api/customAxios";
 import { findEveryoneUserFollows } from "../api/followApi";
 import "../css/Chat.css";
-const socket = io.connect("https://twitter-clone-7wmm.onrender.com", { withCredentials: true });
+const socket = io.connect("https://twitter-clone-7wmm.onrender.com", {
+  withCredentials: true,
+});
 
 const Chat = () => {
   const [chatInput, setChatInput] = useState("");
@@ -17,7 +19,7 @@ const Chat = () => {
     cacheTime: 0,
   });
 
-  console.log(dbMessages)
+  console.log(dbMessages);
 
   const handleScroll = () => {
     window.scrollTo({
@@ -52,13 +54,9 @@ const Chat = () => {
   useEffect(() => {
     socket.on("receive-message", (message) => {
       console.log("received message", message);
-      setDbMessages((prevState) => [
-        ...prevState,
-        { message, received: true },
-      ]);
+      setDbMessages((prevState) => [...prevState, { message, received: true }]);
     });
   }, [socket]);
-
 
   const sendMessage = () => {
     if (chatInput) {
@@ -114,28 +112,28 @@ const Chat = () => {
         <div className="chat-interface">
           {dbMessages.map((message, index, messageArray) => {
             console.log(message);
-            if(message.received === true){
+            if (message.received === true) {
               return (
                 <span
-                      style={{ marginBottom: "2px" }}
-                      className="received-message-container"
-                      key={index}
-                    >
-                      <div className="received-message">{message.message}</div>
-                      <Avatar>
-                        {currentUser.username.charAt(0).toUpperCase()}
-                      </Avatar>
-                    </span>
-              )
+                  style={{ marginBottom: "2px" }}
+                  className="received-message-container"
+                  key={index}
+                >
+                  <div className="received-message">{message.message}</div>
+                  <Avatar>
+                    {currentUser.username.charAt(0).toUpperCase()}x
+                  </Avatar>
+                </span>
+              );
             } else {
               return (
                 <span className="received-message-container" key={index}>
-                      <div className="received-message">{message.message}</div>
-                      <Avatar>
-                        {currentUser.username.charAt(0).toUpperCase()}
-                      </Avatar>
-                    </span>
-              )
+                  <div className="received-message">{message.message}</div>
+                  <Avatar>
+                    {currentUser.username.charAt(0).toUpperCase()}
+                  </Avatar>
+                </span>
+              );
             }
           })}
           {/* {dbMessages &&
@@ -228,24 +226,34 @@ const Chat = () => {
                 }
               }
             })} */}
-          {<div className="chat-input">
-            <TextField
-              variant="outlined"
-              sx={{
-                flex: "1",
-                "& .MuiInputBase-root": {
-                  color: "white",
-                },
-              }}
-              size="small"
-              multiline
-              value={chatInput}
-              onChange={(e) => handleInput(e)}
-            />
-           <Button onClick={sendMessage} variant="contained" disabled={currentUser===undefined && currentRoomId===undefined}>
-                {(currentUser===undefined && currentRoomId === undefined)? "Disabled" : "Send"}
-            </Button>
-          </div>}
+          {
+            <div className="chat-input">
+              <TextField
+                variant="outlined"
+                sx={{
+                  flex: "1",
+                  "& .MuiInputBase-root": {
+                    color: "white",
+                  },
+                }}
+                size="small"
+                multiline
+                value={chatInput}
+                onChange={(e) => handleInput(e)}
+              />
+              <Button
+                onClick={sendMessage}
+                variant="contained"
+                disabled={
+                  currentUser === undefined && currentRoomId === undefined
+                }
+              >
+                {currentUser === undefined && currentRoomId === undefined
+                  ? "Disabled"
+                  : "Send"}
+              </Button>
+            </div>
+          }
         </div>
       </div>
     </div>
