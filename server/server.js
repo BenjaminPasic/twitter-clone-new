@@ -13,7 +13,7 @@ const httpServer = createServer(server);
 app.use(function (req, res, next) {
   res.header(
     "Access-Control-Allow-Origin",
-    "https://main--neon-madeleine-1c09fe.netlify.app"
+    "https://neon-madeleine-1c09fe.netlify.app/"
   );
   res.header(
     "Access-Control-Allow-Headers",
@@ -25,7 +25,7 @@ app.use(function (req, res, next) {
 //Cors setup
 server.use(
   cors({
-    origin: "https://main--neon-madeleine-1c09fe.netlify.app",
+    origin: "https://neon-madeleine-1c09fe.netlify.app/",
     credentials: true,
   })
 );
@@ -33,7 +33,7 @@ server.use(
 //socketio seperated logic
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://main--neon-madeleine-1c09fe.netlify.app",
+    origin: "https://neon-madeleine-1c09fe.netlify.app/",
     credentials: true,
   },
   cookie: {
