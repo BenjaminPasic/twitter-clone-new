@@ -10,6 +10,18 @@ const cookieParser = require("cookie-parser");
 //Express has to be set up this way in order to work with express on the same port
 const httpServer = createServer(server);
 
+server.use(function (req, res, next) {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://neon-madeleine-1c09fe.netlify.app/"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
 //Cors setup
 server.use(
   cors({
