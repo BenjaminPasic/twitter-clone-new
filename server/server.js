@@ -11,7 +11,26 @@ const cookieParser = require("cookie-parser");
 const httpServer = createServer(server);
 
 //Cors setup
-server.use(cors({ origin: "https://main--neon-madeleine-1c09fe.netlify.app", credentials: true }));
+server.use(
+  cors({
+    origin: "https://main--neon-madeleine-1c09fe.netlify.app",
+    credentials: true,
+  })
+);
+
+//socketio seperated logic
+const io = new Server(httpServer, {
+  cors: {
+    origin: "https://main--neon-madeleine-1c09fe.netlify.app",
+    credentials: true,
+  },
+  cookie: {
+    sameSite: "none",
+    secure: true,
+  },
+});
+
+require("./config/socket-io")(io);
 
 //Route imports
 const userRoutes = require("./routes/UserRoutes");
@@ -42,19 +61,5 @@ server.use("/commentlike", commentLikeRoutes);
 server.use("/commentreply", commentRepliesRoutes);
 server.use("/follow", followRoutes);
 server.use("/conversation", conversationRoutes);
-
-//socketio seperated logic
-const io = new Server(httpServer, {
-  cors: {
-    origin: "https://main--neon-madeleine-1c09fe.netlify.app",
-    credentials: true,
-  },
-  cookie: {
-    sameSite: "none",
-    secure: true,
-  }
-});
-
-require("./config/socket-io")(io);
 
 httpServer.listen(3001);
