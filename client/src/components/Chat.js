@@ -10,7 +10,6 @@ const socket = io.connect("https://twitter-clone-7wmm.onrender.com", { withCrede
 const Chat = () => {
   const [chatInput, setChatInput] = useState("");
   const [dbMessages, setDbMessages] = useState([]);
-  const [messages, setMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
   const [currentRoomId, setCurrentRoomId] = useState("");
   const chatInputRef = useRef(null);
@@ -53,7 +52,6 @@ const Chat = () => {
   useEffect(() => {
     socket.on("receive-message", (message) => {
       console.log("received message", message);
-      // mozda
       setDbMessages((prevState) => [
         ...prevState,
         { message, received: true },
@@ -78,7 +76,6 @@ const Chat = () => {
     if (followee !== currentUser) {
       setCurrentUser(followee);
       setDbMessages([]);
-      setMessages([]);
     }
   };
 
@@ -116,6 +113,7 @@ const Chat = () => {
         </div>
         <div className="chat-interface">
           {dbMessages.map((message, index, messageArray) => {
+            console.log(message);
             if(message.received === true){
               return (
                 <span
