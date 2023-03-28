@@ -15,9 +15,13 @@ const Chat = () => {
   const [currentUser, setCurrentUser] = useState("");
   const [currentRoomId, setCurrentRoomId] = useState("");
   const chatInputRef = useRef(null);
-  const { data: users } = useQuery("follows", findEveryoneUserFollows, {
-    cacheTime: 0,
-  });
+  const { data: users, isFetching } = useQuery(
+    "follows",
+    findEveryoneUserFollows,
+    {
+      cacheTime: 0,
+    }
+  );
 
   console.log(dbMessages);
 
@@ -81,137 +85,142 @@ const Chat = () => {
     setChatInput(e.target.value);
   };
 
-  return (
-    <div className="chat">
-      <div className="container">
-        <div className="users">
-          {users?.data.length > 0 ? (
-            users.data.map((user, i) => {
-              return (
-                <div
-                  key={user.id}
-                  className="user"
-                  onClick={() => handleUsernameClick(user)}
-                >
-                  <Avatar sx={{ background: "red" }}>
-                    {user.username.charAt(0).toUpperCase()}
-                  </Avatar>
-                  <div className="name-container">
-                    <p className="name">{user.name}</p>
-                    <p className="username">@{user.username}</p>
+  if (isFetching)
+    return (
+      <div className="chat">
+        <div className="container">
+          <div className="users">
+            {users?.data.length > 0 ? (
+              users.data.map((user, i) => {
+                return (
+                  <div
+                    key={user.id}
+                    className="user"
+                    onClick={() => handleUsernameClick(user)}
+                  >
+                    <Avatar sx={{ background: "red" }}>
+                      {user.username.charAt(0).toUpperCase()}
+                    </Avatar>
+                    <div className="name-container">
+                      <p className="name">{user.name}</p>
+                      <p className="username">@{user.username}</p>
+                    </div>
                   </div>
-                </div>
-              );
-            })
-          ) : (
-            <h2 style={{ color: "white" }}>
-              Follow someone to start chatting!
-            </h2>
-          )}
-        </div>
-        <div className="chat-interface">
-          {dbMessages.length > 0 &&
-            dbMessages
-              .filter((message) => message.message !== null)
-              .map((message, index, messageArray) => {
-                console.log(message);
-                if (message.received === true) {
-                  if (index === 0) {
-                    return (
-                      <span
-                        style={{ marginBottom: "2px" }}
-                        className="received-message-container"
-                        key={index}
-                      >
-                        <div className="received-message">
-                          {message.message}
-                        </div>
-                        <Avatar>
-                          {currentUser.username.charAt(0).toUpperCase()}
-                        </Avatar>
-                      </span>
-                    );
-                  }
-                  if (messageArray[index - 1].id !== message.id) {
-                    return (
-                      <span
-                        style={{ marginBottom: "2px" }}
-                        className="received-message-container"
-                        key={index}
-                      >
-                        <div className="received-message">
-                          {message.message}
-                        </div>
-                        <Avatar>
-                          {currentUser.username.charAt(0).toUpperCase()}
-                        </Avatar>
-                      </span>
-                    );
-                  } else {
-                    return (
-                      <span
-                        className="received-message-container-no-margin"
-                        key={index}
-                      >
-                        <div className="received-message">
-                          {message.message}
-                        </div>
-                        <Avatar
-                          sx={{
-                            background: "#2c2633",
-                            color: "#2c2633",
-                          }}
+                );
+              })
+            ) : (
+              <h2 style={{ color: "white" }}>
+                Follow someone to start chatting!
+              </h2>
+            )}
+          </div>
+          <div className="chat-interface">
+            {dbMessages.length > 0 &&
+              dbMessages
+                .filter((message) => message.message !== null)
+                .map((message, index, messageArray) => {
+                  console.log(message);
+                  if (message.received === true) {
+                    if (index === 0) {
+                      return (
+                        <span
+                          style={{ marginBottom: "2px" }}
+                          className="received-message-container"
+                          key={index}
                         >
-                          nothing
-                        </Avatar>
-                      </span>
-                    );
-                  }
-                } else {
-                  if (index === 0) {
-                    return (
-                      <span
-                        key={index}
-                        style={{ marginBottom: "2px" }}
-                        className="sent-message-container"
-                      >
-                        <Avatar>You</Avatar>
-                        <div className="sent-message">{message.message}</div>
-                      </span>
-                    );
-                  }
-                  if (messageArray[index - 1].id !== message.id) {
-                    return (
-                      <span
-                        key={index}
-                        style={{ marginBottom: "2px" }}
-                        className="sent-message-container"
-                      >
-                        <Avatar>You</Avatar>
-                        <div className="sent-message">{message.message}</div>
-                      </span>
-                    );
-                  } else {
-                    return (
-                      <span
-                        className="sent-message-container-no-margin"
-                        key={index}
-                      >
-                        <Avatar
-                          sx={{
-                            background: "#2c2633",
-                            color: "#2c2633",
-                          }}
+                          <div className="received-message">
+                            {message.message}
+                          </div>
+                          <Avatar>
+                            {currentUser.username.charAt(0).toUpperCase()}
+                          </Avatar>
+                        </span>
+                      );
+                    }
+                    if (
+                      messageArray[index - 1].sender_id !== message.sender_id
+                    ) {
+                      return (
+                        <span
+                          style={{ marginBottom: "2px" }}
+                          className="received-message-container"
+                          key={index}
                         >
-                          nothing
-                        </Avatar>
-                        <div className="sent-message">{message.message}</div>
-                      </span>
-                    );
+                          <div className="received-message">
+                            {message.message}
+                          </div>
+                          <Avatar>
+                            {currentUser.username.charAt(0).toUpperCase()}
+                          </Avatar>
+                        </span>
+                      );
+                    } else {
+                      return (
+                        <span
+                          className="received-message-container-no-margin"
+                          key={index}
+                        >
+                          <div className="received-message">
+                            {message.message}
+                          </div>
+                          <Avatar
+                            sx={{
+                              background: "#2c2633",
+                              color: "#2c2633",
+                            }}
+                          >
+                            nothing
+                          </Avatar>
+                        </span>
+                      );
+                    }
+                  } else {
+                    if (index === 0) {
+                      return (
+                        <span
+                          key={index}
+                          style={{ marginBottom: "2px" }}
+                          className="sent-message-container"
+                        >
+                          <Avatar>You</Avatar>
+                          <div className="sent-message">{message.message}</div>
+                        </span>
+                      );
+                    }
+                    if (
+                      messageArray[index - 1].sender_id !== message.sender_id
+                    ) {
+                      return (
+                        <span
+                          key={index}
+                          style={{ marginBottom: "2px" }}
+                          className="sent-message-container"
+                        >
+                          <Avatar>You</Avatar>
+                          <div className="sent-message">{message.message}</div>
+                        </span>
+                      );
+                    } else {
+                      return (
+                        <span
+                          className="sent-message-container-no-margin"
+                          key={index}
+                        >
+                          <Avatar
+                            sx={{
+                              background: "#2c2633",
+                              color: "#2c2633",
+                            }}
+                          >
+                            nothing
+                          </Avatar>
+                          <div className="sent-message">{message.message}</div>
+                        </span>
+                      );
+                    }
                   }
-                }
-              })}
-          {/* {dbMessages &&
+                })}
+            {/* {dbMessages &&
             dbMessages.map((message, index, messageArray) => {
               if (message.received === true) {
                 if (index === 0) {
@@ -301,38 +310,38 @@ const Chat = () => {
                 }
               }
             })} */}
-          {
-            <div className="chat-input">
-              <TextField
-                variant="outlined"
-                sx={{
-                  flex: "1",
-                  "& .MuiInputBase-root": {
-                    color: "white",
-                  },
-                }}
-                size="small"
-                multiline
-                value={chatInput}
-                onChange={(e) => handleInput(e)}
-              />
-              <Button
-                onClick={sendMessage}
-                variant="contained"
-                disabled={
-                  currentUser === undefined && currentRoomId === undefined
-                }
-              >
-                {currentUser === undefined && currentRoomId === undefined
-                  ? "Disabled"
-                  : "Send"}
-              </Button>
-            </div>
-          }
+            {
+              <div className="chat-input">
+                <TextField
+                  variant="outlined"
+                  sx={{
+                    flex: "1",
+                    "& .MuiInputBase-root": {
+                      color: "white",
+                    },
+                  }}
+                  size="small"
+                  multiline
+                  value={chatInput}
+                  onChange={(e) => handleInput(e)}
+                />
+                <Button
+                  onClick={sendMessage}
+                  variant="contained"
+                  disabled={
+                    currentUser === undefined && currentRoomId === undefined
+                  }
+                >
+                  {currentUser === undefined && currentRoomId === undefined
+                    ? "Disabled"
+                    : "Send"}
+                </Button>
+              </div>
+            }
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default Chat;
