@@ -116,6 +116,22 @@ const Chat = () => {
               .map((message, index, messageArray) => {
                 console.log(message);
                 if (message.received === true) {
+                  if (index === 0) {
+                    return (
+                      <span
+                        style={{ marginBottom: "2px" }}
+                        className="received-message-container"
+                        key={index}
+                      >
+                        <div className="received-message">
+                          {message.message}
+                        </div>
+                        <Avatar>
+                          {currentUser.username.charAt(0).toUpperCase()}
+                        </Avatar>
+                      </span>
+                    );
+                  }
                   if (messageArray[index - 1].id !== message.id) {
                     return (
                       <span
@@ -152,6 +168,18 @@ const Chat = () => {
                     );
                   }
                 } else {
+                  if (index === 0) {
+                    return (
+                      <span
+                        key={index}
+                        style={{ marginBottom: "2px" }}
+                        className="sent-message-container"
+                      >
+                        <Avatar>You</Avatar>
+                        <div className="sent-message">{message.message}</div>
+                      </span>
+                    );
+                  }
                   if (messageArray[index - 1].id !== message.id) {
                     return (
                       <span
