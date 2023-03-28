@@ -13,7 +13,7 @@ const httpServer = createServer(server);
 server.use(function (req, res, next) {
   res.header(
     "Access-Control-Allow-Origin",
-    "https://neon-madeleine-1c09fe.netlify.app"
+    "https://twitter-clone-frontend-27sl.onrender.com"
   );
   res.header(
     "Access-Control-Allow-Headers",
