@@ -115,7 +115,7 @@ const Chat = () => {
             )}
           </div>
           <div className="chat-interface">
-            {dbMessages.length > 0 &&
+            {dbMessages?.length > 0 &&
               dbMessages
                 .filter((message) => message.message !== null)
                 .map((message, index, messageArray) => {
