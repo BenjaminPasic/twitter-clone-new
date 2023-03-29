@@ -1,11 +1,11 @@
-import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useMutation } from "react-query";
-import "../css/Login.css";
+import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
-import useAuth from "../hooks/useAuth";
+import { useMutation } from "react-query";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { login } from "../api/userApi";
+import "../css/Login.css";
+import useAuth from "../hooks/useAuth";
 
 export default function Login() {
   const { mutate, isLoading, error } = useMutation(login);
@@ -26,7 +26,6 @@ export default function Login() {
     if (isAuth === true) {
       navigate("/");
     }
-    console.log(isAuth);
   }, [isAuth]);
 
   useEffect(() => {

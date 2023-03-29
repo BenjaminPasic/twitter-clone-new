@@ -17,7 +17,6 @@ export const verifyToken = () => {
 };
 
 export const getUserProfile = (username) => {
-  console.log(username);
   return customAxios.get("/user/profile", {
     params: {
       username,

@@ -23,8 +23,6 @@ const Chat = () => {
     }
   );
 
-  console.log(dbMessages);
-
   const handleScroll = () => {
     window.scrollTo({
       top: chatInputRef.offsetTop,
@@ -57,7 +55,6 @@ const Chat = () => {
 
   useEffect(() => {
     socket.on("receive-message", (message) => {
-      console.log("received message", message);
       setDbMessages((prevState) => [...prevState, { message, received: true }]);
     });
   }, [socket]);
@@ -68,7 +65,6 @@ const Chat = () => {
         ...prevState,
         { message: chatInput, received: false },
       ]);
-      console.log("sent message", dbMessages);
       socket.emit("send-message", chatInput, currentRoomId, currentUser.id);
       setChatInput("");
     }
@@ -92,6 +88,7 @@ const Chat = () => {
       </div>
     );
   }
+
   return (
     <div className="chat">
       <div className="container">
@@ -125,7 +122,6 @@ const Chat = () => {
             dbMessages
               .filter((message) => message.message !== null)
               .map((message, index, messageArray) => {
-                console.log(message);
                 if (message.received === true) {
                   if (index === 0) {
                     return (

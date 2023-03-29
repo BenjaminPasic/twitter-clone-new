@@ -1,16 +1,20 @@
-import "../css/Navbar.css";
-import logo from "../assets/Chitter-logos/Chatter.png";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Menu, MenuItem, IconButton } from "@mui/material";
+import { Logout } from "@mui/icons-material";
 import Chat from "@mui/icons-material/Chat";
-import { Avatar } from "@mui/material";
+import {
+  Avatar,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
-import useAuth from "../hooks/useAuth";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { ListItemIcon } from "@mui/material";
 import { logout } from "../api/userApi";
-import { Logout } from "@mui/icons-material";
+import logo from "../assets/Chitter-logos/Chatter.png";
+import "../css/Navbar.css";
+import useAuth from "../hooks/useAuth";
 
 export default function Navbar() {
   const { isLoading, isFetching, refetch } = useQuery("logout", logout, {
@@ -79,7 +83,7 @@ export default function Navbar() {
         <div>
           <IconButton onClick={(e) => handleIconClick(e)} size="small">
             <Avatar sx={{ bgcolor: "red" }}>
-              {username && username.charAt(0)}
+              {username && username.charAt(0).toUpperCase()}
             </Avatar>
           </IconButton>
         </div>
