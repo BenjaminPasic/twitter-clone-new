@@ -13,7 +13,7 @@ require("dotenv").config({ path: "../.env" });
 // );
 
 const dbConnection = new Sequelize(
-  "mysql://root:spIFuDm9H4kOAuHrbr9z@containers-us-west-161.railway.app:6662/railway"
+  "mysql://root:CkfZHD2P62l6IIAA1jtB@containers-us-west-193.railway.app:6831/railway"
 );
 
 dbConnection
@@ -22,8 +22,10 @@ dbConnection
     console.log("Connection has been established successfully.");
   })
   .catch((error) => {
-    console.log("FAILURE! connection to database has failed.");
-    console.log("here", error);
+    console.log(
+      "FAILURE! connection to database has failed. More details: ",
+      error
+    );
   });
 
 module.exports = dbConnection;

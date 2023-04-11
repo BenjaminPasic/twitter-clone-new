@@ -20,8 +20,6 @@ const addNewLike = async (req, res) => {
   const postInfo = req.body;
   const userInfo = await decodeJwtToken(req.cookies.token);
 
-  console.log("Here", postInfo, userInfo)
-
   const post = await Like.count({
     where: {
       post_id: postInfo.post_id,

@@ -82,7 +82,6 @@ const getRecentComments = async (req, res) => {
       } else {
         modifiedComment = { ...modifiedComment, can_delete: false };
       }
-      console.log(modifiedComment);
       return modifiedComment;
     });
     return res.status(200).json({ recentComments }).end();

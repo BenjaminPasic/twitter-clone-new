@@ -5,15 +5,12 @@ const Conversation = require("../models/Conversation");
 const socketEventsInit = (io) => {
   io.use(cookieParser());
   io.on("connection", (socket) => {
-    console.log(`User connected: ${socket.id}`);
-
     socket.on("join-room", (room) => {
       socket.join(room);
     });
 
     socket.on("send-message", async (message, room, receiverId) => {
       const senderData = await decodeJwtToken(socket.request.cookies.token);
-      console.log("message backend socket", message);
       socket.to(room).emit("receive-message", message);
       try {
         await Conversation.create({
