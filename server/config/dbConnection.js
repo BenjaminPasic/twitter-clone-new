@@ -12,7 +12,9 @@ require("dotenv").config({ path: "../.env" });
 //   }
 // );
 
-const dbConnection = new Sequelize(process.env.DB_URL);
+const dbConnection = new Sequelize(process.env.DB_URL, {
+  dialect: "mysql",
+});
 
 dbConnection
   .authenticate()
