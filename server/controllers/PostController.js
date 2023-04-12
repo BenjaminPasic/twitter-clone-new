@@ -34,8 +34,6 @@ const addNewPost = async (req, res) => {
 const getRecentPosts = async (req, res) => {
   const { page } = req.params;
 
-
-
   let offset = 0;
   if (page > 1) {
     offset = page * 10 - 10;
@@ -58,6 +56,7 @@ const getRecentPosts = async (req, res) => {
             LIMIT 10 OFFSET ${offset}`,
       { type: QueryTypes.SELECT }
     );
+    console.log("raw sql", recentPosts);
     //Check if current user liked the post, so we can show it accordingly in the frontend
     recentPosts = recentPosts.map((post) => {
       let editedPost = { ...post };
@@ -70,6 +69,7 @@ const getRecentPosts = async (req, res) => {
       }
       return editedPost;
     });
+    console.log("after", recentPosts);
     return res.status(200).json({ recentPosts }).end();
   } catch (e) {
     return res.status(503).json(e).end();
