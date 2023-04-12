@@ -51,7 +51,7 @@ const getRecentPosts = async (req, res) => {
             JOIN users u on p.user_id = u.id
             LEFT JOIN likes l ON l.post_id = p.id
             LEFT JOIN comments c on c.written_on_post_id = p.id
-            GROUP BY p.id, l.user_id
+            GROUP BY p.id
             ORDER BY p.createdAt DESC
             LIMIT 10 OFFSET ${offset}`,
       { type: QueryTypes.SELECT }
